@@ -12,7 +12,7 @@ Governance and Proposal Process: Agora simplifies the proposal process, making i
 
 Community-Centric Approach: We believe in the power of community. Agora is not just a governance tool; it's a platform for discussion, debate, and collaboration. Every member has the opportunity to contribute, comment, and influence the course of the DAO.
 
-## Milestone 1(2024/1/16-2024/2/15)
+## Milestone #1(2024/1/16-2024/2/15)
 
 For Milestone #1, our focus is to develop a comprehensive Product Requirement Document (PRD) that encapsulates the following key features:
 
@@ -33,3 +33,6 @@ In terms of research and development strategy, we will:
 - Conduct product dogfooding to internally test and iterate our product, gaining firsthand experience of its functionality and user interface.
 - Perform desk research to gather references and insights. This will involve analyzing existing solutions and best practices in similar domains, helping us to inform our design and functional decisions with industry standards and user expectations.
 These tasks aim to lay a solid foundation for the Agora project, ensuring that we deliver a product that is not only technically robust but also user-friendly and aligned with the Mossland community's needs.
+
+# Related docs 
+- https://abit.ly/bpx5go
