@@ -12,7 +12,7 @@ Governance and Proposal Process: Agora simplifies the proposal process, making i
 
 Community-Centric Approach: We believe in the power of community. Agora is not just a governance tool; it's a platform for discussion, debate, and collaboration. Every member has the opportunity to contribute, comment, and influence the course of the DAO.
 
-##Milestone 1(2024/1/16-2024/2/15)
+## Milestone 1(2024/1/16-2024/2/15)
 
 For Milestone #1, our focus is to develop a comprehensive Product Requirement Document (PRD) that encapsulates the following key features:
 
@@ -21,7 +21,7 @@ For Milestone #1, our focus is to develop a comprehensive Product Requirement Do
 3. Considering integration with existing voting mechanisms in the Mossland Metaverse.
 4. Forum-style communication channels within DAO.
 
-##Expected deliverables
+## Expected deliverables
 
 Additionally, we will provide:
 
