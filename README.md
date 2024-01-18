@@ -1,7 +1,5 @@
-# Agora
+# Agora: Mossland DAO Governance Framework
 
-Agora: Mossland DAO Governance Framework
-Introduction
 Welcome to Agora, the cornerstone of transparent governance for the Mossland DAO. Agora is a decentralized governance framework designed to empower various members of the Mossland community to actively participate in the decision-making processes. Through Agora, we uphold the values of openness, collaboration, and innovation that are central to the Mossland ecosystem.
 
 # Purpose
