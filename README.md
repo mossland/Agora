@@ -36,3 +36,13 @@ These tasks aim to lay a solid foundation for the Agora project, ensuring that w
 
 # Related docs 
 - https://abit.ly/bpx5go
+
+##WEEK 1(1/16~1/23
+- - project kick off/w mean
+    - [x]  해야할 일들에 대한 전달
+    
+    [Milestone #1 스콥](https://www.notion.so/Milestone-1-c0b7c11d93f04cb6b198f6b97cc36a1f?pvs=21)
+    
+    - [x]  milestone 1에 대한 공유
+- [x]  모스랜드 메타버스 desk research
+- [x]  Read me 초안 작성하기
