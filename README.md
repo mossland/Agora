@@ -56,4 +56,5 @@ These tasks aim to lay a solid foundation for the Agora project, ensuring that w
 ## Week 3/4(1/31-2/7)
 
 - [ ]  유저 플로우별 상세 기획
+- [ ]  프로덕트 룩앤필/네이밍/로고
 - [ ]  디자인 - lofi 작업
