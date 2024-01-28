@@ -37,12 +37,23 @@ These tasks aim to lay a solid foundation for the Agora project, ensuring that w
 # Related docs 
 - https://abit.ly/bpx5go
 
-##WEEK 1(1/16~1/23
+##WEEK 1(1/16~1/23)
 - - project kick off/w mean
     - [x]  해야할 일들에 대한 전달
-    
     [Milestone #1 스콥](https://www.notion.so/Milestone-1-c0b7c11d93f04cb6b198f6b97cc36a1f?pvs=21)
-    
     - [x]  milestone 1에 대한 공유
 - [x]  모스랜드 메타버스 desk research
 - [x]  Read me 초안 작성하기
+
+##Week 2(1/23~1/31)
+
+- [x]  모스랜드에게 요청할 정보 정리해서 콜 요청하기(월요일)
+- [ ]  기획서 초안 작성
+- [PRD Draft(작업 중)](https://www.notion.so/PRD-Draft-ff444fb304c54389965514b7f9078105?pvs=21)
+- [x]  레퍼런스 리서치
+      - 피그마 링크 추가 예정
+
+##Week 3/4(1/31-2/7)
+
+- [ ]  유저 플로우별 상세 기획
+- [ ]  디자인 - lofi 작업
