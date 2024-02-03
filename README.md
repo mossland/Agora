@@ -35,7 +35,8 @@ In terms of research and development strategy, we will:
 These tasks aim to lay a solid foundation for the Agora project, ensuring that we deliver a product that is not only technically robust but also user-friendly and aligned with the Mossland community's needs.
 
 # Related docs 
-- https://abit.ly/bpx5go
+- [https://abit.ly/bpx5go]
+- [https://www.figma.com/file/3pLLZ0vr1jbVmMyHnai6cK/Mossland-Agora-project?type=design&node-id=2%3A2&mode=design&t=UoxS2rhK3ry7BDwO-1]
 
 ## WEEK 1(1/16~1/23)
 - - project kick off/w mean
@@ -51,10 +52,10 @@ These tasks aim to lay a solid foundation for the Agora project, ensuring that w
 - [ ]  기획서 초안 작성
 - [PRD Draft(작업 중)](https://www.notion.so/PRD-Draft-ff444fb304c54389965514b7f9078105?pvs=21)
 - [x]  레퍼런스 리서치
-      - 피그마 링크 추가 예정
+      - (https://www.figma.com/file/3pLLZ0vr1jbVmMyHnai6cK/Mossland-Agora-project?type=design&node-id=2%3A2&mode=design&t=UoxS2rhK3ry7BDwO-1)
 
 ## Week 3/4(1/31-2/7)
 
 - [ ]  유저 플로우별 상세 기획
 - [ ]  프로덕트 룩앤필/네이밍/로고
-- [ ]  디자인 - lofi 작업
+- [x]  디자인 - lofi 작업 시작(~1차 공유 : 2/7 수요일)
