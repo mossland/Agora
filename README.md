@@ -49,13 +49,26 @@ These tasks aim to lay a solid foundation for the Agora project, ensuring that w
 ## Week 2(1/23~1/31)
 
 - [x]  모스랜드에게 요청할 정보 정리해서 콜 요청하기(월요일)
-- [ ]  기획서 초안 작성
+- [x]  기획서 초안 작성
 - [PRD Draft(작업 중)](https://www.notion.so/PRD-Draft-ff444fb304c54389965514b7f9078105?pvs=21)
 - [x]  레퍼런스 리서치
       - (https://www.figma.com/file/3pLLZ0vr1jbVmMyHnai6cK/Mossland-Agora-project?type=design&node-id=2%3A2&mode=design&t=UoxS2rhK3ry7BDwO-1)
 
-## Week 3/4(1/31-2/7)
+## Week 3(1/31-2/6)
 
-- [ ]  유저 플로우별 상세 기획
+- [x]  유저 플로우별 상세 기획
 - [ ]  프로덕트 룩앤필/네이밍/로고
 - [x]  디자인 - lofi 작업 시작(~1차 공유 : 2/7 수요일)
+     https://www.figma.com/file/3pLLZ0vr1jbVmMyHnai6cK/Mossland-Agora-project?type=design&node-id=122-2163&mode=design&t=DBBPlL3D0oA7L97E-0
+    - [x]  메인화면/유저 플로우(~2/7)
+    - [x]  디자인 컨셉(~2/7)
+- [x]  DAO 운영 관련 정책 update 
+     [PRD Draft(작업 중)](https://www.notion.so/PRD-Draft-ff444fb304c54389965514b7f9078105?pvs=21)
+
+## Week 4(2/7~2/15)
+
+- [ ]  어드민 스펙 update 
+     [PRD Draft(작업 중)](https://www.notion.so/PRD-Draft-ff444fb304c54389965514b7f9078105?pvs=21)
+- [ ] lofi 수정사항 반영
+- [ ] 어드민 화면 추가 
+
