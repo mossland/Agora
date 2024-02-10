@@ -71,8 +71,8 @@ These tasks aim to lay a solid foundation for the Agora project, ensuring that w
 현 lofi 기준으로 자잘한 수정사항 업데이트는 계속 진행 중입니다
 웹앱 기준으로 고려했어서, 웹 기준으로 디자인을 진행했는데 반응형에 따라 모바일 화면 대응은 이번 스콥에서는 어려울 것 같습니다. 웹 디자인 시 각 섹션을 모듈로 제작하긴 했어서 모바일은 스콥 확정 후, phase 2에 project showcase 등 추가되는 화면들 포함해서 같이 대응할 수 있도록 할게요. (사실 웹 dapp 중에 모바일 까지 뎁스있게 대응하는 경우가 많지는 않아서, 저희도 mossverse 에서는 웹으로 띄울거고, agora 단독으로 이용 하는 시나리오 정도 고려되는데, 해당 부분은 우선순위를 살짝 조정하도록 하겠습니다
 
-- [ ]  어드민 스펙 update 
-     [PRD Draft(작업 중)](https://www.notion.so/PRD-Draft-ff444fb304c54389965514b7f9078105?pvs=21)
+- [x]  어드민 스펙 update 
+(https://www.notion.so/chelsealee97/PRD-Draft-ff444fb304c54389965514b7f9078105?pvs=4#0b26e757a90a45a9b42ba716057663f4)    
 - [ ] lofi 수정사항 반영
 - [ ] 어드민 화면 추가 
 
