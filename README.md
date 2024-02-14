@@ -65,7 +65,7 @@ These tasks aim to lay a solid foundation for the Agora project, ensuring that w
 - [x]  DAO 운영 관련 정책 update 
      [PRD Draft(작업 중)](https://www.notion.so/PRD-Draft-ff444fb304c54389965514b7f9078105?pvs=21)
 
-## Week 4(2/7~2/15)
+## Week 4(2/7~2/16)
 0207 추가 코멘트 
 어드민 화면 요구사항 주신 것 바탕으로 기능 명세 필요 -> 디자인 플로우에 반영 예정
 현 lofi 기준으로 자잘한 수정사항 업데이트는 계속 진행 중입니다
@@ -73,6 +73,11 @@ These tasks aim to lay a solid foundation for the Agora project, ensuring that w
 
 - [x]  어드민 스펙 update 
 (https://www.notion.so/chelsealee97/PRD-Draft-ff444fb304c54389965514b7f9078105?pvs=4#0b26e757a90a45a9b42ba716057663f4)    
-- [ ] lofi 수정사항 반영
-- [ ] 어드민 화면 추가 
+- [x] lofi 수정사항 반영
+- [x]  Hifi 작업
+      [https://www.figma.com/file/3pLLZ0vr1jbVmMyHnai6cK/Mossland-Agora-project?type=design&node-id=14-152&mode=design&t=1fco7widi9txyTH3-0]
+- [x]  어드민 명세 추가/어드민 화면 업데이트
+- [ ]  1차 피드백 반영
+      [https://docs.google.com/document/d/1oYboOYPCcf-WMpDnOoPAojkih-mUeG-7Ujy0MDUwtRA/edit?usp=sharing]
+- [ ]  디자인 테마 수정
 
