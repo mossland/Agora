@@ -36,7 +36,10 @@ These tasks aim to lay a solid foundation for the Agora project, ensuring that w
 
 # Related docs 
 - [https://abit.ly/bpx5go]
-- [https://www.figma.com/file/3pLLZ0vr1jbVmMyHnai6cK/Mossland-Agora-project?type=design&node-id=2%3A2&mode=design&t=UoxS2rhK3ry7BDwO-1]
+- [https://www.figma.com/file/3pLLZ0vr1jbVmMyHnai6cK/Mossland-Agora-project?type=design&node-id=14%3A152&mode=design&t=N7GjpNJdQEJJSt3O-1]
+  
+# Feedback from the foundation 
+[https://docs.google.com/document/d/1oYboOYPCcf-WMpDnOoPAojkih-mUeG-7Ujy0MDUwtRA/edit?pli=1]
 
 ## WEEK 1(1/16~1/23)
 - - project kick off/w mean
