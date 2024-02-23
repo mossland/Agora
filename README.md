@@ -57,7 +57,7 @@ These tasks aim to lay a solid foundation for the Agora project, ensuring that w
 ## Week 3(1/31-2/6)
 
 - [x]  유저 플로우별 상세 기획
-- [ ]  프로덕트 룩앤필/네이밍/로고
+- [x]  프로덕트 룩앤필/네이밍/로고
 - [x]  디자인 - lofi 작업 시작(~1차 공유 : 2/7 수요일)
      https://www.figma.com/file/3pLLZ0vr1jbVmMyHnai6cK/Mossland-Agora-project?type=design&node-id=122-2163&mode=design&t=DBBPlL3D0oA7L97E-0
     - [x]  메인화면/유저 플로우(~2/7)
@@ -77,7 +77,8 @@ These tasks aim to lay a solid foundation for the Agora project, ensuring that w
 - [x]  Hifi 작업
       [https://www.figma.com/file/3pLLZ0vr1jbVmMyHnai6cK/Mossland-Agora-project?type=design&node-id=14-152&mode=design&t=1fco7widi9txyTH3-0]
 - [x]  어드민 명세 추가/어드민 화면 업데이트
-- [ ]  1차 피드백 반영
+- [x]  1차 피드백 반영
       [https://docs.google.com/document/d/1oYboOYPCcf-WMpDnOoPAojkih-mUeG-7Ujy0MDUwtRA/edit?usp=sharing]
-- [ ]  디자인 테마 수정
-
+- [x]  디자인 색 테마 변경 요청 대응
+- [x]  어드민 topic 숨김(삭제)처리 케이스 대응
+- [x]  버튼 컴포넌트 디자인 변경 및 상태값 따라 분류 
