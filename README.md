@@ -84,4 +84,41 @@ These tasks aim to lay a solid foundation for the Agora project, ensuring that w
       [https://docs.google.com/document/d/1oYboOYPCcf-WMpDnOoPAojkih-mUeG-7Ujy0MDUwtRA/edit?usp=sharing]
 - [x]  디자인 색 테마 변경 요청 대응
 - [x]  어드민 topic 숨김(삭제)처리 케이스 대응
-- [x]  버튼 컴포넌트 디자인 변경 및 상태값 따라 분류 
+- [x]  버튼 컴포넌트 디자인 변경 및 상태값 따라 분류
+
+##Milestone 2(02/29~04/07)
+**Expected deliverables**
+- Milestone #2 관련 Product requirement/UX&UI 반영된 Figma
+- ~~Milestone #1에서 보완요청, 피드백을 통해 추가된 기능에 대한 대응~~
+    
+### 기능 단위 Spec list up
+- Mossland DAO 내 프로젝트 형성과 오픈소스 개발자 커뮤니티를 위한 제반 시스템에 대해 아래 기능들을 포함한 기능 업데이트된 product 전달
+  1. Project Showcase 추가 : 생태계 내 진행되는 오픈소스 프로젝트에 대한 정보/서비스 들에 대해 모아볼 수 있는 곳입니다
+     - 등록된 프로젝트들에 대한 요약/정보를 디테일 페이지에서 열람 가능(1 depth)
+     - 프로젝트 제안 및 신청 시스템: 빌더들이 새로운 프로젝트 아이디어에 대해 제안하고, 필요한 경우 재단에 그랜트를 신청할 수 있는 인터페이스 입니다. 이 시스템은 프로젝트 아이디어, 필요한 자금, 예상 일정 등을 포함해야 합니다.     
+       → 기존 proposal 과는 다른 형태일지에 대해서는 재단과 논의 필요. 다른 재단 developer program 참고해서 어떻게 신청 받는지 레퍼런스 리서치 필요        
+     - 오픈소스 프로젝트로 진행되는 경우, 해당 프로젝트 관련해서 진행상황은 Github 연동을 통해, 진행상황 관련 주요 정보 미러링.
+     - GitHub 연동: 기존의 GitHub 레포기반 연동되어 보여질 수 있는 부분에 대한 구현
+  2. Mobile 버전 반응형 대응 
+     - Agora 웹뷰 기준으로 모바일 반응형 대응
+     - ***admin 까지는 보통 모바일 대응하는 경우가 없어서 리소스 고려해서 생략하도록 하겠습니다.***
+  3. Agora 유저 온보딩 가이드 컨텐츠 one-pager 로 제작  
+     - 유저가 한눈에 뭐하는 곳이고, 어떤 것들이 가능한지 볼 수 있는 one pager 컨텐츠/화면 기획
+     - Agora 내 진입시 볼 수 있는 CTA와 연결
+    
+## 예상 일정 및 투두
+### week 1
+    - [ ]  Project showcase 관련 유저 플로우 및 요구사항 추가(@첼시)
+    - [ ]  모스랜드 재단 내 기능 관련 요구사항 싱크 필요
+    - [ ]  다른 재단 developer program 참고해서 어떻게 신청 받는지 레퍼런스 리서치 필요
+    - [ ]  디자인 관련 싱크
+### week 2-3
+    - [ ]  Agora 유저 온보딩 컨텐츠 기획
+    - [ ]  Project showcase 부분 lofi 구현 시작 및 1차 공유
+    - [ ]  Project showcase 부분 Hifi 구현 및 Admin 사이드 플로우 추가
+    - [ ]  Agora 유저 온보딩 컨텐츠 전달 및 싱크(w/디자인)
+### week 4-5
+    - [ ]  Agora Hifi 공유 및 모바일 대응 시작
+    - [ ]  Agora 유저 온보딩 컨텐츠 디자인
+    - [ ]  Agora 모바일 대응 마무리
+    - [ ]  최종 피드백 요청 후 반영
