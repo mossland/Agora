@@ -12,7 +12,7 @@ Governance and Proposal Process: Agora simplifies the proposal process, making i
 
 Community-Centric Approach: We believe in the power of community. Agora is not just a governance tool; it's a platform for discussion, debate, and collaboration. Every member has the opportunity to contribute, comment, and influence the course of the DAO.
 
-## Milestone #1(2024/1/16-2024/2/15)
+# Milestone #1(2024/1/16-2024/2/15)
 
 For Milestone #1, our focus is to develop a comprehensive Product Requirement Document (PRD) that encapsulates the following key features:
 
@@ -86,7 +86,7 @@ These tasks aim to lay a solid foundation for the Agora project, ensuring that w
 - [x]  어드민 topic 숨김(삭제)처리 케이스 대응
 - [x]  버튼 컴포넌트 디자인 변경 및 상태값 따라 분류
 
-##Milestone 2(02/29~04/07)
+# Milestone 2(02/29~04/07)
 **Expected deliverables**
 - Milestone #2 관련 Product requirement/UX&UI 반영된 Figma
 - ~~Milestone #1에서 보완요청, 피드백을 통해 추가된 기능에 대한 대응~~
