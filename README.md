@@ -103,6 +103,21 @@ frontend : [https://github.com/mossland/Agora_frontend]
   
 ## 예상 일정 및 투두(매주 업데이트 예정) 
 ### week 1
-    - [ ]  Milestone #1 관련 요구사항 영어로 전달 
+    - [x]  Milestone #1 관련 요구사항 영어로 전달 
     - [x]  개발환경 및 기본 세팅 
     - [x]  프론트 작업 시작 
+
+### week 2(3/18~3/26)
+- Completed:
+- Finalizing front-end UI development of Agora admin dashboard
+- Resolved all outstanding questions on admin dashboard regarding UI/intended functionality 
+- Deployed internal dev environment for QA of admin dashboard UI (https://mossland-admin.vercel.app/dashboard/). This will be updated automatically as updates are pushed to the codebase.
+- Sharing current status of admin dashboard code with Mossland team via Github
+- Setup services for Agora backend; setup email accounts, MongoDB account, Luniverse blockchain node account 
+### week 3(3/26~)
+To-do:
+- Lea: tweaks on admin dashboard UI based on discussion/updates surfaced on weekly sync call on 26/3. All changes will be completed by the end of the week to finalize admin dashboard UI.
+- Lea: basic login page for admin dashboard UI.
+- Chelsea: Options for PFP images and add designs for revised comments from weekly sync
+- Once admin dashboard UI is finalized, Vercel deployment can be configured on Mossland repository so that the code is sourced directly from their Github (I cannot do this as I am not an owner of their repo - I can show a tutorial of how to set this up).
+
