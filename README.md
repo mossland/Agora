@@ -121,5 +121,22 @@ Completed:
 - [x]Started working on setup for user-facing front-end. Latest changes will be visible here: https://mossland-app.vercel.app
 - [x]Will load update code to Mossland Github for Admin UI and backend repos.
 - [x]Added Admin's missing screen and policy complements
-### week 4(4/2~)
-- []Admin QA ing
+### week 4(4/2~4/8)
+- [x] Admin QA ing
+- Completed:
+- [x]Added front-end authentication on Admin UI; login via Metamask requires user to be an admin, if not an admin then internal screens are not visible
+- [x]Working on UI for user-facing agora, started working on back-end Web 2 integration for user-facing agora. 
+- [x]Working on authentication/syncing of user profile on user-facing Agora.
+- [x]Will load updated code to Mossland Github for Admin UI, Agora UI, and backend repos.
+### week 5(4/8~4/15)
+- [ ]Add wallet signature on admin UI login to make auth more rigorous (LL)
+- [ ]Outstanding questions posted on Figma (CL)
+- [ ]Beginning QA for Admin UI  (CL)
+- [ ]These are outstanding unfinished functionality on Admin repo (LL):
+- [ ]Reported topics empty list button debugging
+- [ ]Rendering proposal votes
+- [ ]Rendering user activity
+- [ ]When login fails (unauthorised) - show alert message
+- [ ]Require wallet signature when logging in (auth)
+- [ ]Table column search/sort
+
