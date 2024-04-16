@@ -147,5 +147,6 @@ In progress:
 - [ ]Working on integrating Mossland API calls for treasury data, fetching user balances based on wallet address
 To-do: 
 - [ ]QA for Admin UI
+- [ ]Update requirement docs with comments on figma
 
 
