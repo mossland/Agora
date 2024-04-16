@@ -129,14 +129,23 @@ Completed:
 - [x]Working on authentication/syncing of user profile on user-facing Agora.
 - [x]Will load updated code to Mossland Github for Admin UI, Agora UI, and backend repos.
 ### week 5(4/8~4/15)
-- [ ]Add wallet signature on admin UI login to make auth more rigorous (LL)
-- [ ]Outstanding questions posted on Figma (CL)
+- [x]Add wallet signature on admin UI login to make auth more rigorous (LL)
+- [x]Outstanding questions posted on Figma (CL)
 - [ ]Beginning QA for Admin UI  (CL)
-- [ ]These are outstanding unfinished functionality on Admin repo (LL):
-- [ ]Reported topics empty list button debugging
-- [ ]Rendering proposal votes
-- [ ]Rendering user activity
-- [ ]When login fails (unauthorised) - show alert message
-- [ ]Require wallet signature when logging in (auth)
-- [ ]Table column search/sort
+- [x]These are outstanding unfinished functionality on Admin repo (LL):
+- [x]Reported topics empty list button debugging
+- [x]Rendering proposal votes
+- [x]Rendering user activity
+- [x]When login fails (unauthorised) - show alert message
+- [x]Require wallet signature when logging in (auth)
+- [x]Table column search/sort
+### week 6(4/15~4/22)
+In progress:
+- [ ] Working on UI styling for user-facing agora, as well as backend integration
+- [ ]Added authentication handling for user-facing agora; will add wallet signature requirement on both user-facing and admin side for added security
+- [ ]Beginning work on Web3 integration; handling voting, which data will be written to chain
+- [ ]Working on integrating Mossland API calls for treasury data, fetching user balances based on wallet address
+To-do: 
+- [ ]QA for Admin UI
+
 
