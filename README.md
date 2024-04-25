@@ -141,12 +141,19 @@ Completed:
 - [x]Table column search/sort
 ### week 6(4/15~4/22)
 In progress:
-- [ ] Working on UI styling for user-facing agora, as well as backend integration
-- [ ]Added authentication handling for user-facing agora; will add wallet signature requirement on both user-facing and admin side for added security
-- [ ]Beginning work on Web3 integration; handling voting, which data will be written to chain
-- [ ]Working on integrating Mossland API calls for treasury data, fetching user balances based on wallet address
+- [x] Working on UI styling for user-facing agora, as well as backend integration
+- [x]Added authentication handling for user-facing agora; will add wallet signature requirement on both user-facing and admin side for added security
+- [x]Beginning work on Web3 integration; handling voting, which data will be written to chain
+- [x]Working on integrating Mossland API calls for treasury data, fetching user balances based on wallet address
 To-do: 
-- [ ]QA for Admin UI
-- [ ]Update requirement docs with comments on figma
-
+- [x]second round QA for Admin UI
+- [x]Update requirement docs with comments on figma
+### week 7(4/23~4/30)
+In progress:
+- [x]Finalizing UI styling for user-facing agora
+- [ ]Working on backend integration of endpoints into user-facing agora
+- [ ]Working on Web3 integration; handling voting and proposal creation on chain
+To-do: 
+- [ ]fixing minor tickets for QA- Admin UI
+- [ ]UI mockup for proposal end date extension in Figma
 
