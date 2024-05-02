@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import {
   Box,
   Button,
@@ -40,6 +41,7 @@ const Categories = ({ categories }) => {
           }}
         >
           <Typography
+            className="pixelify"
             sx={{
               ml: 1,
               color: "#000000",
@@ -52,6 +54,21 @@ const Categories = ({ categories }) => {
         </Box>
 
         <FormControl sx={{ p: 2 }}>
+          <RadioGroup
+            aria-labelledby="demo-radio-buttons-group-label"
+            defaultValue="female"
+            name="radio-buttons-group"
+          >
+            <FormControlLabel
+              key={"general"}
+              value={"General"}
+              control={<Radio />}
+              label={"General"}
+              componentsProps={{
+                typography: { fontWeight: 'bold' }
+              }}
+            />
+          </RadioGroup>
           {categories && (
             <RadioGroup
               aria-labelledby="demo-radio-buttons-group-label"
@@ -64,6 +81,9 @@ const Categories = ({ categories }) => {
                   value={cat._id}
                   control={<Radio />}
                   label={cat._id}
+                  componentsProps={{
+                    typography: { fontWeight: 'bold' }
+                  }}
                 />
               ))}
             </RadioGroup>
@@ -72,21 +92,24 @@ const Categories = ({ categories }) => {
       </Paper>
       <Button
         variant="contained"
-        onClick={() => handleConnectWallet()}
+        href="https://google.com" //to-do: update link
         sx={{
           px: 4,
           py: 1,
-          width: "100%",
           height: "44px",
           color: "#000000",
           background: "#FFB800",
           border: 1.5,
           borderColor: "#000000",
-          borderRadius: "8px",
+          borderRadius: "10px",
           boxShadow: "4px 4px 0px #000000",
           textTransform: "none",
+          fontSize: "16px",
           fontWeight: "bold",
-          "&:hover": {},
+          "&:hover": {
+            background: "#FFC633",
+            boxShadow: "4px 4px 0px #000000",
+          },
         }}
       >
         How to join the Agora?
@@ -96,3 +119,7 @@ const Categories = ({ categories }) => {
 };
 
 export default Categories;
+
+Categories.propTypes = {
+  categories: PropTypes.array,
+};

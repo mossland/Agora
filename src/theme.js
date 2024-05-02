@@ -2,7 +2,7 @@ import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
   typography: {
-    fontFamily: ["Pixelify San", "sans-serif"].join(","),
+    fontFamily: ["Ubuntu Mono", "sans-serif"].join(","),
   },
   //   palette: {
   //     primary: {

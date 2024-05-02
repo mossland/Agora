@@ -1,33 +1,35 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  List,
-  ListItem,
-  Paper,
-  Typography,
-} from "@mui/material";
+import PropTypes from "prop-types";
+import { Avatar, Box, List, ListItem, Paper, Typography } from "@mui/material";
 
-import p1 from "../../../assets/profile/profile1.png";
-import p2 from "../../../assets/profile/profile2.png";
-import p3 from "../../../assets/profile/profile3.png";
-import p4 from "../../../assets/profile/profile4.png";
+import { fetchProfilePicture } from "../../../utils/fetchProfilePicture";
 
 const RecentActivity = ({ activity }) => {
-  function fetchProfilePicture(pic) {
-    if (pic === "1") {
-      return p1;
+  function getTimeDifference(timestamp) {
+    // Get the current time in milliseconds
+    const currentTime = new Date().getTime();
+
+    // Convert the timestamp string to a Date object
+    const targetTime = new Date(timestamp);
+
+    // Calculate the time difference in milliseconds
+    const timeDifference = currentTime - targetTime;
+
+    // Convert milliseconds to seconds
+    const seconds = Math.floor(timeDifference / 1000);
+
+    // Calculate the time elapsed in days, hours, and minutes
+    const days = Math.floor(seconds / (3600 * 24));
+    const hours = Math.floor((seconds % (3600 * 24)) / 3600);
+    const minutes = Math.floor(((seconds % (3600 * 24)) % 3600) / 60);
+
+    // Construct the output based on the time elapsed
+    if (days > 0) {
+      return `${days} day${days > 1 ? "s" : ""} ago`;
+    } else if (hours > 0) {
+      return `${hours} hour${hours > 1 ? "s" : ""} ago`;
+    } else {
+      return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
     }
-    if (pic === "2") {
-      return p2;
-    }
-    if (pic === "3") {
-      return p3;
-    }
-    if (pic === "4") {
-      return p4;
-    }
-    return "";
   }
 
   return (
@@ -58,6 +60,7 @@ const RecentActivity = ({ activity }) => {
         }}
       >
         <Typography
+          className="pixelify"
           sx={{
             ml: 1,
             color: "#000000",
@@ -74,33 +77,69 @@ const RecentActivity = ({ activity }) => {
           aria-labelledby=""
           sx={{
             m: "2px",
-            height: "189px",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
           }}
         >
-          {activity.map((a) => (
+          {activity.slice(0, 10).map((a) => (
             <ListItem
               sx={{
                 display: "flex",
-                alignItems: "center",
+                alignItems: "flex-start",
                 gap: 2,
               }}
               key={a._doc._id}
             >
-              <Avatar
-                sx={{ color: "black", bgcolor: "#86FFC6" }}
-                variant="square"
-              >
-                M
-              </Avatar>
-              {a.type === "Comment" && <Box>
-                <Typography>
-                    {a._doc.author.nickname} commented on {a._doc.forumTopic.title}
-                </Typography>
-                <Typography>{"1 min"} ago</Typography>
-              </Box>}
+              {a.type === "Comment" && (
+                <>
+                  <Avatar
+                    src={fetchProfilePicture(a._doc.author.profilePicture)}
+                    sx={{
+                      width: "32px",
+                      height: "32px",
+                      border: 1,
+                      borderColor: "#000000",
+                      borderRadius: 1,
+                    }}
+                    variant="square"
+                  />
+                  <Box>
+                    <Typography sx={{ fontSize: "16px" }}>
+                      <strong>{a._doc.author.nickname}</strong> commented on{" "}
+                      {""}
+                      <strong>{a._doc.forumTopic.title}</strong>
+                    </Typography>
+                    <Typography sx={{ fontSize: "12px" }}>
+                      {getTimeDifference(a._doc.createdAt)}
+                    </Typography>
+                  </Box>
+                </>
+              )}
+              {a.type === "Vote" && (
+                <>
+                  <Avatar
+                    src={fetchProfilePicture(a._doc.voter.profilePicture)}
+                    sx={{
+                      width: "32px",
+                      height: "32px",
+                      border: 1,
+                      borderColor: "#000000",
+                      borderRadius: 1,
+                    }}
+                    variant="square"
+                  />
+                  <Box>
+                    <Typography sx={{ fontSize: "16px" }}>
+                      <strong>{a._doc.voter.nickname}</strong> voted on {""}
+                      <strong>{a._doc.associatedProposal.title}</strong>
+                    </Typography>
+                    <Typography sx={{ fontSize: "12px" }}>
+                      {getTimeDifference(a._doc.createdAt)}
+                    </Typography>
+                  </Box>
+                </>
+              )}
             </ListItem>
           ))}
         </List>
@@ -110,3 +149,7 @@ const RecentActivity = ({ activity }) => {
 };
 
 export default RecentActivity;
+
+RecentActivity.propTypes = {
+  activity: PropTypes.array,
+};

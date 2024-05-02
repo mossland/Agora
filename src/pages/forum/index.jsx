@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 
 import TopicGeneral from "./components/topic";
 import Categories from "./components/categories";
@@ -7,60 +7,52 @@ import requestHeaders from "../../utils/restClient";
 import axios from "axios";
 
 const Forum = () => {
-
   const appHeaders = requestHeaders();
   const [forumCategories, setForumCategories] = useState(null);
   const [forums, setForums] = useState(null);
-
-  // GET all forum topics to render in table 
-  useEffect(() => {
-    if (forums === null) {
-      getForums();
-    }
-  }, [forums, appHeaders]);
-
-  const getForums = async () => {
-    //setLoadingData(true);
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_APP_API_BASE_URL}/agora-forums`,
-        appHeaders
-      );
-      console.log(response.data)
-      setForums(response.data);
-      //setLoadingData(false);
-    } catch (error) {
-      console.log(error);
-      //setError(true);
-    }
-  };
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (forumCategories === null) {
-      getForumCategories();
-    }
-  }, [forumCategories, appHeaders]);
+    const fetchData = async () => {
+      try {
+        if (forums === null || forumCategories == null) {
+          const [forumsResponse, categoriesResponse] = await Promise.all([
+            axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/agora-forums`, { headers: appHeaders }),
+            axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/forums/categories`, { headers: appHeaders })
+          ]);
+          setForums(forumsResponse.data);
+          setForumCategories(categoriesResponse.data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const getForumCategories = async () => {
-    //setLoadingData(true);
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_APP_API_BASE_URL}/forums/categories`,
-        appHeaders
-      );
-      setForumCategories(response.data);
-      //setLoadingData(false);
-    } catch (error) {
-      console.log(error);
-      //setError(true);
-    }
-  };
+    fetchData();
+  }, [appHeaders]); 
 
   return (
-    <Box sx={{ mt: 2, display: "flex", justifyContent: "center", gap: 1 }}>
-      <Categories categories={forumCategories} />
-      <TopicGeneral forums={forums} />
-    </Box>
+    <>
+      {loading ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "calc(100vh - 64px)", // Example height, adjust if necessary
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Box sx={{ mt: 2, display: "flex", gap: 1 }}>
+          <Categories categories={forumCategories} />
+          <TopicGeneral forums={forums} />
+        </Box>
+      )}
+    </>
   );
 };
 

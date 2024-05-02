@@ -1,63 +1,64 @@
 import { useEffect, useState } from "react";
-import { Box } from '@mui/material';
-import AllProposals from "./components/allProposals";
-import requestHeaders from "../../utils/restClient";
+import { Outlet } from "react-router-dom";
 import axios from "axios";
+import requestHeaders from "../../utils/restClient";
 
+import { Box, CircularProgress } from "@mui/material";
+import AllProposals from "./components/allProposals";
+[]
 const Proposals = () => {
-
   const appHeaders = requestHeaders();
   const [approvedProposals, setApprovedProposals] = useState(null);
   const [proposalStats, setProposalStats] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // GET all proposals to render in table 
   useEffect(() => {
-    if (approvedProposals === null) {
-      getApprovedProposals();
-    }
-  }, [approvedProposals, appHeaders]);
+    const fetchData = async () => {
+      try {
+        if (approvedProposals === null || proposalStats === null) {
+        const [approvedResponse, statsResponse] = await Promise.all([
+          axios.get(
+            `${import.meta.env.VITE_APP_API_BASE_URL}/approved-proposals`,
+            { headers: appHeaders }
+          ),
+          axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/proposal-stats`, {
+            headers: appHeaders,
+          }),
+        ]);
+        setApprovedProposals(approvedResponse.data);
+        setProposalStats(statsResponse.data);
+      }
+      } catch (error) {
+        console.log(error);
+        // Handle the error state appropriately here
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const getApprovedProposals = async () => {
-    //setLoadingData(true);
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_APP_API_BASE_URL}/approved-proposals`,
-        appHeaders
-      );
-      setApprovedProposals(response.data);
-      //setLoadingData(false);
-    } catch (error) {
-      console.log(error);
-      //setError(true);
-    }
-  };
-
-  // GET proposal stats
-  useEffect(() => {
-    if (proposalStats === null) {
-      getProposalStats();
-    }
-  }, [proposalStats, appHeaders]);
-
-  const getProposalStats = async () => {
-    //setLoadingData(true);
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_APP_API_BASE_URL}/proposal-stats`,
-        appHeaders
-      );
-      setProposalStats(response.data);
-      //setLoadingData(false);
-    } catch (error) {
-      console.log(error);
-      //setError(true);
-    }
-  };
-
+    fetchData();
+  }, [appHeaders]);
+  
   return (
-    <Box sx={{ mt: 2 }}>
-      <AllProposals proposals={approvedProposals} stats={proposalStats} />
-    </Box>
+    <>
+      {loading ? (
+        <Box
+          sx={{
+            height: "80vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Box sx={{ mt: 2 }}>
+          <AllProposals proposals={approvedProposals} stats={proposalStats} />
+          <Outlet />
+        </Box>
+      )}
+    </>
   );
 };
 

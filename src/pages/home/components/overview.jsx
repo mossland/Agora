@@ -1,6 +1,9 @@
-import { Box, Button, Paper, Typography } from "@mui/material";
+import PropTypes from "prop-types";
+import { Box, Paper, Typography } from "@mui/material";
 
-const Overview = ({proposalStats}) => {
+import brick from "../../../assets/images/brick.png";
+
+const Overview = ({ proposalStats }) => {
   return (
     <Paper
       elevation={5}
@@ -28,10 +31,12 @@ const Overview = ({proposalStats}) => {
         }}
       >
         <Typography
+          className="pixelify"
           sx={{
             ml: 1,
             color: "#000000",
-            // fontSize: "",
+            // fontSize: "20px",
+            fontFamily: "",
             fontWeight: "bold",
           }}
         >
@@ -39,7 +44,8 @@ const Overview = ({proposalStats}) => {
         </Typography>
       </Box>
       <Box
-        component="span"
+        component="img"
+        src={brick}
         sx={{
           m: "2px",
           height: "189px",
@@ -47,7 +53,7 @@ const Overview = ({proposalStats}) => {
           alignItems: "center",
           border: 1.5,
           borderColor: "#000000",
-          borderRadius: "8px",
+          borderRadius: "10px",
         }}
       ></Box>
       <Box
@@ -70,8 +76,14 @@ const Overview = ({proposalStats}) => {
             alignItems: "flex-start",
           }}
         >
-          <Typography>PROPOSALS:</Typography>
-         {proposalStats && <Typography>{proposalStats.approved} proposals</Typography>}
+          <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
+            PROPOSALS:
+          </Typography>
+          {proposalStats && (
+            <Typography sx={{ fontSize: "20px", fontWeight: "bold" }}>
+              {proposalStats.approved} proposals
+            </Typography>
+          )}
         </Box>
         <Box
           sx={{
@@ -80,8 +92,14 @@ const Overview = ({proposalStats}) => {
             alignItems: "flex-start",
           }}
         >
-          <Typography>VOTES:</Typography>
-          <Typography>{"259"} votes</Typography>
+          <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
+            VOTES:
+          </Typography>
+          {proposalStats && (
+            <Typography sx={{ fontSize: "20px", fontWeight: "bold" }}>
+              {proposalStats.votes} votes
+            </Typography>
+          )}
         </Box>
         <Box
           sx={{
@@ -90,8 +108,12 @@ const Overview = ({proposalStats}) => {
             alignItems: "flex-start",
           }}
         >
-          <Typography>TREASURY:</Typography>
-          <Typography>${"259"}</Typography>
+          <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
+            TREASURY:
+          </Typography>
+          <Typography sx={{ fontSize: "20px", fontWeight: "bold" }}>
+            ${"259"}
+          </Typography>
         </Box>
       </Box>
     </Paper>
@@ -99,3 +121,7 @@ const Overview = ({proposalStats}) => {
 };
 
 export default Overview;
+
+Overview.propTypes = {
+  proposalStats: PropTypes.object,
+};

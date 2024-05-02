@@ -1,14 +1,10 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  List,
-  ListItem,
-  Paper,
-  Typography,
-} from "@mui/material";
+import PropTypes from "prop-types";
+import { Box, List, ListItem, Paper, Typography } from "@mui/material";
 
-const AgorasHighlights = () => {
+import MIcon from "../../../components/icons/mSquareIcon";
+import { formatDate } from "../../../utils/formatDate";
+
+const AgorasHighlights = ({ highlights }) => {
   return (
     <Paper
       elevation={5}
@@ -37,6 +33,7 @@ const AgorasHighlights = () => {
         }}
       >
         <Typography
+          className="pixelify"
           sx={{
             ml: 1,
             color: "#000000",
@@ -44,38 +41,54 @@ const AgorasHighlights = () => {
             fontWeight: "bold",
           }}
         >
-          Agora's Highlights
+          Agora Highlights
         </Typography>
       </Box>
-
-      <List
-        aria-labelledby=""
-        sx={{
-          m: "2px",
-          height: "189px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <ListItem
+      {highlights && highlights.length === 0 && (
+        <Typography sx={{ mt: 2, mb: 2 }}>
+          There are currently no Agora highlights.
+        </Typography>
+      )}
+      {highlights && highlights.length > 0 && (
+        <List
+          aria-labelledby=""
           sx={{
+            m: "2px",
+            height: "189px",
             display: "flex",
+            flexDirection: "column",
             alignItems: "center",
-            gap: 2,
           }}
         >
-          <Avatar sx={{ color: "black", bgcolor: "#86FFC6" }} variant="square">
-            M
-          </Avatar>
-          <Box>
-            <Typography>{"AI Integration into Mossland"}</Typography>
-            <Typography>{"Dec. 21., 2023"}</Typography>
-          </Box>
-        </ListItem>
-      </List>
+          {highlights.slice(0, 8).map((highlight) => (
+            <ListItem
+              key={highlight._id}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 2,
+              }}
+            >
+              <MIcon />
+              <Box>
+                <Typography sx={{ fontSize: "16", fontWeight: "bold" }}>
+                  {highlight.title}
+                </Typography>
+                <Typography sx={{ fontSize: "12px" }}>
+                  {" "}
+                  {formatDate(highlight.createdAt)}
+                </Typography>
+              </Box>
+            </ListItem>
+          ))}
+        </List>
+      )}
     </Paper>
   );
 };
 
 export default AgorasHighlights;
+
+AgorasHighlights.propTypes = {
+  highlights: PropTypes.array,
+};

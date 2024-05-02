@@ -21,5 +21,5 @@ body {
 }
 
 .pixelify {
-  font-family: "Pixelify Sans", sans-serif;
+  font-family: "Pixelify Sans", sans-serif !important;
 }
