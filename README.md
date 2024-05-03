@@ -159,7 +159,8 @@ To-do:
 ### week 8(5/1~5/8)
 - [ ] QA on user frontend side/C
 - [ ] Decide detailed voting logic/C
-- [ ] User guide content planning before design
+- [ ] User guide content planning before design/C
+- [ ] Finalizing UID/Policy docs for submission
 - [ ] Finalizing user-facing agora codebase
 - [ ] Working on Web3 integration; handling voting and proposal creation on chain
 - [ ]Working on Web3 registration flow to account for existing Mossland users
