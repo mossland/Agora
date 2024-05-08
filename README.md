@@ -151,9 +151,19 @@ To-do:
 ### week 7(4/23~4/30)
 In progress:
 - [x]Finalizing UI styling for user-facing agora
-- [ ]Working on backend integration of endpoints into user-facing agora
-- [ ]Working on Web3 integration; handling voting and proposal creation on chain
+- [x]Working on backend integration of endpoints into user-facing agora
+- [x]Working on Web3 integration; handling voting and proposal creation on chain
 To-do: 
-- [ ]fixing minor tickets for QA- Admin UI
-- [ ]UI mockup for proposal end date extension in Figma
-
+- [x]fixing minor tickets for QA- Admin UI
+- [x]UI mockup for proposal end date extension in Figma
+### week 8(5/1~5/8)
+- [ ] QA on user frontend side/C
+- [ ] Decide detailed voting logic/C
+- [ ] User guide content planning before design/C
+- [ ] Finalizing UID/Policy docs for submission
+- [ ] Finalizing user-facing agora codebase
+- [ ] Working on Web3 integration; handling voting and proposal creation on chain
+- [ ]Working on Web3 registration flow to account for existing Mossland users
+- [ ]Finalizing authentication and permissions on all backend endpoints
+- [ ]Undergoing admin QA
+- [ ]Undergoing front-end QA
