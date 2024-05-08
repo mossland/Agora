@@ -19,6 +19,6 @@ export function fetchProfilePicture(picId) {
     case "4":
       return p4;
     default:
-      return ""; // default image or return nothing
+      return "";
   }
 }

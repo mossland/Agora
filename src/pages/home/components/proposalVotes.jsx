@@ -38,7 +38,7 @@ const ProposalVotes = ({ proposal }) => {
     fetchData();
   }, [appHeaders]);
 
-  return <Typography sx={{ fontSize: "12px" }}>{proposalVotes.length.toString()} VOTES</Typography>;
+  return <>{proposalVotes && <Typography sx={{ fontSize: "12px" }}>{proposalVotes.length.toString()} VOTES</Typography>}</>
 };
 
 export default ProposalVotes;

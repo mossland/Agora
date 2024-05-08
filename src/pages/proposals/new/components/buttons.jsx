@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { Box, Button, Paper } from "@mui/material";
 import axios from "axios";
 import requestHeaders from "../../../../utils/restClient";
+import { useNavigate } from "react-router-dom";
 
 const Buttons = ({
   setInPreview,
@@ -10,28 +11,34 @@ const Buttons = ({
   descriptionValue,
   startDate,
   endDate,
-  tag,
+  selectedProposalTag,
   ccdAdmins,
+  isFormComplete
 }) => {
   const appHeaders = requestHeaders();
   const userId = localStorage.getItem("_id");
 
+  const navigate = useNavigate()
+  
   async function postNewProposal() {
     try {
       // to-do: add validation
+      const adminIds = ccdAdmins.map(i => i._id)
+      console.log(adminIds)
       await axios.post(
-        `${import.meta.env.VITE_APP_API_BASE_URL}/proposals/new`,
+        `${import.meta.env.VITE_APP_API_BASE_URL}/new-proposal`,
         {
           title: title,
           description: descriptionValue,
           startDate: startDate,
           endDate: endDate,
-          tag: tag,
+          tag: selectedProposalTag,
           proponent: userId,
-          ccdAdmins: ccdAdmins,
+          ccdAdmins: adminIds,
         },
         appHeaders
       );
+      navigate("/proposals")
     } catch (error) {
       console.log(error);
       //setError(true);
@@ -57,6 +64,7 @@ const Buttons = ({
             <Button
               onClick={() => setInPreview(true)}
               variant="contained"
+              disabled={!isFormComplete}
               sx={{
                 px: 12,
                 color: "#000000",
@@ -79,6 +87,7 @@ const Buttons = ({
           <Button
             onClick={() => postNewProposal()}
             variant="contained"
+            disabled={!isFormComplete}
             sx={{
               px: 12,
               color: "#FFFFFF",

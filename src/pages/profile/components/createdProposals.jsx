@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import {
   Box,
@@ -20,8 +20,60 @@ import EditProposalModal from "./editProposalModal";
 
 import { formatDate } from "../../../utils/formatDate";
 import requestHeaders from "../../../utils/restClient";
+import { useNavigate } from "react-router-dom";
+
+import { getStatusStyle } from "../../../utils/getStatusStyle";
+import { getTagStyle } from "../../../utils/getTagStyle";
 
 const CreatedProposals = ({ proposals }) => {
+  const appHeaders = requestHeaders();
+
+  const [admins, setAdmins] = useState(null);
+  const [proposalTags, setProposalTags] = useState(null);
+
+  // GET tags
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (proposalTags === null) {
+          const response = await axios.get(
+            `${import.meta.env.VITE_APP_API_BASE_URL}/proposal-tags`,
+            { headers: appHeaders }
+          );
+          setProposalTags(response.data);
+        }
+      } catch (error) {
+        console.log(error);
+        // Handle the error state appropriately here
+      }
+    };
+
+    fetchData();
+  }, [appHeaders]);
+
+  // GET admins
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (admins === null) {
+          const response = await axios.get(
+            `${import.meta.env.VITE_APP_API_BASE_URL}/users/admin`,
+            { headers: appHeaders }
+          );
+          setAdmins(response.data);
+        }
+      } catch (error) {
+        console.log(error);
+        // Handle the error state appropriately here
+      } finally {
+        //setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [appHeaders]);
+
+  const navigate = useNavigate();
   function computeStatusLabel(startDate, endDate, status, proposal) {
     if (status === "In Review") {
       return status.toUpperCase();
@@ -62,8 +114,6 @@ const CreatedProposals = ({ proposals }) => {
     }
   }
 
-  const appHeaders = requestHeaders();
-
   const withdrawProposal = async (pid) => {
     try {
       await axios.patch(
@@ -71,7 +121,7 @@ const CreatedProposals = ({ proposals }) => {
         {},
         appHeaders
       );
-      // to-do: refresh the page
+      window.location.reload();
     } catch (error) {
       console.log(error);
       //setError(true);
@@ -80,13 +130,21 @@ const CreatedProposals = ({ proposals }) => {
 
   // Modal Logic
   const [isEditProposalModalOpen, setEditProposalModalOpen] = useState(false);
+  const [selectedProposal, setSelectedProposal] = useState(null);
 
-  const handleEditProposalModalOpen = () => {
+  const handleEditProposalModalOpen = (proposal) => {
+    setSelectedProposal(proposal);
     setEditProposalModalOpen(true);
   };
 
   const handleClose = () => {
     setEditProposalModalOpen(false);
+    setSelectedProposal(null);
+  };
+
+  const [visibleCount, setVisibleCount] = useState(2);
+  const showMoreProposals = () => {
+    setVisibleCount(proposals.length);
   };
 
   return (
@@ -122,7 +180,6 @@ const CreatedProposals = ({ proposals }) => {
             sx={{
               ml: 1,
               color: "#000000",
-              // fontSize: "",
               fontWeight: "bold",
             }}
           >
@@ -193,12 +250,12 @@ const CreatedProposals = ({ proposals }) => {
 
               <TableBody>
                 {proposals &&
-                  proposals.slice(0, 8).map((proposal) => (
+                  proposals.slice(0, visibleCount).map((proposal) => (
                     <TableRow key={proposal._id}>
                       <TableCell
                         component="th"
                         scope="row"
-                        sx={{ py: 1.5, border: 0 }}
+                        sx={{ pt: 0, pb: 2, border: 0 }}
                       >
                         <Box
                           sx={{
@@ -241,6 +298,13 @@ const CreatedProposals = ({ proposals }) => {
                             "& .MuiChip-label": {
                               px: "5px",
                             },
+                            ...getStatusStyle(
+                              computeStatusLabel(
+                                proposal.startDate,
+                                proposal.endDate,
+                                proposal.status
+                              )
+                            ),
                           }}
                         />
                       </TableCell>
@@ -255,6 +319,7 @@ const CreatedProposals = ({ proposals }) => {
                             "& .MuiChip-label": {
                               px: "5px",
                             },
+                            ...getTagStyle(proposal.tag),
                           }}
                         />
                       </TableCell>
@@ -267,37 +332,15 @@ const CreatedProposals = ({ proposals }) => {
                           fontWeight: "bold",
                         }}
                       >
-                        <Button
-                          variant="contained"
-                          onClick={() => handleEditProposalModalOpen(proposal)}
-                          sx={{
-                            px: 4,
-                            py: 1,
-                            width: "60px",
-                            height: "22px",
-                            color: "#000000",
-                            background: "#FFFFFF",
-                            border: 1.5,
-                            borderColor: "#000000",
-                            borderRadius: "5px",
-                            boxShadow: "4px 4px 0px #000000",
-                            textTransform: "none",
-                            fontSize: "14px",
-                            fontWeight: "bold",
-                            "&:hover": {},
-                          }}
-                        >
-                          EDIT
-                        </Button>
-                        <EditProposalModal
-                          proposal={proposal}
-                          open={isEditProposalModalOpen}
-                          handleClose={handleClose}
-                        />
-                        {proposal.status === "In Review" && (
+                        {(proposal.status === "In Review" ||
+                          (proposal.status === "Rejected" &&
+                            proposal.reviewReason &&
+                            proposal.reviewTimestamp)) && (
                           <Button
-                            onClick={() => withdrawProposal(proposal._id)}
                             variant="contained"
+                            onClick={() =>
+                              handleEditProposalModalOpen(proposal)
+                            }
                             sx={{
                               px: 4,
                               py: 1,
@@ -312,7 +355,42 @@ const CreatedProposals = ({ proposals }) => {
                               textTransform: "none",
                               fontSize: "14px",
                               fontWeight: "bold",
-                              "&:hover": {},
+                              "&:hover": {
+                                background: "#CCCCCC",
+                                boxShadow: "4px 4px 0px #000000",
+                              },
+                            }}
+                          >
+                            EDIT
+                          </Button>
+                        )}
+
+                        {(proposal.status === "In Review" ||
+                          (proposal.status === "Rejected" &&
+                            proposal.reviewReason &&
+                            proposal.reviewTimestamp)) && (
+                          <Button
+                            onClick={() => withdrawProposal(proposal._id)}
+                            variant="contained"
+                            sx={{
+                              ml: 2,
+                              px: 4,
+                              py: 1,
+                              width: "60px",
+                              height: "22px",
+                              color: "#000000",
+                              background: "#FFFFFF",
+                              border: 1.5,
+                              borderColor: "#000000",
+                              borderRadius: "5px",
+                              boxShadow: "4px 4px 0px #000000",
+                              textTransform: "none",
+                              fontSize: "14px",
+                              fontWeight: "bold",
+                              "&:hover": {
+                                background: "#CCCCCC",
+                                boxShadow: "4px 4px 0px #000000",
+                              },
                             }}
                           >
                             WITHDRAW
@@ -325,8 +403,17 @@ const CreatedProposals = ({ proposals }) => {
             </Table>
           </TableContainer>
         )}
+        {selectedProposal && (
+          <EditProposalModal
+            proposal={selectedProposal}
+            admins={admins}
+            open={isEditProposalModalOpen}
+            handleClose={handleClose}
+            proposalTags={proposalTags}
+          />
+        )}
 
-        {proposals && proposals.length >= 3 && (
+        {proposals && proposals.length > visibleCount && (
           <Box
             sx={{
               my: 2,
@@ -336,8 +423,8 @@ const CreatedProposals = ({ proposals }) => {
             }}
           >
             <Button
+              onClick={showMoreProposals}
               variant="contained"
-              href="/proposals"
               sx={{
                 px: 4,
                 py: 1,

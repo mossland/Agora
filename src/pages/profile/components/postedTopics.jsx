@@ -1,3 +1,4 @@
+import { useState } from "react";
 import PropTypes from "prop-types";
 import {
   Avatar,
@@ -16,6 +17,7 @@ import requestHeaders from "../../../utils/restClient";
 
 import { fetchProfilePicture } from "../../../utils/fetchProfilePicture";
 import ForumLiking from "../../forum/components/forumLiking";
+import ForumComments from "../../forum/components/forumComments";
 
 const PostedTopics = ({ topics }) => {
   function getTimeDifference(timestamp) {
@@ -77,6 +79,11 @@ const PostedTopics = ({ topics }) => {
     }
   }
 
+  const [visibleCount, setVisibleCount] = useState(3); 
+  const showMoreTopics = () => {
+    setVisibleCount(topics.length);
+  };
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
       <Paper
@@ -109,7 +116,6 @@ const PostedTopics = ({ topics }) => {
             sx={{
               ml: 1,
               color: "#000000",
-              // fontSize: "",
               fontWeight: "bold",
             }}
           >
@@ -126,141 +132,129 @@ const PostedTopics = ({ topics }) => {
               aria-labelledby=""
               sx={{
                 m: "2px",
-                height: "189px",
-
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
               }}
             >
-              {topics &&
-                topics.slice(0, 3).map((topic) => (
-                  <ListItem
-                    key={topic._id}
+              {topics.slice(0, visibleCount).map((topic) => (
+                <ListItem
+                  key={topic._id}
+                  sx={{
+                    bgcolor: "#FFFFFF",
+                    borderRadius: "8px",
+                  }}
+                >
+                  <Box
                     sx={{
-                      bgcolor: "#FFFFFF",
-                      borderRadius: "8px",
+                      width: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 1,
                     }}
                   >
                     <Box
                       sx={{
-                        width: "100%",
                         display: "flex",
-                        flexDirection: "column",
-                        gap: 3,
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Box>
+                        <Typography
+                          sx={{ fontSize: "20px", fontWeight: "bold" }}
+                        >
+                          {topic.title}
+                        </Typography>
+                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                          <Typography sx={{ fontSize: "14px" }}>
+                            {getTimeDifference(topic.createdAt)}
+                          </Typography>
+                        </Box>
+                      </Box>
+                      <Box sx={{ display: "flex", gap: 1.5 }}>
+                        {topic.pinned && <FlagIcon />}
+                        <ForumLiking forum={topic} />
+                      </Box>
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
                       }}
                     >
                       <Box
                         sx={{
                           display: "flex",
-                          justifyContent: "space-between",
+                          alignItems: "center",
+                          gap: 1.5,
                         }}
                       >
-                        <Box>
-                          <Typography
-                            sx={{ fontSize: "20px", fontWeight: "bold" }}
-                          >
-                            {topic.title}
-                          </Typography>
-                          <Box sx={{ display: "flex", alignItems: "center" }}>
-                            <Typography sx={{ fontSize: "14px" }}>
-                              {getTimeDifference(topic.createdAt)}
-                            </Typography>
-                          </Box>
-                        </Box>
-                        <Box sx={{ display: "flex", gap: 1.5 }}>
-                          {topic.pinned && <FlagIcon />}
-                          <ForumLiking forum={topic} />
-                        </Box>
+                        <Avatar
+                          sx={{
+                            width: "24px",
+                            height: "24px",
+                            border: 1,
+                            borderColor: "#000000",
+                            borderRadius: 1,
+                          }}
+                          variant="square"
+                          src={fetchProfilePicture(topic.author.profilePicture)}
+                        />
+                        <Typography
+                          sx={{ fontSize: "14px", fontWeight: "bold" }}
+                        >
+                          {topic.author.nickname}
+                        </Typography>
+                        <Chip
+                          label={topic.category}
+                          variant="outlined"
+                          sx={{
+                            color: "#999999",
+                            height: "19px",
+                            fontSize: "12px",
+                            fontWeight: "bold",
+                            borderColor: "#999999",
+                            borderRadius: "4px",
+                            "& .MuiChip-label": {
+                              px: "5px",
+                            },
+                          }}
+                        />
                       </Box>
                       <Box
-                        sx={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}
+                        sx={{ display: "flex", alignItems: "center", gap: 3 }}
                       >
-                        <Box
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 1.5,
-                          }}
-                        >
-                          <Avatar
-                            sx={{
-                              width: "24px",
-                              height: "24px",
-                              border: 1,
-                              borderColor: "#000000",
-                              borderRadius: 1,
-                            }}
-                            variant="square"
-                            src={fetchProfilePicture(
-                              topic.author.profilePicture
-                            )}
-                          />
+                        <Box sx={{ display: "flex", gap: 1 }}>
                           <Typography
                             sx={{ fontSize: "14px", fontWeight: "bold" }}
                           >
-                            {topic.author.nickname}
+                            {topic.views}
                           </Typography>
-                          <Chip
-                            label={topic.category}
-                            variant="outlined"
-                            sx={{
-                              color: "#999999",
-                              height: "19px",
-                              fontSize: "12px",
-                              fontWeight: "bold",
-                              borderColor: "#999999",
-                              borderRadius: "4px",
-                              "& .MuiChip-label": {
-                                px: "5px",
-                              },
-                            }}
-                          />
+                          <Typography sx={{ fontSize: "14px" }}>
+                            Views
+                          </Typography>
                         </Box>
-                        <Box
-                          sx={{ display: "flex", alignItems: "center", gap: 3 }}
-                        >
-                          <Box sx={{ display: "flex", gap: 1 }}>
-                            <Typography
-                              sx={{ fontSize: "14px", fontWeight: "bold" }}
-                            >
-                              {topic.views}
-                            </Typography>
-                            <Typography sx={{ fontSize: "14px" }}>
-                              Views
-                            </Typography>
-                          </Box>
-                          <Box sx={{ display: "flex", gap: 1 }}>
-                            <Typography
-                              sx={{ fontSize: "14px", fontWeight: "bold" }}
-                            >
-                              {"22"}
-                            </Typography>
-                            <Typography sx={{ fontSize: "14px" }}>
-                              comments
-                            </Typography>
-                          </Box>
-                          <Box sx={{ display: "flex", gap: 1 }}>
-                            <Typography
-                              sx={{ fontSize: "14px", fontWeight: "bold" }}
-                            >
-                              {topic.likers.length}
-                            </Typography>
-                            <Typography sx={{ fontSize: "14px" }}>
-                              Likes
-                            </Typography>
-                          </Box>
+                        <Box sx={{ display: "flex", gap: 1 }}>
+                         <ForumComments forum={topic}/>
+                        </Box>
+                        <Box sx={{ display: "flex", gap: 1 }}>
+                          <Typography
+                            sx={{ fontSize: "14px", fontWeight: "bold" }}
+                          >
+                            {topic.likers.length}
+                          </Typography>
+                          <Typography sx={{ fontSize: "14px" }}>
+                            Likes
+                          </Typography>
                         </Box>
                       </Box>
                     </Box>
-                  </ListItem>
-                ))}
+                  </Box>
+                </ListItem>
+              ))}
             </List>
-            {topics && topics.length >= 4 && (
+            {topics && visibleCount < topics.length && (
               <Box
                 sx={{
                   my: 2,
@@ -270,8 +264,8 @@ const PostedTopics = ({ topics }) => {
                 }}
               >
                 <Button
+                  onClick={showMoreTopics}
                   variant="contained"
-                  href="/forum"
                   sx={{
                     px: 4,
                     py: 1,

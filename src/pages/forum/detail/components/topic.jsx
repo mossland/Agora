@@ -1,7 +1,8 @@
-import PropTypes from "prop-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import requestHeaders from "../../../../utils/restClient";
+import PropTypes from "prop-types";
 
 import {
   Avatar,
@@ -31,18 +32,31 @@ import ReportCommentModal from "../../../../components/modals/reportCommentModal
 import CommentLiking from "./commentLiking";
 
 const Topic = ({ topic, topicComments }) => {
-  console.log("HELLO");
-  console.log(topic);
+  useEffect(() => {
+    const viewTopic = async () => {
+      try {
+        if (topic._id) {
+          await axios.patch(
+            `${import.meta.env.VITE_APP_API_BASE_URL}/view-forum/${topic._id}`,
+            { headers: appHeaders }
+          );
+        }
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
+    };
+
+    viewTopic();
+  }, [topic._id]);
 
   const pfp = localStorage.getItem("profilePicture");
 
   const userId = localStorage.getItem("_id");
 
-  const [commentText, setCommentText] = useState(null)
-
-  console.log("MY ID", userId);
+  const [commentText, setCommentText] = useState(null);
 
   const appHeaders = requestHeaders();
+  const navigate = useNavigate();
 
   async function postNewTopicComment() {
     try {
@@ -51,10 +65,12 @@ const Topic = ({ topic, topicComments }) => {
         {
           comment: commentText,
           commenter: userId,
-          forumId: topic._id
+          forumId: topic._id,
         },
         appHeaders
       );
+      // Refresh after posting comment
+      window.location.reload();
     } catch (error) {
       console.log(error);
       //setError(true);
@@ -108,19 +124,8 @@ const Topic = ({ topic, topicComments }) => {
     setGeneralAnchorEl(null);
   };
 
-  const handleReportCommentMenuClick = (event) => {
-    setReportCommentAnchorEl(event.currentTarget);
-  };
-
-  const handleReportCommentMenuClose = () => {
-    setReportCommentAnchorEl(null);
-  };
-
   // Modal Logic - report topic
   const [isReportModalOpen, setReportModalOpen] = useState(false);
-  // const handleReportModalOpen = () => {
-  //   setReportModalOpen(true);
-  // };
   const handleOpenReportModal = () => {
     setReportModalOpen(true);
   };
@@ -131,17 +136,22 @@ const Topic = ({ topic, topicComments }) => {
 
   // Modal Logic - report comment
   const [isReportCommentModalOpen, setReportCommentModalOpen] = useState(false);
-  // const handleReportModalOpen = () => {
-  //   setReportModalOpen(true);
-  // };
+  const [selectedComment, setSelectedComment] = useState(null);
+
+  const handleReportCommentMenuClick = (event, comment) => {
+    setReportCommentAnchorEl(event.currentTarget);
+    setSelectedComment(comment);
+  };
+
   const handleOpenReportCommentModal = () => {
     setReportCommentModalOpen(true);
+    setReportCommentAnchorEl(null);
   };
 
   const handleReportCommentModalClose = () => {
     setReportCommentModalOpen(false);
+    setSelectedComment(null);
   };
-
   return (
     <Box sx={{ flex: 1, display: "flex", flexDirection: "column", gap: 1 }}>
       <Paper
@@ -254,7 +264,7 @@ const Topic = ({ topic, topicComments }) => {
             </Box>
           </Box>
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <Typography sx={{ fontSize: "14px" }}>
+            <Typography sx={{ color: "#808080", fontSize: "14px" }}>
               Created {formatDate(topic.createdAt)}
             </Typography>
           </Box>
@@ -330,28 +340,23 @@ const Topic = ({ topic, topicComments }) => {
           </Button>
         </Box>
 
-        <Box
-          sx={{
-            m: "2px",
-            mb: 3,
-            bgcolor: "#FFFFFF",
-            border: 1.5,
-            borderColor: "#000000",
-            borderRadius: "5px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            gap: 2,
-            textAlign: "left",
-          }}
-        >
-          {!topicComments && <CircularProgress />}
-          {topicComments && topicComments.length === 0 && (
-            <Typography sx={{ mt: 3 }}>
-              This forum topic does not have any comments
-            </Typography>
-          )}
-          {topicComments && topicComments.length > 0 && (
+        {!topicComments && <CircularProgress />}
+        {topicComments && topicComments.length > 0 && (
+          <Box
+            sx={{
+              m: "2px",
+              mb: 3,
+              bgcolor: "#FFFFFF",
+              border: 1.5,
+              borderColor: "#000000",
+              borderRadius: "5px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              gap: 2,
+              textAlign: "left",
+            }}
+          >
             <List sx={{ width: "100%" }}>
               {topicComments.map((comment) => (
                 <ListItem key={comment._id} sx={{ mb: 0.5 }}>
@@ -410,30 +415,34 @@ const Topic = ({ topic, topicComments }) => {
                       <DotIcon
                         width="15px"
                         height="15px"
-                        onClick={handleReportCommentMenuClick}
+                        onClick={(e) =>
+                          handleReportCommentMenuClick(e, comment)
+                        }
                       />
                       <ReportKebabMenuComment
-                        anchorEl={reportAnchorEl}
-                        open={reportCommentOpen}
-                        handleClose={handleReportCommentMenuClose}
+                        anchorEl={reportCommentAnchorEl}
+                        open={Boolean(reportCommentAnchorEl)}
+                        handleClose={() => setReportCommentAnchorEl(null)}
                         handleOpenReportModal={handleOpenReportCommentModal}
-                      />
-                      <ReportCommentModal
-                        open={isReportCommentModalOpen}
-                        handleClose={handleReportCommentModalClose}
-                        comment={comment}
                       />
                     </Box>
                   </Box>
                 </ListItem>
               ))}
             </List>
-          )}
-        </Box>
+            {selectedComment && (
+              <ReportCommentModal
+                open={isReportCommentModalOpen}
+                handleClose={handleReportCommentModalClose}
+                comment={selectedComment}
+              />
+            )}
+          </Box>
+        )}
       </Paper>
       <ReportTopicModal
         open={isReportModalOpen}
-        handleClose={handleReportModalClose}
+        handleCloseModal={handleReportModalClose}
         topic={topic}
       />
     </Box>

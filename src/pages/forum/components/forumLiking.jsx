@@ -7,7 +7,6 @@ import HeartIcon from "../../../components/icons/hearchIcon";
 import FilledHeartIcon from "../../../components/icons/filledHeartIcon";
 
 const ForumLiking = ({ forum }) => {
-  console.log(forum);
   const userId = localStorage.getItem("_id");
   const appHeaders = requestHeaders();
 

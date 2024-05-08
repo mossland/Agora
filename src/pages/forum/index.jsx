@@ -10,7 +10,23 @@ const Forum = () => {
   const appHeaders = requestHeaders();
   const [forumCategories, setForumCategories] = useState(null);
   const [forums, setForums] = useState(null);
+  const [filteredForums, setFilteredForums] = useState(null);
   const [loading, setLoading] = useState(true);
+
+
+  // Category filter for radio button
+  const [selectedValue, setSelectedValue] = useState("General");
+
+  const handleChange = (event) => {
+    setSelectedValue(event.target.value);
+    if (event.target.value === "General") {
+      setFilteredForums(forums)
+    } 
+    else {
+      const filtered = forums.filter(i => i.category === event.target.value)
+    setFilteredForums(filtered)
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,6 +37,7 @@ const Forum = () => {
             axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/forums/categories`, { headers: appHeaders })
           ]);
           setForums(forumsResponse.data);
+          setFilteredForums(forumsResponse.data)
           setForumCategories(categoriesResponse.data);
         }
       } catch (error) {
@@ -48,8 +65,8 @@ const Forum = () => {
         </Box>
       ) : (
         <Box sx={{ mt: 2, display: "flex", gap: 1 }}>
-          <Categories categories={forumCategories} />
-          <TopicGeneral forums={forums} />
+          <Categories selectedValue={selectedValue} handleChange={handleChange} categories={forumCategories} />
+          <TopicGeneral selectedValue={selectedValue} forums={filteredForums} />
         </Box>
       )}
     </>

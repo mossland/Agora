@@ -4,33 +4,16 @@ import { Avatar, Box, Button, Chip, Paper, Typography } from "@mui/material";
 import MIcon from "../../../../components/icons/mCircleIcon";
 import Markdown from "../../../../components/markdown/Markdown";
 
-import { getTimeDifference } from "../../../../utils/getTimeDifference";
 import { fetchProfilePicture } from "../../../../utils/fetchProfilePicture";
 import { formatDate } from "../../../../utils/formatDate";
 import { getStatusStyle } from "../../../../utils/getStatusStyle";
 import { getTagStyle } from "../../../../utils/getTagStyle";
-import HeartIcon from "../../../../components/icons/hearchIcon";
-import DotIcon from "../../../../components/icons/dotIcon";
 
 const Description = ({ title, forumTags, descriptionValue }) => {
-  function computeApprovedStatus(startDate, endDate) {
-    var now = new Date(); // Current timestamp
-    startDate = new Date(startDate); // Convert start date to Date object
-    endDate = new Date(endDate); // Convert end date to Date object
-
-    if (now < startDate) {
-      return "Upcoming";
-    }
-
-    if (now >= startDate && now <= endDate) {
-      return "Ongoing";
-    }
-
-    if (now > endDate) {
-      return "Ended";
-    }
-  }
-
+  
+  const pfp = localStorage.getItem("profilePicture");
+  const nickname = localStorage.getItem("nickname");
+  const now = new Date()
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
       <Paper
@@ -99,12 +82,6 @@ const Description = ({ title, forumTags, descriptionValue }) => {
             >
               {title}
             </Typography>
-            <Box>
-              <HeartIcon />
-              <DotIcon />
-            </Box>
-          </Box>
-          <Box sx={{ display: "flex", gap: 1 }}>
             <Chip
               label={forumTags}
               sx={{
@@ -129,17 +106,17 @@ const Description = ({ title, forumTags, descriptionValue }) => {
                 borderColor: "#000000",
                 borderRadius: 1,
               }}
-              // src={fetchProfilePicture(proposal.proponent.profilePicture)}
+              src={fetchProfilePicture(pfp)}
               variant="square"
             />
             <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
-              {/* {proposal.proponent.nickname} */}
+              {nickname}
             </Typography>
           </Box>
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <Typography sx={{ color: "#808080", fontSize: "14px" }}>
               Created
-              {/* {formatDate(proposal.startDate)} */}
+              {formatDate(now)}
             </Typography>
           </Box>
           <Box sx={{ mt: 1 }}>

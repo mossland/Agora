@@ -8,23 +8,14 @@ const NewTopic = ({
   setTitle,
   admins,
   forumTags,
-  setForumTags,
+  selectedForumTag,
+  setSelectedForumTag,
   descriptionValue,
   setDescriptionValue,
 }) => {
   const handleChangeTitle = (event) => {
     setTitle(event.target.value);
   };
-
-  const tags = [
-    "Announcement",
-    "MIP Discussion",
-    "Introduction",
-    "Idea Lab",
-    "QnA",
-  ];
-
-  console.log(forumTags);
 
   return (
     <Paper
@@ -59,7 +50,6 @@ const NewTopic = ({
           sx={{
             ml: 1,
             color: "#000000",
-            // fontSize: "",
             fontWeight: "bold",
           }}
         >
@@ -112,7 +102,7 @@ const NewTopic = ({
           }}
         />
 
-        <Typography
+        {/* <Typography
           sx={{
             mt: 2,
             mb: 1,
@@ -143,7 +133,7 @@ const NewTopic = ({
               },
             },
           }}
-        />
+        /> */}
         <Typography
           sx={{
             mt: 2,
@@ -156,25 +146,26 @@ const NewTopic = ({
           TAG
         </Typography>
         <Box sx={{ display: "flex", gap: 1 }}>
-          {tags.map((tag) => (
-            <Chip
-              key={tag}
-              onClick={() => setForumTags(tag)}
-              label={tag}
-              variant="filled"
-              clickable
-              sx={{
-                height: "22px",
-                fontSize: "14px",
-                fontWeight: "bold",
-                bgcolor: "white",
-                color: "black",
-                border: forumTags === tag ? 1 : 0,
-                borderColor: "black",
-                borderRadius: 1,
-              }}
-            />
-          ))}
+          {forumTags &&
+            forumTags.map((tag) => (
+              <Chip
+                key={tag._id}
+                label={tag._id}
+                variant="filled"
+                clickable
+                onClick={() => setSelectedForumTag(tag._id)}
+                sx={{
+                  height: "22px",
+                  fontSize: "14px",
+                  fontWeight: selectedForumTag === tag._id ? "bold" : "normal",
+                  bgcolor: "white",
+                  color: "black",
+                  border: selectedForumTag === tag._id ? 1 : 0,
+                  borderColor: "black",
+                  borderRadius: 1,
+                }}
+              />
+            ))}
         </Box>
         <Typography
           sx={{
@@ -192,6 +183,11 @@ const NewTopic = ({
             theme="snow"
             value={descriptionValue}
             onChange={setDescriptionValue}
+            style={{
+              backgroundColor: "white",
+              border: "none",
+              borderRadius: "5px",
+            }}
           />
         </Box>
       </Box>

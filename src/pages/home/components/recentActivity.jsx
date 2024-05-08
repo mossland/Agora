@@ -36,7 +36,7 @@ const RecentActivity = ({ activity }) => {
     <Paper
       elevation={5}
       sx={{
-        minWidth: { sm: 500, md: 500 },
+        minWidth: { sm: 250, md: 400 },
         display: "flex",
         flexDirection: "column",
         border: 1.5,
@@ -64,7 +64,6 @@ const RecentActivity = ({ activity }) => {
           sx={{
             ml: 1,
             color: "#000000",
-            // fontSize: "",
             fontWeight: "bold",
           }}
         >

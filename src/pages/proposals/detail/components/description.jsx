@@ -9,8 +9,32 @@ import { fetchProfilePicture } from "../../../../utils/fetchProfilePicture";
 import { formatDate } from "../../../../utils/formatDate";
 import { getStatusStyle } from "../../../../utils/getStatusStyle";
 import { getTagStyle } from "../../../../utils/getTagStyle";
+import { useEffect } from "react";
+import axios from "axios";
+import requestHeaders from "../../../../utils/restClient";
 
 const Description = ({ proposal }) => {
+  const appHeaders = requestHeaders();
+
+  useEffect(() => {
+    const viewProposal = async () => {
+      try {
+        if (proposal._id) {
+          await axios.patch(
+            `${import.meta.env.VITE_APP_API_BASE_URL}/view-proposal/${
+              proposal._id
+            }`,
+            { headers: appHeaders }
+          );
+        }
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
+    };
+
+    viewProposal();
+  }, [proposal._id]);
+
   function computeApprovedStatus(startDate, endDate) {
     var now = new Date(); // Current timestamp
     startDate = new Date(startDate); // Convert start date to Date object
@@ -24,7 +48,8 @@ const Description = ({ proposal }) => {
       return "Ongoing";
     }
 
-    if (now > endDate) {
+    if (now > endDate) { 
+      // to-do: handle extended
       return "Ended";
     }
   }
@@ -62,7 +87,6 @@ const Description = ({ proposal }) => {
               sx={{
                 ml: 1,
                 color: "#000000",
-                // fontSize: "",
                 fontWeight: "bold",
               }}
             >
@@ -160,13 +184,13 @@ const Description = ({ proposal }) => {
               >
                 {getTimeDifference(proposal.endDate)}
               </Typography>
-              <Typography sx={{ fontSize: "14px" }}>
-                {formatDate(proposal.startDate)}
+              <Typography sx={{ color: "#808080", fontSize: "14px" }}>
+                Created {formatDate(proposal.createdAt)}
               </Typography>
             </Box>
             <Markdown content={proposal.description} />
           </Box>
-          <Box
+          {proposal.linkedDiscusion && <Box
             sx={{
               m: "2px",
               mb: 5,
@@ -221,7 +245,7 @@ const Description = ({ proposal }) => {
             >
               Discussion
             </Button>
-          </Box>
+          </Box>}
         </Paper>
       )}
     </Box>

@@ -78,7 +78,7 @@ const ProposalDetails = () => {
             )}
           </Box>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-            <Vote proposal={proposal} />
+            <Vote proposal={proposal} votes={proposalVotes} />
             <Information proposal={proposal} />
             <CurrentResult proposal={proposal} votes={proposalVotes} />
             <Votes proposal={proposal} votes={proposalVotes} />

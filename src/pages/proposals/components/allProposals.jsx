@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { NavLink } from "react-router-dom";
 
 import {
@@ -28,6 +28,7 @@ import SearchIcon from "../../../assets/icons/search.png";
 import { formatDate } from "../../../utils/formatDate";
 import { getStatusStyle } from "../../../utils/getStatusStyle";
 import { getTagStyle } from "../../../utils/getTagStyle";
+import useAuth from "../../../hooks/useAuth";
 
 const AllProposals = ({ proposals, stats }) => {
   const [sort, setSort] = useState("latest");
@@ -37,15 +38,34 @@ const AllProposals = ({ proposals, stats }) => {
   };
 
   // Search Logic
-  const [proposalsSearchQuery, setProposalsSearchQuery] = useState("");
-
-  const handleProposalsSearchChange = (event) => {
-    setProposalsSearchQuery(event.target.value);
+  const [searchInput, setSearchInput] = useState("");
+  const handleSearchChange = (event) => {
+    setSearchInput(event.target.value.toLowerCase());
   };
+  const filteredProposals = proposals.filter((proposal) =>
+    proposal._doc.title.toLowerCase().includes(searchInput)
+  );
 
-  // const filteredProposals = proposals.filter((proposal) =>
-  //   proposal.title.toLowerCase().includes(proposal.toLowerCase()) //to-do: any other search criteria?
-  // );
+  const sortedProposals = useMemo(() => {
+    const filtered = proposals.filter((proposal) =>
+      proposal._doc.title.toLowerCase().includes(searchInput)
+    );
+
+    switch (sort) {
+      case "latest":
+        return filtered.sort(
+          (a, b) => new Date(b._doc.createdAt) - new Date(a._doc.createdAt)
+        );
+      case "ends-soon":
+        return filtered
+          .filter((a) => new Date(a._doc.endDate) > new Date())
+          .sort((a, b) => new Date(a._doc.endDate) - new Date(b._doc.endDate));
+      case "hyped":
+        return filtered.sort((a, b) => b.views - ( a.views));
+      default:
+        return filtered;
+    }
+  }, [proposals, searchInput, sort]);
 
   function getTimeDifference(timestamp) {
     // Get the current time in milliseconds
@@ -81,8 +101,10 @@ const AllProposals = ({ proposals, stats }) => {
 
   const [visibleCount, setVisibleCount] = useState(8);
   const handleViewMore = () => {
-    setVisibleCount((prevCount) => prevCount + 8); // Increment the number of proposals displayed
+    setVisibleCount(proposals.length);
   };
+
+  const { isAuthenticated } = useAuth();
 
   return (
     <Paper
@@ -116,7 +138,6 @@ const AllProposals = ({ proposals, stats }) => {
           sx={{
             ml: 1,
             color: "#000000",
-            // fontSize: "14px",
             fontWeight: "bold",
           }}
         >
@@ -215,13 +236,13 @@ const AllProposals = ({ proposals, stats }) => {
       >
         <Box>
           <TextField
+            value={searchInput}
+            onChange={handleSearchChange}
             id="outlined-basic"
             variant="outlined"
-            value={proposalsSearchQuery}
-            onChange={handleProposalsSearchChange}
             placeholder="Search proposals"
             sx={{
-              // maxWidth: "100%",
+              minWidth: "400px",
               backgroundColor: "white",
               borderColor: "#000000",
               borderRadius: 1,
@@ -309,31 +330,33 @@ const AllProposals = ({ proposals, stats }) => {
           </FormControl>
         </Box>
 
-        <Button
-          href="/proposals/new"
-          variant="contained"
-          sx={{
-            px: 4,
-            py: 1,
-            width: "200px",
-            color: "white",
-            background: "linear-gradient(#0148FF, #0B89FF)",
-            border: 1.5,
-            borderColor: "#000000",
-            borderRadius: "5px",
-            boxShadow: "4px 4px 0px #000000",
-            textTransform: "none",
-            fontWeight: "bold",
-            transition: "all 0.3s ease", // not working
-            "&:hover": {
-              background:
-                "linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), linear-gradient(#0148FF, #0B89FF)",
+        {isAuthenticated && (
+          <Button
+            href="/proposals/new"
+            variant="contained"
+            sx={{
+              px: 4,
+              py: 1,
+              width: "200px",
+              color: "white",
+              background: "linear-gradient(#0148FF, #0B89FF)",
+              border: 1.5,
+              borderColor: "#000000",
+              borderRadius: "5px",
               boxShadow: "4px 4px 0px #000000",
-            },
-          }}
-        >
-          NEW PROPOSAL
-        </Button>
+              textTransform: "none",
+              fontWeight: "bold",
+              transition: "all 0.3s ease", // not working
+              "&:hover": {
+                background:
+                  "linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), linear-gradient(#0148FF, #0B89FF)",
+                boxShadow: "4px 4px 0px #000000",
+              },
+            }}
+          >
+            NEW PROPOSAL
+          </Button>
+        )}
       </Box>
 
       <TableContainer
@@ -352,58 +375,64 @@ const AllProposals = ({ proposals, stats }) => {
       >
         <Table aria-label="proposals-table">
           <TableHead>
-            <TableRow>
-              <TableCell
-                sx={{
-                  color: "#808080",
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                  border: 0,
-                }}
-              >
-                PROPOSAL
-              </TableCell>
-              <TableCell
-                align="right"
-                sx={{
-                  color: "#808080",
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                  border: 0,
-                }}
-              >
-                TAG
-              </TableCell>
-              <TableCell
-                align="right"
-                sx={{
-                  color: "#808080",
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                  border: 0,
-                }}
-              >
-                REMAINING
-              </TableCell>
-              <TableCell
-                align="right"
-                sx={{
-                  color: "#808080",
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                  border: 0,
-                }}
-              ></TableCell>
-            </TableRow>
+            {sortedProposals.length <= 0 ? (
+              <Box sx={{ my: 2 }}>
+                <Typography>No proposals.</Typography>
+              </Box>
+            ) : (
+              <TableRow>
+                <TableCell
+                  sx={{
+                    color: "#808080",
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                    border: 0,
+                  }}
+                >
+                  PROPOSAL
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{
+                    color: "#808080",
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                    border: 0,
+                  }}
+                >
+                  TAG
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{
+                    color: "#808080",
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                    border: 0,
+                  }}
+                >
+                  REMAINING
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{
+                    color: "#808080",
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                    border: 0,
+                  }}
+                ></TableCell>
+              </TableRow>
+            )}
           </TableHead>
           <TableBody>
-            {proposals &&
-              proposals.slice(0, visibleCount).map((proposal) => (
+            {sortedProposals &&
+              sortedProposals.slice(0, visibleCount).map((proposal) => (
                 <TableRow key={proposal._doc?._id || proposal.id}>
                   <TableCell
                     component="th"
                     scope="row"
-                    sx={{ py: 1.5, border: 0 }}
+                    sx={{ pt: 0, pb: 2, border: 0 }}
                   >
                     <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                       <MIcon />
@@ -501,7 +530,7 @@ const AllProposals = ({ proposals, stats }) => {
           </TableBody>
         </Table>
       </TableContainer>
-      {proposals && proposals.length > visibleCount && (
+      {sortedProposals && sortedProposals.length > visibleCount && (
         <Box
           sx={{
             my: 2,
@@ -512,7 +541,7 @@ const AllProposals = ({ proposals, stats }) => {
         >
           <Button
             variant="contained"
-             onClick={handleViewMore}
+            onClick={handleViewMore}
             sx={{
               px: 4,
               py: 1,

@@ -1,11 +1,21 @@
 import PropTypes from "prop-types";
-import { Box, Stack, Paper, TextField, Typography, Chip } from "@mui/material";
+import {
+  Autocomplete,
+  Avatar,
+  Box,
+  Stack,
+  Paper,
+  TextField,
+  Typography,
+  Chip,
+} from "@mui/material";
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { fetchProfilePicture } from "../../../../utils/fetchProfilePicture";
 
 const NewProposal = ({
   title,
@@ -14,17 +24,18 @@ const NewProposal = ({
   descriptionValue,
   setDescriptionValue,
   proposalTags,
-  setProposalTags,
+  selectedProposalTag,
+  setSelectedProposalTag,
   startDate,
   setStartDate,
   endDate,
   setEndDate,
+  handleChangeAdmins
 }) => {
   const handleChangeTitle = (event) => {
     setTitle(event.target.value);
   };
 
-  console.log(proposalTags)
 
   return (
     <Paper
@@ -128,7 +139,7 @@ const NewProposal = ({
         >
           CC.
         </Typography>
-        <TextField
+        {/* <TextField
           variant="outlined"
           placeholder="@mosserve_DAO_ADMIN"
           sx={{
@@ -148,7 +159,54 @@ const NewProposal = ({
               },
             },
           }}
-        />
+        /> */}
+        {admins && <Autocomplete
+          onChange={handleChangeAdmins}
+          multiple  
+          disablePortal
+          id="combo-box-demo"
+          options={admins}
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              background: "white",
+              "& fieldset": {
+                borderWidth: "1.5px",
+                borderColor: "#000000",
+              },
+              "&:hover fieldset": {
+                borderColor: "#000000",
+              },
+              "&.Mui-focused fieldset": {
+                borderColor: "#000000",
+              },
+            },
+          }}
+          getOptionLabel={(option) => option.nickname} // This tells Autocomplete how to get the option label from each option object
+          renderOption={(props, option) => (
+            <Box
+              component="li"
+              {...props}
+              sx={{ display: "flex", alignItems: "center" }}
+            >
+              <Avatar
+                src={fetchProfilePicture(option.profilePicture)}
+                sx={{
+                  width: "24px",
+                  height: "24px",
+                  mr: 1,
+                  border: 1,
+                  borderColor: "#000000",
+                  borderRadius: 1,
+                }}
+                variant="square"
+              />
+              <Typography>{option.nickname}</Typography>
+            </Box>
+          )}
+          renderInput={(params) => (
+            <TextField {...params} placeholder="@mosserve_DAO_ADMIN" />
+          )}
+        />}
         <Typography
           sx={{
             mt: 2,
@@ -164,16 +222,18 @@ const NewProposal = ({
           {proposalTags &&
             proposalTags.map((tag) => (
               <Chip
-                onClick={() => setProposalTags(tag)}
+                variant="outlined"
+                onClick={() => setSelectedProposalTag(tag._id)}
                 key={tag._id}
                 label={tag._id}
+                clickable
                 sx={{
                   height: "22px",
                   fontSize: "14px",
-                  fontWeight: "bold",
+                  fontWeight:  selectedProposalTag === tag._id ? "bold" : "normal",
                   bgcolor: "white",
                   color: "black",
-                  border: proposalTags === tag ? 1 : 0,
+                  border: selectedProposalTag === tag._id ? 1 : 0,
                   borderColor: "black",
                   borderRadius: 1,
                 }}
@@ -195,6 +255,11 @@ const NewProposal = ({
           theme="snow"
           value={descriptionValue}
           onChange={setDescriptionValue}
+          style={{
+            backgroundColor: "white",
+            border: "none",
+            borderRadius: "5px",
+          }}
         />
         <Typography
           sx={{
@@ -210,6 +275,24 @@ const NewProposal = ({
         <Stack direction="row">
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateTimePicker
+              disablePast
+              sx={{
+                backgroundColor: "white",
+                borderColor: "#000000",
+                borderRadius: 1,
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderWidth: "1.5px",
+                    borderColor: "#000000",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "#000000",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#000000",
+                  },
+                },
+              }}
               label="Start date"
               value={startDate}
               onChange={(newValue) => setStartDate(newValue)}
@@ -230,6 +313,24 @@ const NewProposal = ({
           </Typography>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateTimePicker
+              disablePast
+              sx={{
+                backgroundColor: "white",
+                borderColor: "#000000",
+                borderRadius: 1,
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderWidth: "1.5px",
+                    borderColor: "#000000",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "#000000",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#000000",
+                  },
+                },
+              }}
               label="End date"
               value={endDate}
               onChange={(newValue) => setEndDate(newValue)}

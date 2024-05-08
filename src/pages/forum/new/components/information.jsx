@@ -1,9 +1,8 @@
 import PropTypes from "prop-types";
 import { Box, Paper, Typography, Stack } from "@mui/material";
 
-import { formatDate, formatDateTime } from "../../../../utils/formatDate";
 
-const Information = ({ startDate, endDate }) => {
+const Information = () => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
       <Paper
@@ -36,7 +35,6 @@ const Information = ({ startDate, endDate }) => {
             sx={{
               ml: 1,
               color: "#000000",
-              // fontSize: "",
               fontWeight: "bold",
             }}
           >
@@ -52,10 +50,10 @@ const Information = ({ startDate, endDate }) => {
               <Typography
                 sx={{ color: "#808080", fontSize: "14px", fontWeight: "bold" }}
               >
-                START DATE
+                LIKES
               </Typography>
               <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
-                {startDate && formatDate(startDate.toDate())}
+                -
               </Typography>
             </Stack>
             <Stack
@@ -65,20 +63,25 @@ const Information = ({ startDate, endDate }) => {
               <Typography
                 sx={{ color: "#808080", fontSize: "14px", fontWeight: "bold" }}
               >
-                END DATE
+                REPLIES
               </Typography>
               <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
-                {endDate && formatDate(endDate.toDate())}
+                -
               </Typography>
             </Stack>
-          </Box>
-          <Box sx={{}}>
-            <Typography variant="body1" gutterBottom>
-              {/* {formatDateTime(proposal.startDate)} */}
-            </Typography>
-            <Typography variant="body1" gutterBottom>
-              {/* {formatDateTime(proposal.endDate)} */}
-            </Typography>
+            <Stack
+              direction="row"
+              sx={{ justifyContent: "space-between", alignItems: "center" }}
+            >
+              <Typography
+                sx={{ color: "#808080", fontSize: "14px", fontWeight: "bold" }}
+              >
+                VIEWS
+              </Typography>
+              <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
+                -
+              </Typography>
+            </Stack>
           </Box>
         </Box>
       </Paper>

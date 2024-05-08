@@ -1,8 +1,12 @@
 import PropTypes from "prop-types";
 import { Menu, MenuItem } from "@mui/material";
 
-const ReportKebabMenuComment = ({ anchorEl, open, handleClose, handleOpenReportModal }) => {
- 
+const ReportKebabMenuComment = ({
+  anchorEl,
+  open,
+  handleClose,
+  handleOpenReportModal,
+}) => {
   return (
     <Menu
       elevation={2}
@@ -31,8 +35,8 @@ const ReportKebabMenuComment = ({ anchorEl, open, handleClose, handleOpenReportM
       <MenuItem
         sx={{ fontSize: "16px", fontWeight: "bold" }}
         onClick={() => {
-          handleClose();  // Close the menu first
-          handleOpenReportModal();  // Then open the report modal
+          handleClose(); // Close the menu first
+          handleOpenReportModal(); // Then open the report modal
         }}
       >
         Report

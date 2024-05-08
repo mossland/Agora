@@ -1,6 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom";
 import { Avatar, Box, Button } from "@mui/material";
-import useAuth from "../../hooks/useAuth";
 import { useState } from "react";
 
 // Utils
@@ -24,7 +23,7 @@ function Header() {
 
   const role = localStorage.getItem("role");
   const pfp = localStorage.getItem("profilePicture");
-  const wallet = localStorage.getItem("wallet");
+  const wallet = localStorage.getItem("walletAddress");
 
 
   // Modal Logic
@@ -108,6 +107,10 @@ function Header() {
                 borderColor: "#000000",
                 borderRadius: 2,
                 boxShadow: "3px 3px 0px #000000",
+                "&:hover": {
+                  background: "#6C6C6C",
+                  boxShadow: "3px 3px 0px #000000",
+                },
               }}
               onClick={() => console.log("Redirect to admin")}
             >

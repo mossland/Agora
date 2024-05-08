@@ -1,3 +1,4 @@
+import { useState } from "react";
 import PropTypes from "prop-types";
 import {
   Box,
@@ -20,23 +21,32 @@ import { getTagStyle } from "../../../utils/getTagStyle";
 import { formatDate } from "../../../utils/formatDate";
 
 const RecentVotes = ({ votes }) => {
+  console.log(votes);
+
   function fetchVotingStatus(p) {
     const now = new Date();
-    if (now >= p.startDate && now <= p.endDate) {
+    const startDate = new Date(p.startDate);
+    const endDate = new Date(p.endDate);
+    if (now >= startDate && now <= endDate) {
       return "Ongoing";
     }
-    if (now >= p.endDate) {
+    if (now >= endDate) {
       // to-do: check voting result
-      if (p.extended === true && now < p.extendedEndDate) {
+      if (p.extended === true && now < Date(p.extendedEndDate)) {
         return "Extended";
       }
       return "Ended";
     }
-    if (now < p.startDate) {
+    if (now < startDate) {
       return "Ready";
     }
     return "";
   }
+
+  const [visibleCount, setVisibleCount] = useState(5);
+  const showMoreVotes = () => {
+    setVisibleCount(votes.length); // Show all votes
+  };
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
@@ -132,12 +142,12 @@ const RecentVotes = ({ votes }) => {
             )}
             <TableBody>
               {votes &&
-                votes.slice(0, 8).map((vote) => (
+                votes.slice(0, visibleCount).map((vote) => (
                   <TableRow key={vote._id}>
                     <TableCell
                       component="th"
                       scope="row"
-                      sx={{ py: 1.5, border: 0 }}
+                      sx={{ pt: 0, pb: 2, border: 0 }}
                     >
                       <Box
                         sx={{ display: "flex", alignItems: "center", gap: 2 }}
@@ -209,7 +219,7 @@ const RecentVotes = ({ votes }) => {
             </TableBody>
           </Table>
         </TableContainer>
-        {votes && votes.length >= 6 && (
+        {votes && visibleCount < votes.length && (
           <Box
             sx={{
               my: 2,

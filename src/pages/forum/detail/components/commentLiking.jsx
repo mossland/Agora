@@ -55,7 +55,11 @@ const CommentLiking = ({ comment }) => {
         />
       )}
       {unliked === false && (comment.likers.includes(userId) || liked) && (
-        <FilledHeartIcon onClick={() => unlikeForumTopicComment(comment._id)} />
+        <FilledHeartIcon
+          width="15px"
+          height="15px"
+          onClick={() => unlikeForumTopicComment(comment._id)}
+        />
       )}
     </>
   );

@@ -10,13 +10,55 @@ import PostedTopics from "./components/postedTopics";
 
 const Profile = () => {
   const id = localStorage.getItem("_id");
+  const wallet = localStorage.getItem("walletAddress");
 
   const appHeaders = requestHeaders();
   const [userData, setUserData] = useState(null);
   const [userProposals, setUserProposals] = useState(null);
   const [userVotes, setUserVotes] = useState(null);
   const [userTopics, setUserTopics] = useState(null);
+  const [userMocBalance, setUserMocBalance] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const viewProfile = async () => {
+      try {
+        if (id) {
+          await axios.patch(
+            `${import.meta.env.VITE_APP_API_BASE_URL}/view-profile/${
+              id
+            }`,
+            { headers: appHeaders }
+          );
+        }
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
+    };
+
+    viewProfile();
+  }, [id]);
+
+  useEffect(() => {
+    const getMocBalance = async () => {
+      try {
+        if (wallet) {
+          const res = await axios.get(
+            `https://api.luniverse.io/mx/v2.0/wallets/${wallet}/balance`,
+            { headers: {
+              'Authorization': `Bearer ${import.meta.env.VITE_APP_LUNIVERSE_API_KEY}`
+            } }
+          );
+          console.log(res.data)
+        }
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
+    };
+
+    getMocBalance();
+  }, [wallet]);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -81,7 +123,7 @@ const Profile = () => {
         </Box>
       ) : (
         <Box sx={{ mt: 2, display: "flex", gap: 1 }}>
-          <Information user={userData} />
+          <Information user={userData} userTokens={userMocBalance} userStats={{totalVotes: userVotes.length}} />
           <Box
             sx={{ flex: 1, display: "flex", flexDirection: "column", gap: 1 }}
           >

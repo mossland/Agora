@@ -1,3 +1,6 @@
+import { useState } from "react";
+import axios from "axios";
+import requestHeaders from "../../utils/restClient";
 import PropTypes from "prop-types";
 import {
   Box,
@@ -7,14 +10,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import axios from "axios";
 import CloseIcon from "@mui/icons-material/Close";
-import { useState } from "react";
-import requestHeaders from "../../utils/restClient";
 
-const ReportTopicModal = ({ open, handleClose, topic }) => {
-
-  const [reason, setReason] = useState(null)
+const ReportTopicModal = ({ open, handleCloseModal, topic }) => {
+  const [reason, setReason] = useState(null);
 
   const appHeaders = requestHeaders();
 
@@ -38,7 +37,12 @@ const ReportTopicModal = ({ open, handleClose, topic }) => {
     handleClose();
     setReason("");
   };
-  
+
+  const handleClose = () => {
+    setReason("");
+    handleCloseModal();
+  };
+
   return (
     <Modal
       open={open}
@@ -63,7 +67,6 @@ const ReportTopicModal = ({ open, handleClose, topic }) => {
         <Box
           component="span"
           sx={{
-            // height: "38px",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -100,7 +103,13 @@ const ReportTopicModal = ({ open, handleClose, topic }) => {
           <CloseIcon />
         </IconButton>
         <Box
-          sx={{ px: 4, py: 2, display: "flex", flexDirection: "column", gap: "15px" }}
+          sx={{
+            px: 4,
+            py: 2,
+            display: "flex",
+            flexDirection: "column",
+            gap: "15px",
+          }}
         >
           <Typography sx={{ fontSize: "18px", fontWeight: "bold" }}>
             Report Topic
@@ -152,5 +161,5 @@ export default ReportTopicModal;
 ReportTopicModal.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  topic: PropTypes.object
+  topic: PropTypes.object,
 };

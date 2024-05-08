@@ -2,12 +2,15 @@ import PropTypes from "prop-types";
 import { createContext, useEffect, useReducer } from "react";
 import axios from "axios";
 import { isValidToken, setSession } from "../utils/jwt";
+import { Web3 } from "web3";
 
 const initialState = {
   isAuthenticated: false,
   isInitialized: false,
   user: null,
 };
+
+
 
 const handlers = {
   INITIALIZE: (state, action) => {
@@ -108,21 +111,42 @@ function AuthProvider({ children }) {
   }, []);
 
   const login = async (wallet) => {
+
+
+    const ethereumProvider = window.ethereum;
+    const web3 = new Web3(ethereumProvider);
+    
+    const signature = await web3.eth.personal.sign(
+      import.meta.env.VITE_APP_SIGNING_MESSAGE,
+      wallet,
+      ''
+    );
+    
     const response = await axios.post(
       `${import.meta.env.VITE_APP_API_BASE_URL}/login`,
       {
-        signature: wallet
+        signature: signature,
+        wallet: wallet
       }
     );
 
+    // Check if user exists 
+
+    if (response.data.userExists === false) {
+      // Register the user 
+      return "NO SUCH USER"
+    }
     const accessToken = response.data.token;
     const user = response.data;
 
+    console.log(user)
+
     setSession(accessToken);
     localStorage.setItem("_id", user["_id"]);
-    localStorage.setItem("wallet", user["walletAddress"]);
+    localStorage.setItem("walletAddress", user["walletAddress"]);
     localStorage.setItem("role", user["role"]);
     localStorage.setItem("profilePicture", user["profilePicture"]);
+    localStorage.setItem("nickname", user["nickname"]);
 
     dispatch({
       type: "LOGIN",
@@ -137,6 +161,45 @@ function AuthProvider({ children }) {
     dispatch({ type: "LOGOUT" });
   };
 
+  const register = async (wallet, nickname, pfpSelected) => {
+
+    const ethereumProvider = window.ethereum;
+    const web3 = new Web3(ethereumProvider);
+    
+    const signature = await web3.eth.personal.sign(
+      import.meta.env.VITE_APP_SIGNING_MESSAGE,
+      wallet,
+      ''
+    );
+    
+    const response = await axios.post(
+      `${import.meta.env.VITE_APP_API_BASE_URL}/register`,
+      {
+        wallet: wallet,
+        signature: signature,
+        nickname: nickname,
+        pfp: pfpSelected
+      }
+    );
+
+    const accessToken = response.data.token;
+    const user = response.data;
+
+    setSession(accessToken);
+    localStorage.setItem("_id", user["_id"]);
+    localStorage.setItem("walletAddress", user["walletAddress"]);
+    localStorage.setItem("role", user["role"]);
+    localStorage.setItem("profilePicture", user["profilePicture"]);
+    localStorage.setItem("nickname", user["nickname"]);
+
+    dispatch({
+      type: "LOGIN",
+      payload: {
+        user,
+      },
+    });
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -144,6 +207,7 @@ function AuthProvider({ children }) {
         method: "jwt",
         login,
         logout,
+        register
       }}
     >
       {children}

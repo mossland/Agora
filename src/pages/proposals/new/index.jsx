@@ -12,12 +12,18 @@ const NewProposalPage = () => {
   const appHeaders = requestHeaders();
   const [inPreview, setInPreview] = useState(false);
   const [admins, setAdmins] = useState(null);
+  const [ccdAdmins, setCCdAdmins] = useState([]);
   
   const [title, setTitle] = useState(null);
   const [descriptionValue, setDescriptionValue] = useState(null);
   const [proposalTags, setProposalTags] = useState(null);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [selectedProposalTag, setSelectedProposalTag] = useState(null);
+
+  const handleChangeAdmins = (event, value) => {
+    setCCdAdmins(value);
+  };
 
   // GET admins
   useEffect(() => {
@@ -62,20 +68,25 @@ const NewProposalPage = () => {
 
     fetchData();
   }, [appHeaders]);
+
+  const isFormComplete = title && descriptionValue && proposalTags && startDate && endDate;
+
   return (
     <Box sx={{ mt: 2, display: "flex", gap: 1 }}>
       <Box sx={{ flex: 1 }}>
         {inPreview ? (
-          <Description title={title} admins={admins} proposalTags={proposalTags} descriptionValue={descriptionValue} />
+          <Description title={title} admins={admins} selectedProposalTag={selectedProposalTag} endDate={endDate} descriptionValue={descriptionValue} />
         ) : (
           <NewProposal
+            handleChangeAdmins={handleChangeAdmins}
             title={title}
             setTitle={setTitle}
             admins={admins}
             descriptionValue={descriptionValue}
             setDescriptionValue={setDescriptionValue}
             proposalTags={proposalTags}
-            setProposalTags={setProposalTags}
+            selectedProposalTag={selectedProposalTag}
+            setSelectedProposalTag={setSelectedProposalTag}
             startDate={startDate}
             setStartDate={setStartDate}
             endDate={endDate}
@@ -90,8 +101,11 @@ const NewProposalPage = () => {
           startDate={startDate}
           endDate={endDate}
           descriptionValue={descriptionValue}
+          selectedProposalTag={selectedProposalTag}
           setInPreview={setInPreview}
           preview={inPreview}
+          ccdAdmins={ccdAdmins}
+          isFormComplete={isFormComplete}
         />
       </Box>
     </Box>

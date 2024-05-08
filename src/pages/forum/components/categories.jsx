@@ -10,7 +10,8 @@ import {
   Typography,
 } from "@mui/material";
 
-const Categories = ({ categories }) => {
+const Categories = ({ categories, selectedValue, handleChange }) => {
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
       <Paper
@@ -56,8 +57,10 @@ const Categories = ({ categories }) => {
         <FormControl sx={{ p: 2 }}>
           <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
-            defaultValue="female"
+            defaultValue="General"
             name="radio-buttons-group"
+            value={selectedValue}
+            onChange={handleChange}
           >
             <FormControlLabel
               key={"general"}
@@ -65,29 +68,22 @@ const Categories = ({ categories }) => {
               control={<Radio />}
               label={"General"}
               componentsProps={{
-                typography: { fontWeight: 'bold' }
+                typography: { fontWeight: "bold" },
               }}
             />
-          </RadioGroup>
-          {categories && (
-            <RadioGroup
-              aria-labelledby="demo-radio-buttons-group-label"
-              defaultValue="female"
-              name="radio-buttons-group"
-            >
-              {categories.map((cat) => (
+            {categories.map((cat) => (
                 <FormControlLabel
                   key={cat._id}
                   value={cat._id}
                   control={<Radio />}
                   label={cat._id}
                   componentsProps={{
-                    typography: { fontWeight: 'bold' }
+                    typography: { fontWeight: "bold" },
                   }}
                 />
               ))}
-            </RadioGroup>
-          )}
+          </RadioGroup>
+    
         </FormControl>
       </Paper>
       <Button

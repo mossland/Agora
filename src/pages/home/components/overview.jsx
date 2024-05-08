@@ -2,8 +2,37 @@ import PropTypes from "prop-types";
 import { Box, Paper, Typography } from "@mui/material";
 
 import brick from "../../../assets/images/brick.png";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const Overview = ({ proposalStats }) => {
+  const [treasury, setTreasuryAmount] = useState(null);
+
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  
+  });
+
+  useEffect(() => {
+    const getMocBalance = async () => {
+      try {
+        if (treasury === null) {
+          const res = await axios.get(
+            `https://disclosure.moss.land/api/market`,
+            { headers: {} }
+          );
+          const market = res.data.filter(i => i.market_type === "mossland_marketcap_usd")
+          setTreasuryAmount(formatter.format(market[0].number))
+        }
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
+    };
+
+    getMocBalance();
+  }, [treasury]);
+
   return (
     <Paper
       elevation={5}
@@ -111,9 +140,9 @@ const Overview = ({ proposalStats }) => {
           <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
             TREASURY:
           </Typography>
-          <Typography sx={{ fontSize: "20px", fontWeight: "bold" }}>
-            ${"259"}
-          </Typography>
+          {treasury && <Typography sx={{ fontSize: "20px", fontWeight: "bold" }}>
+            {treasury}
+          </Typography>}
         </Box>
       </Box>
     </Paper>

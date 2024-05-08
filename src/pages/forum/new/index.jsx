@@ -15,9 +15,8 @@ const NewForum = () => {
 
   const [title, setTitle] = useState(null);
   const [forumTags, setForumTags] = useState(null);
+  const [selectedForumTag, setSelectedForumTag] = useState(null);
   const [descriptionValue, setDescriptionValue] = useState(null);
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
 
   // GET admins
   useEffect(() => {
@@ -72,7 +71,7 @@ const NewForum = () => {
           <Description
             title={title}
             admins={admins}
-            forumTags={forumTags}
+            forumTags={selectedForumTag}
             descriptionValue={descriptionValue}
           />
         ) : (
@@ -84,18 +83,19 @@ const NewForum = () => {
             setForumTags={setForumTags}
             descriptionValue={descriptionValue}
             setDescriptionValue={setDescriptionValue}
+            selectedForumTag={selectedForumTag}
+            setSelectedForumTag={setSelectedForumTag}
           />
         )}
       </Box>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-        {inPreview && <Information startDate={startDate} endDate={endDate} />}
+        {inPreview && <Information/>}
         <Buttons
           title={title}
-          descriptionValue={descriptionValue}
+          contents={descriptionValue}
+          category={selectedForumTag}
           preview={inPreview}
           setInPreview={setInPreview}
-          startDate={startDate}
-          endDate={endDate}
           isFormComplete={isFormComplete}
         />
       </Box>

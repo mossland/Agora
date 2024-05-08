@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Box, Paper, Stack, Typography } from "@mui/material";
+import { Box, Paper, LinearProgress, Stack, Typography } from "@mui/material";
 
 import MIcon from "../../../../components/icons/mSquareIcon";
 
@@ -37,7 +37,6 @@ const CurrentResult = ({ proposal, votes }) => {
               sx={{
                 ml: 1,
                 color: "#000000",
-                // fontSize: "",
                 fontWeight: "bold",
               }}
             >
@@ -47,21 +46,34 @@ const CurrentResult = ({ proposal, votes }) => {
           <Box sx={{ m: 2, gap: 1 }}>
             <Stack direction="row">
               <Typography
-                sx={{ color: "#808080", fontSize: "14px", fontWeight: "bold" }}
+                sx={{
+                  color: "#808080",
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                }}
               >
                 FOR
               </Typography>
             </Stack>
             <Stack direction="row">
               <Typography
-                sx={{ color: "#808080", fontSize: "14px", fontWeight: "bold" }}
+                sx={{
+                  color: "#808080",
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                }}
               >
                 AGAINST
               </Typography>
+              <LinearProgress />
             </Stack>
             <Stack direction="row">
               <Typography
-                sx={{ color: "#808080", fontSize: "14px", fontWeight: "bold" }}
+                sx={{
+                  color: "#808080",
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                }}
               >
                 ABSTAIN
               </Typography>

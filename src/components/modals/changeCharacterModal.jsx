@@ -1,3 +1,4 @@
+import { useState } from "react";
 import PropTypes from "prop-types";
 import {
   Avatar,
@@ -6,15 +7,13 @@ import {
   IconButton,
   Modal,
   Typography,
-  TextField,
 } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
 import useAuth from "../../hooks/useAuth";
-import { useState } from "react";
 import { fetchProfilePicture } from "../../utils/fetchProfilePicture";
 
-const SelectCharacterModal = ({
+const ChangeCharacterModal = ({
   open,
   handleClose,
   wallet,
@@ -27,10 +26,6 @@ const SelectCharacterModal = ({
 
   const handleAvatarClick = (pfpId) => {
     setPfpSelected(pfpId);
-  };
-
-  const handleChangeNickname = (event) => {
-    setNickname(event.target.value);
   };
 
   async function handleRegister() {
@@ -70,7 +65,6 @@ const SelectCharacterModal = ({
         <Box
           component="span"
           sx={{
-            // height: "38px",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -111,7 +105,6 @@ const SelectCharacterModal = ({
             sx={{
               mb: 10,
               display: "flex",
-              // justifyContent: "space-between",
               gap: 3,
             }}
           >
@@ -135,28 +128,6 @@ const SelectCharacterModal = ({
               />
             ))}
           </Box>
-          <TextField
-            aria-label="Write your name"
-            multiline
-            rows={1}
-            placeholder="Write your name"
-            onChange={handleChangeNickname}
-            variant="outlined"
-            required
-            sx={{
-              width: "100%",
-              "& .MuiOutlinedInput-root": {
-                height: "47px",
-                mb: 2,
-                border: 1,
-                borderRadius: 2,
-                cursor: "pointer",
-                "& fieldset": {},
-                "&:hover fieldset": {},
-                "&.Mui-focused fieldset": {},
-              },
-            }}
-          />
           {wallet && (
             <Button
               disabled={
@@ -192,9 +163,9 @@ const SelectCharacterModal = ({
   );
 };
 
-export default SelectCharacterModal;
+export default ChangeCharacterModal;
 
-SelectCharacterModal.propTypes = {
+ChangeCharacterModal.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
 };

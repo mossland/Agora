@@ -15,11 +15,42 @@ import { fetchProfilePicture } from "../../../utils/fetchProfilePicture";
 import { formatDate } from "../../../utils/formatDate";
 import { formatWallet } from "../../../utils/formatWallet";
 import requestHeaders from "../../../utils/restClient";
+import ChangeCharacterModal from "../../../components/modals/changeCharacterModal";
 
-const Information = ({ user, userStats }) => {
+const Information = ({ user, userStats, userTokens }) => {
   // Edit Logic
   const [isEditing, setIsEditing] = useState(false);
   const [editedUsername, setEditedUsername] = useState(user.nickname);
+
+  const isChanged = editedUsername !== user.nickname;
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleChipClick = () => {
+    if (isEditing) {
+      if (isChanged) {
+        handleSave();
+      } else {
+        handleCancel();
+      }
+    } else {
+      handleEditClick();
+    }
+  };
+  const handleCancel = () => {
+    setEditedUsername(user.nickname);
+    setIsEditing(false);
+  };
+
+  const handleSave = async () => {
+    if (isChanged) {
+      await editUserNickname(user._id);
+      window.location.reload();
+    }
+    setIsEditing(false);
+  };
 
   const appHeaders = requestHeaders();
 
@@ -49,20 +80,6 @@ const Information = ({ user, userStats }) => {
     }
   };
 
-  const handleEditClick = () => {
-    setIsEditing(true);
-  };
-
-  const handleCancel = () => {
-    setIsEditing(false);
-    setEditedUsername(user.nickname); // Reset the username on cancel
-  };
-
-  const handleSave = async () => {
-    await editUserNickname(user._id);
-    setIsEditing(false);
-  };
-
   function getTimeDifference(timestamp) {
     // Get the current time in milliseconds
     const currentTime = new Date().getTime();
@@ -90,6 +107,15 @@ const Information = ({ user, userStats }) => {
       return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
     }
   }
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
@@ -125,7 +151,6 @@ const Information = ({ user, userStats }) => {
             sx={{
               ml: 1,
               color: "#000000",
-              // fontSize: "",
               fontWeight: "bold",
             }}
           >
@@ -133,12 +158,44 @@ const Information = ({ user, userStats }) => {
           </Typography>
         </Box>
         {user && (
-          <Avatar
-            sx={{ width: "100%", height: "auto", borderRadius: 2 }}
-            src={fetchProfilePicture(user.profilePicture)}
-            variant="rounded"
-          ></Avatar>
+          <Box sx={{ position: "relative" }}>
+            <Avatar
+              sx={{
+                width: "100%",
+                height: "auto",
+                borderRadius: 2,
+                outline: isEditing && "150px solid rgba(250, 250, 250, 0.65)",
+                outlineOffset: "-150px",
+              }}
+              src={fetchProfilePicture(user.profilePicture)}
+              variant="rounded"
+            />
+            {isEditing && (
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                }}
+              >
+                <Button
+                  onClick={openModal}
+                  sx={{
+                    color: "#000000",
+                    fontSize: "16px",
+                    fontWeight: "bold",
+                    border: 1,
+                    borderRadius: 1,
+                  }}
+                >
+                  Change My PFP
+                </Button>
+              </Box>
+            )}
+          </Box>
         )}
+        <ChangeCharacterModal open={isModalOpen} handleClose={handleClose} />
         {user && (
           <Box sx={{ p: 2, display: "flex", flexDirection: "column", gap: 2 }}>
             <Box>
@@ -164,22 +221,30 @@ const Information = ({ user, userStats }) => {
                     </Typography>
                   )}
                   <Chip
-                    
-                    label={isEditing ? "Confirm" : "Edit"}
+                    label={
+                      isEditing ? (isChanged ? "Confirm" : "Close") : "Edit"
+                    }
                     component="button"
                     variant="outlined"
                     clickable
-                    onClick={isEditing ? handleSave : handleEditClick}
+                    onClick={handleChipClick}
                     sx={{
                       height: "19px",
                       fontSize: "12px",
                       color: isEditing ? "#FFFFFF" : "#808080",
-                      backgroundColor: isEditing ? "#474747" : "#FFFFFF",
+                      backgroundColor: isEditing
+                        ? isChanged
+                          ? "#474747"
+                          : "#474747"
+                        : "#FFFFFF",
                       border: isEditing && "none",
                       borderRadius: "4px",
                       boxShadow: isEditing && "2px 2px 0px #000000",
                       "& .MuiChip-label": {
                         px: "5px",
+                      },
+                      "&:hover": {
+                        backgroundColor: "#6C6C6C !important",
                       },
                     }}
                   />
@@ -216,25 +281,29 @@ const Information = ({ user, userStats }) => {
                     </Typography>
                   </Box>
                 )}
-                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                  <Typography
-                    sx={{
-                      color: "#808080",
-                      fontSize: "14px",
-                      fontWeight: "bold",
-                    }}
+                {userTokens && (
+                  <Box
+                    sx={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    TOKENS
-                  </Typography>
-                  <Typography
-                    sx={{
-                      fontSize: "14px",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {"992,501"} MOC
-                  </Typography>
-                </Box>
+                    <Typography
+                      sx={{
+                        color: "#808080",
+                        fontSize: "14px",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      TOKENS
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: "14px",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {"992,501"} MOC
+                    </Typography>
+                  </Box>
+                )}
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                   <Typography
                     sx={{
@@ -251,7 +320,7 @@ const Information = ({ user, userStats }) => {
                       fontWeight: "bold",
                     }}
                   >
-                    {"241"}
+                    {user.views}
                   </Typography>
                 </Box>
                 {user.lastSeen && (
@@ -300,7 +369,7 @@ const Information = ({ user, userStats }) => {
                     </Typography>
                   </Box>
                 )}
-                {userStats && (
+                {user.firstVote && (
                   <Box
                     sx={{ display: "flex", justifyContent: "space-between" }}
                   >
@@ -319,7 +388,7 @@ const Information = ({ user, userStats }) => {
                         fontWeight: "bold",
                       }}
                     >
-                      {formatDate(userStats.firstVote)}
+                      {formatDate(user.firstVote)}
                     </Typography>
                   </Box>
                 )}

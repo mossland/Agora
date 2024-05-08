@@ -24,5 +24,5 @@ export default FilledHeartIcon;
 FilledHeartIcon.propTypes = {
   width: PropTypes.string,
   height: PropTypes.string,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
 };

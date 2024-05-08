@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
 import { Avatar, Box, List, ListItem, Paper, Typography } from "@mui/material";
 
-import MIcon from "../../../../components/icons/mSquareIcon";
+import { fetchProfilePicture } from "../../../../utils/fetchProfilePicture";
 
 const Votes = ({ proposal, votes }) => {
-  console.log(votes);
+  console.log(votes)
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
       {proposal && (
@@ -45,7 +45,7 @@ const Votes = ({ proposal, votes }) => {
               Votes
             </Typography>
           </Box>
-          <Box sx={{ m: 2, display: "flex", flexDirection: "column", gap: 1 }}>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
             {votes && (
               <List
                 aria-labelledby=""
@@ -56,19 +56,43 @@ const Votes = ({ proposal, votes }) => {
                 }}
               >
                 {votes.length === 0 && (
-                  <Typography>No votes on this proposal.</Typography>
+                  <Typography sx={{mb: 1, mt: 1}}>No votes on this proposal.</Typography>
                 )}
                 {votes.map((vote) => (
                   <ListItem
                     key={vote._id}
                     sx={{
-                      bgcolor: "#FFFFFF",
-                      borderRadius: "8px",
+                      display: "flex",
+                      alignItems: "center",
                     }}
                   >
-                    <Avatar />
-                    {vote.voter.nickname}
-                    {vote.type}
+                    <Avatar
+                      sx={{
+                        width: "24px",
+                        height: "24px",
+                        mr: 2,
+                        border: 1,
+                        borderColor: "#000000",
+                        borderRadius: 1,
+                      }}
+                      src={fetchProfilePicture(proposal.proponent.profilePicture)}
+                      variant="square"
+                    />
+                    <Typography
+                      sx={{ flex: 1, fontSize: "14px", fontWeight: "bold" }}
+                    >
+                      {vote.voter.nickname}
+                    </Typography>
+                    <Typography
+                      sx={{ flex: 1, fontSize: "14px", fontWeight: "bold" }}
+                    >
+                      {vote.type}
+                    </Typography>
+                    <Typography
+                      sx={{ fontSize: "14px", fontWeight: "bold" }}
+                    >
+                      x MOC
+                    </Typography>
                   </ListItem>
                 ))}
               </List>

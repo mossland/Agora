@@ -2,10 +2,20 @@ import PropTypes from "prop-types";
 import { Box, Button, Paper, Typography } from "@mui/material";
 import axios from "axios";
 import requestHeaders from "../../../../utils/restClient";
+import useAuth from "../../../../hooks/useAuth";
 
-const Vote = ({ proposal }) => {
+const Vote = ({ proposal, votes }) => {
+  const { isAuthenticated } = useAuth();
   const userId = localStorage.getItem("_id");
   const appHeaders = requestHeaders();
+
+  function userAlreadyVoted(id) {
+    const voters = votes.map((i) => i.voter._id);
+    if (voters.includes(id)) {
+      return true;
+    }
+    return false;
+  }
 
   function computeApprovedStatus(startDate, endDate) {
     var now = new Date(); // Current timestamp
@@ -27,14 +37,19 @@ const Vote = ({ proposal }) => {
 
   const voteFor = async () => {
     try {
-      await axios.patch(
-        `${import.meta.env.VITE_APP_API_BASE_URL}/vote/${proposal._id}`,
+      //to-do: fetch user's MOC balance at time of vote
+      await axios.post(
+        `${import.meta.env.VITE_APP_API_BASE_URL}/vote-proposal/${
+          proposal._id
+        }`,
         {
+          initialMocBalance: null,
           voter: userId,
           vote: "For",
         },
         appHeaders
       );
+      window.location.reload();
     } catch (error) {
       console.log(error);
       //setError(true);
@@ -43,14 +58,19 @@ const Vote = ({ proposal }) => {
 
   const voteAgainst = async () => {
     try {
-      await axios.patch(
-        `${import.meta.env.VITE_APP_API_BASE_URL}/vote/${proposal._id}`,
+      //to-do: fetch user's MOC balance at time of vote
+      await axios.post(
+        `${import.meta.env.VITE_APP_API_BASE_URL}/vote-proposal/${
+          proposal._id
+        }`,
         {
+          initialMocBalance: null,
           voter: userId,
           vote: "Against",
         },
         appHeaders
       );
+      window.location.reload();
     } catch (error) {
       console.log(error);
       //setError(true);
@@ -59,16 +79,19 @@ const Vote = ({ proposal }) => {
 
   const voteAbstain = async () => {
     try {
-      await axios.patch(
+      //to-do: fetch user's MOC balance at time of vote
+      await axios.post(
         `${import.meta.env.VITE_APP_API_BASE_URL}/vote-proposal/${
           proposal._id
         }`,
         {
+          initialMocBalance: null,
           voter: userId,
-          vote: "Against",
+          vote: "Abstain",
         },
         appHeaders
       );
+      window.location.reload();
     } catch (error) {
       console.log(error);
       //setError(true);
@@ -115,11 +138,23 @@ const Vote = ({ proposal }) => {
               Vote
             </Typography>
           </Box>
-          <Box sx={{ mx: .5, my: 1, display: "flex", flexDirection: "column", gap: .5 }}>
+          <Box
+            sx={{
+              mx: 0.75,
+              my: 1,
+              display: "flex",
+              flexDirection: "column",
+              gap: 1,
+            }}
+          >
             <Button
               disabled={
+                userAlreadyVoted(userId) ||
+                !isAuthenticated ||
                 computeApprovedStatus(proposal.startDate, proposal.endDate) ===
-                "Ended"
+                  "Ended" ||
+                computeApprovedStatus(proposal.startDate, proposal.endDate) ===
+                  "Upcoming"
               }
               onClick={() => voteFor()}
               variant="contained"
@@ -134,15 +169,22 @@ const Vote = ({ proposal }) => {
                 boxShadow: "4px 4px 0px #000000",
                 textTransform: "none",
                 fontWeight: "bold",
-                "&:hover": {},
+                "&:hover": {
+                  background: "#33E550",
+                  boxShadow: "4px 4px 0px #000000",
+                },
               }}
             >
               FOR
             </Button>
             <Button
               disabled={
+                userAlreadyVoted(userId) ||
+                !isAuthenticated ||
                 computeApprovedStatus(proposal.startDate, proposal.endDate) ===
-                "Ended"
+                  "Ended" ||
+                computeApprovedStatus(proposal.startDate, proposal.endDate) ===
+                  "Upcoming"
               }
               onClick={() => voteAgainst()}
               variant="contained"
@@ -155,15 +197,22 @@ const Vote = ({ proposal }) => {
                 boxShadow: "4px 4px 0px #000000",
                 textTransform: "none",
                 fontWeight: "bold",
-                "&:hover": {},
+                "&:hover": {
+                  background: "#FF3333",
+                  boxShadow: "4px 4px 0px #000000",
+                },
               }}
             >
               AGAINST
             </Button>
             <Button
               disabled={
+                userAlreadyVoted(userId) ||
+                !isAuthenticated ||
                 computeApprovedStatus(proposal.startDate, proposal.endDate) ===
-                "Ended"
+                  "Ended" ||
+                computeApprovedStatus(proposal.startDate, proposal.endDate) ===
+                  "Upcoming"
               }
               onClick={() => voteAbstain()}
               variant="contained"
@@ -178,7 +227,10 @@ const Vote = ({ proposal }) => {
                 boxShadow: "4px 4px 0px #000000",
                 textTransform: "none",
                 fontWeight: "bold",
-                "&:hover": {},
+                "&:hover": {
+                  background: "#FDD133",
+                  boxShadow: "4px 4px 0px #000000",
+                },
               }}
             >
               ABSTAIN

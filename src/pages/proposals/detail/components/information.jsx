@@ -37,7 +37,6 @@ const Information = ({ proposal }) => {
               sx={{
                 ml: 1,
                 color: "#000000",
-                // fontSize: "",
                 fontWeight: "bold",
               }}
             >

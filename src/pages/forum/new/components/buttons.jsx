@@ -2,37 +2,36 @@ import PropTypes from "prop-types";
 import { Box, Button, Paper } from "@mui/material";
 import axios from "axios";
 import requestHeaders from "../../../../utils/restClient";
+import { useNavigate } from "react-router-dom";
 
 const Buttons = ({
   setInPreview,
   preview,
   title,
-  descriptionValue,
-  startDate,
-  endDate,
-  tag,
+  contents,
+  category,
   ccdAdmins,
   isFormComplete
 }) => {
   const appHeaders = requestHeaders();
   const userId = localStorage.getItem("_id");
+  const navigate = useNavigate();
 
-  async function postNewProposal() {
+  async function postNewTopic() {
     try {
       // to-do: add validation
-      await axios.post(
-        `${import.meta.env.VITE_APP_API_BASE_URL}/proposals/new`,
+      const newTopic = await axios.post(
+        `${import.meta.env.VITE_APP_API_BASE_URL}/forums/new`,
         {
           title: title,
-          description: descriptionValue,
-          startDate: startDate,
-          endDate: endDate,
-          tag: tag,
-          proponent: userId,
+          contents: contents,
+          category: category,
+          author: userId,
           ccdAdmins: ccdAdmins,
         },
         appHeaders
       );
+      navigate(`/forum/${newTopic.data._id}`);
     } catch (error) {
       console.log(error);
       //setError(true);
@@ -79,8 +78,9 @@ const Buttons = ({
             </Button>
           )}
           <Button
-            onClick={() => postNewProposal()}
+            onClick={() => postNewTopic()}
             variant="contained"
+            disabled={!isFormComplete}
             sx={{
               px: 12,
               color: "#FFFFFF",

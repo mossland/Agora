@@ -9,7 +9,7 @@ const AgorasHighlights = ({ highlights }) => {
     <Paper
       elevation={5}
       sx={{
-        minWidth: { sm: 500, md: 500 },
+        minWidth: { sm: 250, md: 400 },
         display: "flex",
         flexDirection: "column",
         border: 1.5,
@@ -54,13 +54,12 @@ const AgorasHighlights = ({ highlights }) => {
           aria-labelledby=""
           sx={{
             m: "2px",
-            height: "189px",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
           }}
         >
-          {highlights.slice(0, 8).map((highlight) => (
+          {highlights.slice(0, 3).map((highlight) => (
             <ListItem
               key={highlight._id}
               sx={{

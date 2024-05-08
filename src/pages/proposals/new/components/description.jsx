@@ -1,34 +1,53 @@
-import PropTypes from "prop-types";
-import { Avatar, Box, Button, Chip, Paper, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Chip,
+  Paper,
+  Typography,
+} from "@mui/material";
 
-import MIcon from "../../../../components/icons/mCircleIcon";
 import Markdown from "../../../../components/markdown/Markdown";
 
-import { getTimeDifference } from "../../../../utils/getTimeDifference";
 import { fetchProfilePicture } from "../../../../utils/fetchProfilePicture";
 import { formatDate } from "../../../../utils/formatDate";
-import { getStatusStyle } from "../../../../utils/getStatusStyle";
 import { getTagStyle } from "../../../../utils/getTagStyle";
 
-const Description = ({ title, proposalTags, descriptionValue }) => {
-  function computeApprovedStatus(startDate, endDate) {
-    var now = new Date(); // Current timestamp
-    startDate = new Date(startDate); // Convert start date to Date object
-    endDate = new Date(endDate); // Convert end date to Date object
+const Description = ({ title, selectedProposalTag, descriptionValue, endDate }) => {
+  function getTimeDifference(timestamp) {
+    // Get the current time in milliseconds
+    const currentTime = new Date().getTime();
 
-    if (now < startDate) {
-      return "Upcoming";
-    }
+    // Convert the timestamp string to a Date object
+    const targetTime = new Date(timestamp);
 
-    if (now >= startDate && now <= endDate) {
-      return "Ongoing";
-    }
+    // Calculate the time difference in milliseconds
+    const timeDifference = targetTime - currentTime;
 
-    if (now > endDate) {
-      return "Ended";
+    // Check if the timestamp is in the future
+    if (timeDifference > 0) {
+      // Convert milliseconds to minutes
+      const minutes = Math.floor(timeDifference / 60000);
+
+      // If remaining time is greater than or equal to 1440 minutes (24 hours), show in days
+      if (minutes >= 1440) {
+        const days = Math.floor(minutes / 1440);
+        return `ENDS IN ${days} DAY${days !== 1 ? "S" : ""}`;
+      } else if (minutes >= 60) {
+        // If remaining time is greater than or equal to 60 minutes, show in hours
+        const hours = Math.floor(minutes / 60);
+        return `ENDS IN ${hours} HOUR${hours !== 1 ? "S" : ""}`;
+      } else {
+        // Otherwise, show in minutes
+        return `ENDS IN ${minutes} MINUTE${minutes !== 1 ? "S" : ""}`;
+      }
+    } else {
+      return "ENDED";
     }
   }
 
+  const pfp = localStorage.getItem("profilePicture");
+  const nickname = localStorage.getItem("nickname");
+  const now = new Date();
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
       <Paper
@@ -87,7 +106,6 @@ const Description = ({ title, proposalTags, descriptionValue }) => {
             sx={{
               width: "100%",
               display: "flex",
-              flexDirection: "column",
               justifyContent: "space-between",
               gap: 1,
             }}
@@ -100,7 +118,7 @@ const Description = ({ title, proposalTags, descriptionValue }) => {
             </Typography>
             <Box sx={{ display: "flex", gap: 1 }}>
               <Chip
-                label={proposalTags}
+                label="Upcoming"
                 sx={{
                   px: 1,
                   height: "30px",
@@ -111,7 +129,22 @@ const Description = ({ title, proposalTags, descriptionValue }) => {
                   "& .MuiChip-label": {
                     px: "5px",
                   },
-                  ...getTagStyle(proposalTags),
+                  ...getTagStyle(selectedProposalTag),
+                }}
+              />
+              <Chip
+                label={selectedProposalTag}
+                sx={{
+                  px: 1,
+                  height: "30px",
+                  fontSize: "14px",
+                  background: "none",
+                  border: 1,
+                  borderRadius: "4px",
+                  "& .MuiChip-label": {
+                    px: "5px",
+                  },
+                  ...getTagStyle(selectedProposalTag),
                 }}
               />
             </Box>
@@ -125,16 +158,19 @@ const Description = ({ title, proposalTags, descriptionValue }) => {
                 borderColor: "#000000",
                 borderRadius: 1,
               }}
-              // src={fetchProfilePicture(proposal.proponent.profilePicture)}
+              src={fetchProfilePicture(pfp)}
               variant="square"
             />
             <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
-              {/* {proposal.proponent.nickname} */}
+              {nickname}
             </Typography>
           </Box>
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <Typography sx={{ fontSize: "14px" }}>
-              {/* {formatDate(proposal.startDate)} */}
+            <Typography sx={{ color: "#FF0000", fontWeight: "bold" }}>
+              {getTimeDifference(endDate)}
+            </Typography>
+            <Typography sx={{ color: "#808080", fontSize: "14px" }}>
+              Created {formatDate(now)}
             </Typography>
           </Box>
           <Markdown content={descriptionValue} />
