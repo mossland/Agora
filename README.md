@@ -157,13 +157,38 @@ To-do:
 - [x]fixing minor tickets for QA- Admin UI
 - [x]UI mockup for proposal end date extension in Figma
 ### week 8(5/1~5/8)
-- [ ] QA on user frontend side/C
-- [ ] Decide detailed voting logic/C
-- [ ] User guide content planning before design/C
-- [ ] Finalizing UID/Policy docs for submission
-- [ ] Finalizing user-facing agora codebase
-- [ ] Working on Web3 integration; handling voting and proposal creation on chain
-- [ ]Working on Web3 registration flow to account for existing Mossland users
-- [ ]Finalizing authentication and permissions on all backend endpoints
-- [ ]Undergoing admin QA
-- [ ]Undergoing front-end QA
+- [x] QA on user frontend side/C
+- [x] Decide detailed voting logic/C
+- [x] User guide content planning before design/C
+- [x] Finalizing UID/Policy docs for submission
+- [x] Finalizing user-facing agora codebase
+- [x] Working on Web3 integration; handling voting and proposal creation on chain
+- [x] Working on Web3 registration flow to account for existing Mossland users
+- [x] Finalizing authentication and permissions on all backend endpoints
+- [x] Undergoing admin QA
+- [x] Undergoing front-end QA
+### week 9(5/8~5/15)
+- [x]Front-end for admin and user-facing agora complete
+- [x]Working on Web3 integration; handling voting and proposal creation on chain
+- [x]Fetch user’s MOC balance
+- [x]Visualize voting results + passed metric
+To-do:
+- [x]Undergoing admin QA
+- [x]Undergoing front-end QA
+### week 10(5/16~)
+# Complete:
+- [x] Web3 integration for new proposal complete
+- [x] Web3 integration for proposal vote complete
+- [x] Web3 integration for proposal close voting complete
+- [x] Fetch user’s MOC balance complete - using a temporal solution via 3rd party API
+- [x] Voting result UI complete
+- [x] Added authentication via JWT token to all relevant endpoints where user login is required
+# In-progress:
+- [ ] Passed proposals metric
+- [ ] Final proposal result (fetch from contract once endDate is met)
+
+# To-do:
+- [ ] Handover code to Mossland; deployment to production environment + necessary ENV variables from Mossland side
+- [ ] Transition user’s MOC balance API once it is ready from Mossland
+- [ ] Undergoing admin QA
+- [ ] Undergoing front-end QA
