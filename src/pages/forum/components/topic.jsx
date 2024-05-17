@@ -17,7 +17,7 @@ import {
   FormControl,
 } from "@mui/material";
 
-import FlagIcon from "../../../components/icons/flagIcon";
+import FilledFlagIcon from "../../../components/icons/filledFlagIcon";
 import SearchIcon from "../../../assets/icons/search.png";
 
 import { fetchProfilePicture } from "../../../utils/fetchProfilePicture";
@@ -67,13 +67,7 @@ const TopicGeneral = ({ forums, selectedValue }) => {
   const handleSearchChange = (event) => {
     setSearchInput(event.target.value.toLowerCase());
   };
-  const filteredForums = forums.filter(
-    (forum) =>
-      forum.title.toLowerCase().includes(searchInput) ||
-      (forum.author &&
-        forum.author.nickname.toLowerCase().includes(searchInput))
-  );
-
+  
   const sortedAndFilteredForums = useMemo(() => {
     const filtered = forums.filter(
       (forum) =>
@@ -85,11 +79,10 @@ const TopicGeneral = ({ forums, selectedValue }) => {
       case 'latest':
         return filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       case 'new-register':
-        // Assuming new-register means recently created forums
-        return filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-      case 'ends-soon':
-        // Sort by ending soon (assuming there is an endDate)
-        return filtered.filter(a => new Date(a.endDate) > new Date()).sort((a, b) => new Date(a.endDate) - new Date(b.endDate));
+        return filtered.sort((a, b) => new Date(b.author.createdAt) - new Date(a.author.createdAt));
+      // case 'ends-soon':
+      //   // Sort by ending soon (assuming there is an endDate)
+      //   return filtered.filter(a => new Date(a.endDate) > new Date()).sort((a, b) => new Date(a.endDate) - new Date(b.endDate));
       case 'hyped':
         // Sort by a combination of views and likes, assuming both are integers
         return filtered.sort((a, b) => (b.views + b.likers.length) - (a.views + a.likers.length));
@@ -226,7 +219,7 @@ const TopicGeneral = ({ forums, selectedValue }) => {
                 PaperProps: {
                   sx: {
                     "& .MuiMenuItem-root.Mui-selected": {
-                      backgroundColor: "#E1E1E1",
+                      backgroundColor: "#E1E1E1 !important",
                       "&:hover": {
                         backgroundColor: "#E1E1E1",
                       },
@@ -248,12 +241,12 @@ const TopicGeneral = ({ forums, selectedValue }) => {
               >
                 New Register
               </MenuItem>
-              <MenuItem
+              {/* <MenuItem
                 value="ends-soon"
                 sx={{ fontSize: "16px", fontWeight: "bold" }}
               >
                 Ends Soon
-              </MenuItem>
+              </MenuItem> */}
               <MenuItem
                 value="hyped"
                 sx={{ fontSize: "16px", fontWeight: "bold" }}
@@ -343,8 +336,8 @@ const TopicGeneral = ({ forums, selectedValue }) => {
                     </Box>
                   </Box>
                   <Box sx={{ display: "flex", gap: 1.5 }}>
-                    {forum.pinned && <FlagIcon />}
-                    <ForumLiking forum={forum} />
+                    {forum.pinned && <FilledFlagIcon />}
+                    {isAuthenticated && <ForumLiking forum={forum} />}
                   </Box>
                 </Box>
                 <Box
@@ -434,5 +427,6 @@ const TopicGeneral = ({ forums, selectedValue }) => {
 export default TopicGeneral;
 
 TopicGeneral.propTypes = {
-  forums: PropTypes.array,
+  forums: PropTypes.array.isRequired,
+  selectedValue: PropTypes.string.isRequired,
 };

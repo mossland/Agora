@@ -7,7 +7,9 @@ import { Box, CircularProgress } from "@mui/material";
 import AllProposals from "./components/allProposals";
 []
 const Proposals = () => {
-  const appHeaders = requestHeaders();
+   const token = localStorage.getItem("accessToken");
+  const appHeaders = requestHeaders(token);
+
   const [approvedProposals, setApprovedProposals] = useState(null);
   const [proposalStats, setProposalStats] = useState(null);
   const [loading, setLoading] = useState(true);

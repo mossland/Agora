@@ -1,13 +1,17 @@
 import PropTypes from "prop-types";
-import { Box, Button, Paper, Typography } from "@mui/material";
+import { Box, Button, Paper, Stack, Typography } from "@mui/material";
 import axios from "axios";
 import requestHeaders from "../../../../utils/restClient";
 import useAuth from "../../../../hooks/useAuth";
+import { castVote } from "../../../../utils/contractInteraction";
+import { useState } from "react";
 
 const Vote = ({ proposal, votes }) => {
   const { isAuthenticated } = useAuth();
   const userId = localStorage.getItem("_id");
-  const appHeaders = requestHeaders();
+  const wallet = localStorage.getItem("walletAddress");
+  const token = localStorage.getItem("accessToken");
+  const appHeaders = requestHeaders(token);
 
   function userAlreadyVoted(id) {
     const voters = votes.map((i) => i.voter._id);
@@ -35,22 +39,40 @@ const Vote = ({ proposal, votes }) => {
     }
   }
 
+  const [noMocError, setNoMocError] = useState(false);
+  const [txError, setTxError] = useState(false);
+
   const voteFor = async () => {
     try {
-      //to-do: fetch user's MOC balance at time of vote
-      await axios.post(
-        `${import.meta.env.VITE_APP_API_BASE_URL}/vote-proposal/${
-          proposal._id
-        }`,
-        {
-          initialMocBalance: null,
-          voter: userId,
-          vote: "For",
-        },
-        appHeaders
+      setTxError(false);
+      setNoMocError(false);
+      //Fetch user's MOC balance
+      const response = await axios.get(
+        `${import.meta.env.VITE_APP_API_BASE_URL}/moc-balance/${wallet}`,
+        { headers: appHeaders }
       );
-      window.location.reload();
+      if (response.data.items.length === 0) {
+        setNoMocError(true);
+      } else {
+        await castVote(wallet, proposal.smartContractId, "For");
+        const humanReadableBalance =
+          response.data.items[0].balance /
+          10 ** response.data.items[0].contract.decimals;
+        await axios.post(
+          `${import.meta.env.VITE_APP_API_BASE_URL}/vote-proposal/${
+            proposal._id
+          }`,
+          {
+            initialMocBalance: humanReadableBalance,
+            voter: userId,
+            vote: "For",
+          },
+          appHeaders
+        );
+        window.location.reload();
+      }
     } catch (error) {
+      setTxError(true);
       console.log(error);
       //setError(true);
     }
@@ -58,20 +80,35 @@ const Vote = ({ proposal, votes }) => {
 
   const voteAgainst = async () => {
     try {
-      //to-do: fetch user's MOC balance at time of vote
-      await axios.post(
-        `${import.meta.env.VITE_APP_API_BASE_URL}/vote-proposal/${
-          proposal._id
-        }`,
-        {
-          initialMocBalance: null,
-          voter: userId,
-          vote: "Against",
-        },
-        appHeaders
+      setTxError(false);
+      setNoMocError(false);
+      //Fetch user's MOC balance
+      const response = await axios.get(
+        `${import.meta.env.VITE_APP_API_BASE_URL}/moc-balance/${wallet}`,
+        { headers: appHeaders }
       );
-      window.location.reload();
+      if (response.data.items.length === 0) {
+        setNoMocError(true);
+      } else {
+        await castVote(wallet, proposal.smartContractId, "Against");
+        const humanReadableBalance =
+          response.data.items[0].balance /
+          10 ** response.data.items[0].contract.decimals;
+        await axios.post(
+          `${import.meta.env.VITE_APP_API_BASE_URL}/vote-proposal/${
+            proposal._id
+          }`,
+          {
+            initialMocBalance: humanReadableBalance,
+            voter: userId,
+            vote: "Against",
+          },
+          appHeaders
+        );
+        window.location.reload();
+      }
     } catch (error) {
+      setTxError(true);
       console.log(error);
       //setError(true);
     }
@@ -79,20 +116,35 @@ const Vote = ({ proposal, votes }) => {
 
   const voteAbstain = async () => {
     try {
-      //to-do: fetch user's MOC balance at time of vote
-      await axios.post(
-        `${import.meta.env.VITE_APP_API_BASE_URL}/vote-proposal/${
-          proposal._id
-        }`,
-        {
-          initialMocBalance: null,
-          voter: userId,
-          vote: "Abstain",
-        },
-        appHeaders
+      setTxError(false);
+      setNoMocError(false);
+      //Fetch user's MOC balance
+      const response = await axios.get(
+        `${import.meta.env.VITE_APP_API_BASE_URL}/moc-balance/${wallet}`,
+        { headers: appHeaders }
       );
-      window.location.reload();
+      if (response.data.items.length === 0) {
+        setNoMocError(true);
+      } else {
+        await castVote(wallet, proposal.smartContractId, "Abstain");
+        const humanReadableBalance =
+          response.data.items[0].balance /
+          10 ** response.data.items[0].contract.decimals;
+        await axios.post(
+          `${import.meta.env.VITE_APP_API_BASE_URL}/vote-proposal/${
+            proposal._id
+          }`,
+          {
+            initialMocBalance: humanReadableBalance,
+            voter: userId,
+            vote: "Abstain",
+          },
+          appHeaders
+        );
+        window.location.reload();
+      }
     } catch (error) {
+      setTxError(true);
       console.log(error);
       //setError(true);
     }
@@ -147,6 +199,22 @@ const Vote = ({ proposal, votes }) => {
               gap: 1,
             }}
           >
+            {noMocError && (
+              <Stack sx={{ maxWidth: "300px" }}>
+                <Typography>
+                  You have no MOC in your wallet. A non-negative MOC balance is
+                  required to cast a vote.
+                </Typography>
+              </Stack>
+            )}
+            {txError && (
+              <Stack sx={{ maxWidth: "300px" }}>
+                <Typography>
+                  A transaction error occurred. Please check the console for
+                  logs and try again.
+                </Typography>
+              </Stack>
+            )}
             <Button
               disabled={
                 userAlreadyVoted(userId) ||
@@ -154,7 +222,9 @@ const Vote = ({ proposal, votes }) => {
                 computeApprovedStatus(proposal.startDate, proposal.endDate) ===
                   "Ended" ||
                 computeApprovedStatus(proposal.startDate, proposal.endDate) ===
-                  "Upcoming"
+                  "Upcoming" ||
+                proposal.smartContractId === null ||
+                proposal.smartContractId === undefined
               }
               onClick={() => voteFor()}
               variant="contained"
@@ -184,7 +254,9 @@ const Vote = ({ proposal, votes }) => {
                 computeApprovedStatus(proposal.startDate, proposal.endDate) ===
                   "Ended" ||
                 computeApprovedStatus(proposal.startDate, proposal.endDate) ===
-                  "Upcoming"
+                  "Upcoming" ||
+                proposal.smartContractId === null ||
+                proposal.smartContractId === undefined
               }
               onClick={() => voteAgainst()}
               variant="contained"
@@ -212,7 +284,9 @@ const Vote = ({ proposal, votes }) => {
                 computeApprovedStatus(proposal.startDate, proposal.endDate) ===
                   "Ended" ||
                 computeApprovedStatus(proposal.startDate, proposal.endDate) ===
-                  "Upcoming"
+                  "Upcoming" ||
+                proposal.smartContractId === null ||
+                proposal.smartContractId === undefined
               }
               onClick={() => voteAbstain()}
               variant="contained"
@@ -246,4 +320,5 @@ export default Vote;
 
 Vote.propTypes = {
   proposal: PropTypes.object,
+  votes: PropTypes.array,
 };

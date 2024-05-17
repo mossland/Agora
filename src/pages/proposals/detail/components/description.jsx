@@ -14,7 +14,8 @@ import axios from "axios";
 import requestHeaders from "../../../../utils/restClient";
 
 const Description = ({ proposal }) => {
-  const appHeaders = requestHeaders();
+  const token = localStorage.getItem("accessToken");
+  const appHeaders = requestHeaders(token);
 
   useEffect(() => {
     const viewProposal = async () => {
@@ -33,7 +34,7 @@ const Description = ({ proposal }) => {
     };
 
     viewProposal();
-  }, [proposal._id]);
+  }, [appHeaders, proposal._id]);
 
   function computeApprovedStatus(startDate, endDate) {
     var now = new Date(); // Current timestamp
@@ -48,7 +49,7 @@ const Description = ({ proposal }) => {
       return "Ongoing";
     }
 
-    if (now > endDate) { 
+    if (now > endDate) {
       // to-do: handle extended
       return "Ended";
     }
@@ -190,62 +191,66 @@ const Description = ({ proposal }) => {
             </Box>
             <Markdown content={proposal.description} />
           </Box>
-          {proposal.linkedDiscusion && <Box
-            sx={{
-              m: "2px",
-              mb: 5,
-              p: 2,
-              bgcolor: "#FFFFFF",
-              border: 1.5,
-              borderColor: "#000000",
-              borderRadius: "5px",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              gap: 2,
-              textAlign: "left",
-            }}
-          >
-            <Box sx={{ display: "flex", gap: 2 }}>
-              <MIcon />
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
-                <Typography
-                  sx={{
-                    color: "#808080",
-                    fontSize: "14px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {"DISCUSSION"}
-                </Typography>
-                <Typography sx={{ fontSize: "18px", fontWeight: "bold" }}>
-                  {proposal.title}
-                </Typography>
-              </Box>
-            </Box>
-            <Button
-              variant="contained"
-              href={`/forum/${proposal.linkedDiscusion}`}
+          {proposal.linkedDiscusion && (
+            <Box
               sx={{
-                height: "22px",
-                color: "#000000",
-                background: "#FFFFFF",
+                m: "2px",
+                mb: 5,
+                p: 2,
+                bgcolor: "#FFFFFF",
                 border: 1.5,
                 borderColor: "#000000",
                 borderRadius: "5px",
-                boxShadow: "4px 4px 0px #000000",
-                textTransform: "none",
-                fontSize: "14px",
-                fontWeight: "bold",
-                "&:hover": {
-                  background: "#CCCCCC",
-                  boxShadow: "4px 4px 0px #000000",
-                },
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                gap: 2,
+                textAlign: "left",
               }}
             >
-              Discussion
-            </Button>
-          </Box>}
+              <Box sx={{ display: "flex", gap: 2 }}>
+                <MIcon />
+                <Box
+                  sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}
+                >
+                  <Typography
+                    sx={{
+                      color: "#808080",
+                      fontSize: "14px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {"DISCUSSION"}
+                  </Typography>
+                  <Typography sx={{ fontSize: "18px", fontWeight: "bold" }}>
+                    {proposal.title}
+                  </Typography>
+                </Box>
+              </Box>
+              <Button
+                variant="contained"
+                href={`/forum/${proposal.linkedDiscusion}`}
+                sx={{
+                  height: "22px",
+                  color: "#000000",
+                  background: "#FFFFFF",
+                  border: 1.5,
+                  borderColor: "#000000",
+                  borderRadius: "5px",
+                  boxShadow: "4px 4px 0px #000000",
+                  textTransform: "none",
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                  "&:hover": {
+                    background: "#CCCCCC",
+                    boxShadow: "4px 4px 0px #000000",
+                  },
+                }}
+              >
+                Discussion
+              </Button>
+            </Box>
+          )}
         </Paper>
       )}
     </Box>

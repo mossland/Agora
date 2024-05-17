@@ -13,13 +13,14 @@ const Buttons = ({
   ccdAdmins,
   isFormComplete
 }) => {
-  const appHeaders = requestHeaders();
+   const token = localStorage.getItem("accessToken");
+  const appHeaders = requestHeaders(token);
+
   const userId = localStorage.getItem("_id");
   const navigate = useNavigate();
 
   async function postNewTopic() {
     try {
-      // to-do: add validation
       const newTopic = await axios.post(
         `${import.meta.env.VITE_APP_API_BASE_URL}/forums/new`,
         {
@@ -109,11 +110,10 @@ Buttons.propTypes = {
   setInPreview: PropTypes.func,
   preview: PropTypes.bool,
   title: PropTypes.string,
-  descriptionValue: PropTypes.string,
-  startDate: PropTypes.object, //to-do: check this
-  endDate: PropTypes.object, //to-do: check this
-  tag: PropTypes.string,
+  contents: PropTypes.string,
+  category: PropTypes.string,
   ccdAdmins: PropTypes.array,
+  isFormComplete: PropTypes.string,
 };
 
 export default Buttons;

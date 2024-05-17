@@ -12,7 +12,9 @@ const Profile = () => {
   const id = localStorage.getItem("_id");
   const wallet = localStorage.getItem("walletAddress");
 
-  const appHeaders = requestHeaders();
+  const token = localStorage.getItem("accessToken");
+  const appHeaders = requestHeaders(token);
+
   const [userData, setUserData] = useState(null);
   const [userProposals, setUserProposals] = useState(null);
   const [userVotes, setUserVotes] = useState(null);
@@ -25,9 +27,7 @@ const Profile = () => {
       try {
         if (id) {
           await axios.patch(
-            `${import.meta.env.VITE_APP_API_BASE_URL}/view-profile/${
-              id
-            }`,
+            `${import.meta.env.VITE_APP_API_BASE_URL}/view-profile/${id}`,
             { headers: appHeaders }
           );
         }
@@ -43,13 +43,17 @@ const Profile = () => {
     const getMocBalance = async () => {
       try {
         if (wallet) {
-          const res = await axios.get(
-            `https://api.luniverse.io/mx/v2.0/wallets/${wallet}/balance`,
-            { headers: {
-              'Authorization': `Bearer ${import.meta.env.VITE_APP_LUNIVERSE_API_KEY}`
-            } }
+          const response = await axios.get(
+            `${import.meta.env.VITE_APP_API_BASE_URL}/moc-balance/${wallet}`,
+            { headers: appHeaders }
           );
-          console.log(res.data)
+          if (response.data.items.length === 0) {
+            setUserMocBalance(0)
+          } else {
+            const humanReadableBalance = response.data.items[0].balance / (10 ** response.data.items[0].contract.decimals)
+            setUserMocBalance(humanReadableBalance)
+          }
+          
         }
       } catch (error) {
         console.error("Failed to fetch data:", error);
@@ -59,45 +63,51 @@ const Profile = () => {
     getMocBalance();
   }, [wallet]);
 
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (userData === null || userProposals === null || userVotes === null || userTopics === null) {
-        const userProfileResponse = axios.get(
-          `${import.meta.env.VITE_APP_API_BASE_URL}/user/${id}`,
-          { headers: appHeaders }
-        );
-        const userProposalsResponse = axios.get(
-          `${import.meta.env.VITE_APP_API_BASE_URL}/proposals-by-user/${id}`,
-          { headers: appHeaders }
-        );
-        const userVotesResponse = axios.get(
-          `${import.meta.env.VITE_APP_API_BASE_URL}/votes-by-user/${id}`,
-          { headers: appHeaders }
-        );
-        const userTopicsResponse = axios.get(
-          `${import.meta.env.VITE_APP_API_BASE_URL}/forums-by-user/${id}`,
-          { headers: appHeaders }
-        );
+        if (
+          userData === null ||
+          userProposals === null ||
+          userVotes === null ||
+          userTopics === null
+        ) {
+          const userProfileResponse = axios.get(
+            // `http://localhost:3000/user/${id}`,
+            `${import.meta.env.VITE_APP_API_BASE_URL}/user/${id}`,
+            { headers: appHeaders }
+          );
+          const userProposalsResponse = axios.get(
+            `${import.meta.env.VITE_APP_API_BASE_URL}/proposals-by-user/${id}`,
+            { headers: appHeaders }
+          );
+          const userVotesResponse = axios.get(
+            `${import.meta.env.VITE_APP_API_BASE_URL}/votes-by-user/${id}`,
+            //`http://localhost:3000/votes-by-user/${id}`,
+            { headers: appHeaders }
+          );
+          const userTopicsResponse = axios.get(
+            `${import.meta.env.VITE_APP_API_BASE_URL}/forums-by-user/${id}`,
+            { headers: appHeaders }
+          );
 
-        const [
-          userDataResponse,
-          proposalsResponse,
-          votesResponse,
-          topicsResponse,
-        ] = await Promise.all([
-          userProfileResponse,
-          userProposalsResponse,
-          userVotesResponse,
-          userTopicsResponse,
-        ]);
+          const [
+            userDataResponse,
+            proposalsResponse,
+            votesResponse,
+            topicsResponse,
+          ] = await Promise.all([
+            userProfileResponse,
+            userProposalsResponse,
+            userVotesResponse,
+            userTopicsResponse,
+          ]);
 
-        setUserData(userDataResponse.data);
-        setUserProposals(proposalsResponse.data);
-        setUserVotes(votesResponse.data);
-        setUserTopics(topicsResponse.data);
-      }
+          setUserData(userDataResponse.data);
+          setUserProposals(proposalsResponse.data);
+          setUserVotes(votesResponse.data);
+          setUserTopics(topicsResponse.data);
+        }
       } catch (error) {
         console.error("Failed to fetch user data:", error);
       } finally {
@@ -123,7 +133,11 @@ const Profile = () => {
         </Box>
       ) : (
         <Box sx={{ mt: 2, display: "flex", gap: 1 }}>
-          <Information user={userData} userTokens={userMocBalance} userStats={{totalVotes: userVotes.length}} />
+          <Information
+            user={userData}
+            userTokens={userMocBalance}
+            userStats={{ totalVotes: userVotes.length }}
+          />
           <Box
             sx={{ flex: 1, display: "flex", flexDirection: "column", gap: 1 }}
           >

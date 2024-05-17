@@ -74,6 +74,7 @@ function AuthProvider({ children }) {
           };
 
           const response = await axios.get(
+            // `http://localhost:3000/user/${userId}`,
             `${import.meta.env.VITE_APP_API_BASE_URL}/user/${userId}`,
             config
           );
@@ -138,8 +139,6 @@ function AuthProvider({ children }) {
     }
     const accessToken = response.data.token;
     const user = response.data;
-
-    console.log(user)
 
     setSession(accessToken);
     localStorage.setItem("_id", user["_id"]);

@@ -8,7 +8,9 @@ import FilledHeartIcon from "../../../../components/icons/filledHeartIcon";
 
 const CommentLiking = ({ comment }) => {
   const userId = localStorage.getItem("_id");
-  const appHeaders = requestHeaders();
+   const token = localStorage.getItem("accessToken");
+  const appHeaders = requestHeaders(token);
+
 
   const [liked, setLiked] = useState(false);
   const [unliked, setUnliked] = useState(false);
@@ -47,14 +49,14 @@ const CommentLiking = ({ comment }) => {
 
   return (
     <>
-      {liked === false && (!comment.likers.includes(userId) || unliked) && (
+      {  liked === false && (!comment.likers.includes(userId) || unliked) && (
         <HeartIcon
           width="15px"
           height="15px"
           onClick={() => likeForumTopicComment(comment._id)}
         />
       )}
-      {unliked === false && (comment.likers.includes(userId) || liked) && (
+      { unliked === false && (comment.likers.includes(userId) || liked) && (
         <FilledHeartIcon
           width="15px"
           height="15px"

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import axios from "axios";
 import {
   Avatar,
   Box,
@@ -8,33 +9,38 @@ import {
   Modal,
   Typography,
 } from "@mui/material";
-
 import CloseIcon from "@mui/icons-material/Close";
-import useAuth from "../../hooks/useAuth";
 import { fetchProfilePicture } from "../../utils/fetchProfilePicture";
+import requestHeaders from "../../utils/restClient";
 
 const ChangeCharacterModal = ({
   open,
   handleClose,
-  wallet,
-  handleCloseNetworkModal,
 }) => {
-  const { register, login } = useAuth();
 
-  const [nickname, setNickname] = useState(null);
+   const token = localStorage.getItem("accessToken");
+  const appHeaders = requestHeaders(token);
+
   const [pfpSelected, setPfpSelected] = useState(null);
 
   const handleAvatarClick = (pfpId) => {
     setPfpSelected(pfpId);
   };
 
-  async function handleRegister() {
+  async function handlePFPUpdate() {
     try {
-      await register(wallet, nickname, pfpSelected);
-      await login(wallet);
-      handleCloseNetworkModal();
-      handleClose();
-    } catch (e) {}
+      const userId = localStorage.getItem("_id");
+      await axios.patch(
+        `${import.meta.env.VITE_APP_API_BASE_URL}/users/edit-pfp/${userId}`,
+        { pfp: pfpSelected },
+        appHeaders
+      );
+      handleClose()
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+      //setError(true);
+    }
   }
 
   return (
@@ -128,14 +134,10 @@ const ChangeCharacterModal = ({
               />
             ))}
           </Box>
-          {wallet && (
+          { (
             <Button
-              disabled={
-                pfpSelected === null ||
-                nickname === null ||
-                nickname.trim() === ""
-              }
-              onClick={() => handleRegister()}
+              
+              onClick={() => handlePFPUpdate()}
               variant="contained"
               sx={{
                 mb: 2,
@@ -154,7 +156,7 @@ const ChangeCharacterModal = ({
                 },
               }}
             >
-              Next
+              Save
             </Button>
           )}
         </Box>

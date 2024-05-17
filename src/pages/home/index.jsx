@@ -9,7 +9,9 @@ import requestHeaders from "../../utils/restClient";
 import axios from "axios";
 
 const Home = () => {
-  const appHeaders = requestHeaders();
+   const token = localStorage.getItem("accessToken");
+  const appHeaders = requestHeaders(token);
+
   const [ongoingProposals, setOngoingProposals] = useState(null);
   const [proposalStats, setProposalStats] = useState(null);
   const [recentActivity, setRecentActivity] = useState(null);

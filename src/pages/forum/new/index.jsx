@@ -1,22 +1,24 @@
-import { Box } from "@mui/material";
-import requestHeaders from "../../../utils/restClient";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import requestHeaders from "../../../utils/restClient";
+import { Box } from "@mui/material";
+
 import NewTopic from "./components/newTopic";
 import Buttons from "./components/buttons";
-import { useEffect, useState } from "react";
-
 import Information from "./components/information";
 import Description from "./components/description";
 
 const NewForum = () => {
-  const appHeaders = requestHeaders();
+   const token = localStorage.getItem("accessToken");
+  const appHeaders = requestHeaders(token);
+
   const [admins, setAdmins] = useState(null);
   const [inPreview, setInPreview] = useState(false);
 
-  const [title, setTitle] = useState(null);
+  const [title, setTitle] = useState("");
   const [forumTags, setForumTags] = useState(null);
   const [selectedForumTag, setSelectedForumTag] = useState(null);
-  const [descriptionValue, setDescriptionValue] = useState(null);
+  const [descriptionValue, setDescriptionValue] = useState("");
 
   // GET admins
   useEffect(() => {
@@ -38,7 +40,7 @@ const NewForum = () => {
     };
 
     fetchData();
-  }, [appHeaders]);
+  }, [appHeaders, admins]);
 
   // GET tags
   useEffect(() => {
@@ -60,7 +62,7 @@ const NewForum = () => {
     };
 
     fetchData();
-  }, [appHeaders]);
+  }, [appHeaders, forumTags]);
 
   const isFormComplete = title && descriptionValue && forumTags;
 

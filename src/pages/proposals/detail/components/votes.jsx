@@ -4,7 +4,6 @@ import { Avatar, Box, List, ListItem, Paper, Typography } from "@mui/material";
 import { fetchProfilePicture } from "../../../../utils/fetchProfilePicture";
 
 const Votes = ({ proposal, votes }) => {
-  console.log(votes)
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
       {proposal && (
@@ -91,7 +90,7 @@ const Votes = ({ proposal, votes }) => {
                     <Typography
                       sx={{ fontSize: "14px", fontWeight: "bold" }}
                     >
-                      x MOC
+                      {vote.initialMocBalance} MOC
                     </Typography>
                   </ListItem>
                 ))}

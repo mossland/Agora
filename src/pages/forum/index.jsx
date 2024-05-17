@@ -7,7 +7,9 @@ import requestHeaders from "../../utils/restClient";
 import axios from "axios";
 
 const Forum = () => {
-  const appHeaders = requestHeaders();
+   const token = localStorage.getItem("accessToken");
+  const appHeaders = requestHeaders(token);
+
   const [forumCategories, setForumCategories] = useState(null);
   const [forums, setForums] = useState(null);
   const [filteredForums, setFilteredForums] = useState(null);
@@ -31,7 +33,7 @@ const Forum = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (forums === null || forumCategories == null) {
+        if (!forums || !forumCategories) {
           const [forumsResponse, categoriesResponse] = await Promise.all([
             axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/agora-forums`, { headers: appHeaders }),
             axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/forums/categories`, { headers: appHeaders })
@@ -48,7 +50,7 @@ const Forum = () => {
     };
 
     fetchData();
-  }, [appHeaders]); 
+  }, [appHeaders, forums, forumCategories]); 
 
   return (
     <>

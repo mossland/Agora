@@ -63,7 +63,7 @@ const Information = () => {
               <Typography
                 sx={{ color: "#808080", fontSize: "14px", fontWeight: "bold" }}
               >
-                REPLIES
+                COMMENTS
               </Typography>
               <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
                 -

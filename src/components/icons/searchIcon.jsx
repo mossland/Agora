@@ -1,4 +1,5 @@
 import { Box } from "@mui/material";
+import PropTypes from "prop-types";
 
 import searchIcon from "../assets/icons/search.png";
 
@@ -18,3 +19,8 @@ const SearchIcon = (props) => {
 };
 
 export default SearchIcon;
+
+SearchIcon.propTypes = {
+  size: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  sx: PropTypes.object,
+};

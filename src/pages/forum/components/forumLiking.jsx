@@ -8,7 +8,9 @@ import FilledHeartIcon from "../../../components/icons/filledHeartIcon";
 
 const ForumLiking = ({ forum }) => {
   const userId = localStorage.getItem("_id");
-  const appHeaders = requestHeaders();
+   const token = localStorage.getItem("accessToken");
+  const appHeaders = requestHeaders(token);
+
 
   const [liked, setLiked] = useState(false);
   const [unliked, setUnliked] = useState(false);

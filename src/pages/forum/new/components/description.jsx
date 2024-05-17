@@ -1,19 +1,17 @@
 import PropTypes from "prop-types";
-import { Avatar, Box, Button, Chip, Paper, Typography } from "@mui/material";
+import { Avatar, Box, Chip, Paper, Typography } from "@mui/material";
 
-import MIcon from "../../../../components/icons/mCircleIcon";
 import Markdown from "../../../../components/markdown/Markdown";
 
 import { fetchProfilePicture } from "../../../../utils/fetchProfilePicture";
 import { formatDate } from "../../../../utils/formatDate";
-import { getStatusStyle } from "../../../../utils/getStatusStyle";
+// import { getStatusStyle } from "../../../../utils/getStatusStyle";
 import { getTagStyle } from "../../../../utils/getTagStyle";
 
 const Description = ({ title, forumTags, descriptionValue }) => {
-  
   const pfp = localStorage.getItem("profilePicture");
   const nickname = localStorage.getItem("nickname");
-  const now = new Date()
+  const now = new Date();
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
       <Paper
@@ -129,3 +127,9 @@ const Description = ({ title, forumTags, descriptionValue }) => {
 };
 
 export default Description;
+
+Description.propTypes = {
+  title: PropTypes.string,
+  forumTags: PropTypes.string,
+  descriptionValue: PropTypes.string,
+};

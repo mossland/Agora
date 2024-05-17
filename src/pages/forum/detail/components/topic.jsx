@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import requestHeaders from "../../../../utils/restClient";
 import PropTypes from "prop-types";
@@ -30,8 +29,14 @@ import FilledHeartIcon from "../../../../components/icons/filledHeartIcon";
 import ReportTopicModal from "../../../../components/modals/reportTopicModal";
 import ReportCommentModal from "../../../../components/modals/reportCommentModal";
 import CommentLiking from "./commentLiking";
+import FilledFlagIcon from "../../../../components/icons/filledFlagIcon";
+import useAuth from "../../../../hooks/useAuth";
 
 const Topic = ({ topic, topicComments }) => {
+  const { isAuthenticated } = useAuth();
+  const token = localStorage.getItem("accessToken");
+  const appHeaders = requestHeaders(token);
+
   useEffect(() => {
     const viewTopic = async () => {
       try {
@@ -47,16 +52,11 @@ const Topic = ({ topic, topicComments }) => {
     };
 
     viewTopic();
-  }, [topic._id]);
+  }, [appHeaders, topic._id]);
 
   const pfp = localStorage.getItem("profilePicture");
-
   const userId = localStorage.getItem("_id");
-
-  const [commentText, setCommentText] = useState(null);
-
-  const appHeaders = requestHeaders();
-  const navigate = useNavigate();
+  const [commentText, setCommentText] = useState("");
 
   async function postNewTopicComment() {
     try {
@@ -112,9 +112,7 @@ const Topic = ({ topic, topicComments }) => {
   const [generalAnchorEl, setGeneralAnchorEl] = useState(null);
   const generalOpen = Boolean(generalAnchorEl);
 
-  const [reportAnchorEl, setReportAnchorEl] = useState(null);
   const [reportCommentAnchorEl, setReportCommentAnchorEl] = useState(null);
-  const reportCommentOpen = Boolean(reportCommentAnchorEl);
 
   const handleGeneralMenuClick = (event) => {
     setGeneralAnchorEl(event.currentTarget);
@@ -213,17 +211,18 @@ const Topic = ({ topic, topicComments }) => {
               {topic.title}
             </Typography>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              {liked === false &&
+            {topic.pinned && <FilledFlagIcon />}
+              {isAuthenticated && liked === false &&
                 (!topic.likers.includes(userId) || unliked) && (
                   <HeartIcon onClick={() => likeForumTopic(topic._id)} />
                 )}
-              {unliked === false &&
+              { unliked === false &&
                 (topic.likers.includes(userId) || liked) && (
                   <FilledHeartIcon
                     onClick={() => unlikeForumTopic(topic._id)}
                   />
                 )}
-              <DotIcon onClick={handleGeneralMenuClick} />
+              {isAuthenticated &&<DotIcon onClick={handleGeneralMenuClick} />}
               <ReportKebabMenu
                 anchorEl={generalAnchorEl}
                 open={generalOpen}
@@ -320,7 +319,7 @@ const Topic = ({ topic, topicComments }) => {
           <Button
             onClick={() => postNewTopicComment()}
             variant="contained"
-            disabled={commentText === null || commentText.trim() === ""}
+            disabled={commentText.trim() === "" || !isAuthenticated}
             sx={{
               px: 4,
               py: 1,
@@ -412,13 +411,13 @@ const Topic = ({ topic, topicComments }) => {
                         {comment.likers && comment.likers.length}
                       </Typography>
                       <CommentLiking comment={comment} />
-                      <DotIcon
+                      {isAuthenticated &&<DotIcon
                         width="15px"
                         height="15px"
                         onClick={(e) =>
                           handleReportCommentMenuClick(e, comment)
                         }
-                      />
+                      />}
                       <ReportKebabMenuComment
                         anchorEl={reportCommentAnchorEl}
                         open={Boolean(reportCommentAnchorEl)}
@@ -452,6 +451,6 @@ const Topic = ({ topic, topicComments }) => {
 export default Topic;
 
 Topic.propTypes = {
-  topic: PropTypes.object,
+  topic: PropTypes.object.isRequired,
   topicComments: PropTypes.array,
 };

@@ -1,18 +1,37 @@
-import {
-  Avatar,
-  Box,
-  Chip,
-  Paper,
-  Typography,
-} from "@mui/material";
-
+import PropTypes from "prop-types";
+import { Avatar, Box, Chip, Paper, Typography } from "@mui/material";
 import Markdown from "../../../../components/markdown/Markdown";
 
 import { fetchProfilePicture } from "../../../../utils/fetchProfilePicture";
 import { formatDate } from "../../../../utils/formatDate";
 import { getTagStyle } from "../../../../utils/getTagStyle";
 
-const Description = ({ title, selectedProposalTag, descriptionValue, endDate }) => {
+const Description = ({
+  title,
+  selectedProposalTag,
+  descriptionValue,
+  startDate,
+  endDate,
+}) => {
+  function computeApprovedStatus(startDate, endDate) {
+    var now = new Date(); // Current timestamp
+    startDate = new Date(startDate); // Convert start date to Date object
+    endDate = new Date(endDate); // Convert end date to Date object
+
+    if (now < startDate) {
+      return "Upcoming";
+    }
+
+    if (now >= startDate && now <= endDate) {
+      return "Ongoing";
+    }
+
+    if (now > endDate) {
+      // to-do: handle extended
+      return "Ended";
+    }
+  }
+
   function getTimeDifference(timestamp) {
     // Get the current time in milliseconds
     const currentTime = new Date().getTime();
@@ -118,7 +137,7 @@ const Description = ({ title, selectedProposalTag, descriptionValue, endDate }) 
             </Typography>
             <Box sx={{ display: "flex", gap: 1 }}>
               <Chip
-                label="Upcoming"
+                label={computeApprovedStatus(startDate, endDate)}
                 sx={{
                   px: 1,
                   height: "30px",
@@ -129,7 +148,7 @@ const Description = ({ title, selectedProposalTag, descriptionValue, endDate }) 
                   "& .MuiChip-label": {
                     px: "5px",
                   },
-                  ...getTagStyle(selectedProposalTag),
+                  ...getTagStyle(computeApprovedStatus(startDate, endDate)),
                 }}
               />
               <Chip
@@ -181,3 +200,11 @@ const Description = ({ title, selectedProposalTag, descriptionValue, endDate }) 
 };
 
 export default Description;
+
+Description.propTypes = {
+  title: PropTypes.string,
+  selectedProposalTag: PropTypes.string,
+  descriptionValue: PropTypes.string,
+  startDate: PropTypes.object,
+  endDate: PropTypes.object,
+};

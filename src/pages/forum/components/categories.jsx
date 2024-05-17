@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 
 const Categories = ({ categories, selectedValue, handleChange }) => {
-
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
       <Paper
@@ -65,30 +64,41 @@ const Categories = ({ categories, selectedValue, handleChange }) => {
             <FormControlLabel
               key={"general"}
               value={"General"}
-              control={<Radio />}
+              control={
+                <Radio
+                  sx={{
+                    "&.Mui-checked": { color: "#000000" },
+                  }}
+                />
+              }
               label={"General"}
               componentsProps={{
                 typography: { fontWeight: "bold" },
               }}
             />
             {categories.map((cat) => (
-                <FormControlLabel
-                  key={cat._id}
-                  value={cat._id}
-                  control={<Radio />}
-                  label={cat._id}
-                  componentsProps={{
-                    typography: { fontWeight: "bold" },
-                  }}
-                />
-              ))}
+              <FormControlLabel
+                key={cat._id}
+                value={cat._id}
+                control={
+                  <Radio
+                    sx={{
+                      "&.Mui-checked": { color: "#000000" },
+                    }}
+                  />
+                }
+                label={cat._id}
+                componentsProps={{
+                  typography: { fontWeight: "bold" },
+                }}
+              />
+            ))}
           </RadioGroup>
-    
         </FormControl>
       </Paper>
       <Button
         variant="contained"
-        href="https://google.com" //to-do: update link
+        href="https://www.moss.land/"
         sx={{
           px: 4,
           py: 1,
@@ -117,5 +127,7 @@ const Categories = ({ categories, selectedValue, handleChange }) => {
 export default Categories;
 
 Categories.propTypes = {
-  categories: PropTypes.array,
+  categories: PropTypes.array.isRequired,
+  selectedValue: PropTypes.string.isRequired,
+  handleChange: PropTypes.func.isRequired,
 };

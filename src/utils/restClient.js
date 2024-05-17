@@ -3,7 +3,8 @@ const requestHeaders = (auth) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      // Authorization: auth,
+      Authorization: auth
+      
     },
   };
 };

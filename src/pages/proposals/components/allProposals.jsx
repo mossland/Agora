@@ -42,9 +42,6 @@ const AllProposals = ({ proposals, stats }) => {
   const handleSearchChange = (event) => {
     setSearchInput(event.target.value.toLowerCase());
   };
-  const filteredProposals = proposals.filter((proposal) =>
-    proposal._doc.title.toLowerCase().includes(searchInput)
-  );
 
   const sortedProposals = useMemo(() => {
     const filtered = proposals.filter((proposal) =>
@@ -61,7 +58,7 @@ const AllProposals = ({ proposals, stats }) => {
           .filter((a) => new Date(a._doc.endDate) > new Date())
           .sort((a, b) => new Date(a._doc.endDate) - new Date(b._doc.endDate));
       case "hyped":
-        return filtered.sort((a, b) => b.views - ( a.views));
+        return filtered.sort((a, b) => b.views - a.views);
       default:
         return filtered;
     }
@@ -218,8 +215,9 @@ const AllProposals = ({ proposals, stats }) => {
           </Typography>
           {stats && (
             <Typography sx={{ fontSize: "20px", fontWeight: "bold" }}>
+              {stats.passed}
               {"/"}
-              {stats.approved} ({"50%"})
+              {stats.approved} ({(stats.passed/stats.approved).toFixed(2)}%)
             </Typography>
           )}
         </Box>
@@ -298,7 +296,7 @@ const AllProposals = ({ proposals, stats }) => {
                 PaperProps: {
                   sx: {
                     "& .MuiMenuItem-root.Mui-selected": {
-                      backgroundColor: "#E1E1E1",
+                      backgroundColor: "#E1E1E1 !important",
                       "&:hover": {
                         backgroundColor: "#E1E1E1",
                       },
@@ -376,9 +374,11 @@ const AllProposals = ({ proposals, stats }) => {
         <Table aria-label="proposals-table">
           <TableHead>
             {sortedProposals.length <= 0 ? (
-              <Box sx={{ my: 2 }}>
-                <Typography>No proposals.</Typography>
-              </Box>
+              <TableRow sx={{ my: 2 }}>
+                <TableCell>
+                  <Typography sx={{ textAlign: "center" }}>No proposals.</Typography>
+                </TableCell>
+              </TableRow>
             ) : (
               <TableRow>
                 <TableCell

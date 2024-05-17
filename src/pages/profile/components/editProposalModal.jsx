@@ -10,7 +10,7 @@ import {
   Paper,
   TextField,
   Typography,
-  Stack
+  Stack,
 } from "@mui/material";
 import axios from "axios";
 import requestHeaders from "../../../utils/restClient";
@@ -22,44 +22,45 @@ import "react-quill/dist/quill.snow.css";
 import { fetchProfilePicture } from "../../../utils/fetchProfilePicture";
 import dayjs from "dayjs";
 
-const EditProposalModal = ({ proposal, open, handleClose, proposalTags, admins }) => {
-  const appHeaders = requestHeaders();
+const EditProposalModal = ({
+  proposal,
+  open,
+  handleClose,
+  proposalTags,
+  admins,
+}) => {
+   const token = localStorage.getItem("accessToken");
+  const appHeaders = requestHeaders(token);
+
 
   const [inPreview, setInPreview] = useState(false);
 
   const [ccdAdmins, setCCdAdmins] = useState(null);
 
-  async function filterAdmins() {
-    console.log("here")
-    let filteredAdmins = []
-    console.log(proposal.ccdAdmins)
-    for await (const admin of proposal.ccdAdmins) {
-      const foundAdmin = admins.filter(i => i._id === admin)
-      filteredAdmins.push(foundAdmin)
-    }
-    return filterAdmins
-  }
-
   useEffect(() => {
-    console.log("in effect")
     const fetchData = async () => {
       try {
-        console.log(ccdAdmins)
         if (ccdAdmins === null && proposal && admins) {
-          console.log("in call")
-          const filtered = await filterAdmins()
+          //const filtered = await filterAdmins()
+          let filtered = [];
+          for await (const admin of proposal.ccdAdmins) {
+            const foundAdmin = admins.filter((i) => i._id === admin);
+            if (foundAdmin.length > 0) {
+              filtered.push(foundAdmin[0]);
+            }
+           
+          }
+
           setCCdAdmins(filtered);
         }
       } catch (error) {
         console.log(error);
         // Handle the error state appropriately here
-      } 
+      }
     };
 
     fetchData();
   }, [ccdAdmins, proposal, admins]);
-
-  
 
   const [descriptionValue, setDescriptionValue] = useState(
     proposal.description
@@ -67,8 +68,10 @@ const EditProposalModal = ({ proposal, open, handleClose, proposalTags, admins }
   const [title, setTitle] = useState(proposal.title);
   const [startDate, setStartDate] = useState(proposal.startDate);
   const [endDate, setEndDate] = useState(proposal.endDate);
-  
+
   const [selectedProposalTag, setSelectedProposalTag] = useState(proposal.tag);
+
+  const isFormComplete = title && descriptionValue && selectedProposalTag && startDate && endDate;
 
   const handleChangeTitle = (event) => {
     setTitle(event.target.value);
@@ -80,11 +83,7 @@ const EditProposalModal = ({ proposal, open, handleClose, proposalTags, admins }
 
   async function editProposal() {
     try {
-      // to-do: add validation on the form
-      console.log(ccdAdmins)
-
-      const adminIds = ccdAdmins.map(i => i._id);
-      console.log(adminIds)
+      const adminIds = ccdAdmins.map((i) => i._id);
       await axios.patch(
         `${import.meta.env.VITE_APP_API_BASE_URL}/proposals/edit/${
           proposal._id
@@ -99,7 +98,7 @@ const EditProposalModal = ({ proposal, open, handleClose, proposalTags, admins }
         },
         appHeaders
       );
-      handleClose()
+      handleClose();
     } catch (error) {
       console.log(error);
       //setError(true);
@@ -212,53 +211,57 @@ const EditProposalModal = ({ proposal, open, handleClose, proposalTags, admins }
           >
             CC.
           </Typography>
-          {admins && <Autocomplete
-          multiple  
-          disablePortal
-          id="combo-box-demo"
-          options={admins}
-          onChange={handleChangeAdmins}
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              background: "white",
-              "& fieldset": {
-                borderWidth: "1.5px",
-                borderColor: "#000000",
-              },
-              "&:hover fieldset": {
-                borderColor: "#000000",
-              },
-              "&.Mui-focused fieldset": {
-                borderColor: "#000000",
-              },
-            },
-          }}
-          getOptionLabel={(option) => option.nickname} // This tells Autocomplete how to get the option label from each option object
-          renderOption={(props, option) => (
-            <Box
-              component="li"
-              {...props}
-              sx={{ display: "flex", alignItems: "center" }}
-            >
-              <Avatar
-                src={fetchProfilePicture(option.profilePicture)}
-                sx={{
-                  width: "24px",
-                  height: "24px",
-                  mr: 1,
-                  border: 1,
-                  borderColor: "#000000",
-                  borderRadius: 1,
-                }}
-                variant="square"
-              />
-              <Typography>{option.nickname}</Typography>
-            </Box>
+          {admins && ccdAdmins && (
+            <Autocomplete
+              multiple
+              disablePortal
+              defaultValue={ccdAdmins}
+              id="combo-box-demo"
+              options={admins}
+              isOptionEqualToValue={(option, value) => option._id === value._id}
+              onChange={handleChangeAdmins}
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  background: "white",
+                  "& fieldset": {
+                    borderWidth: "1.5px",
+                    borderColor: "#000000",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "#000000",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#000000",
+                  },
+                },
+              }}
+              getOptionLabel={(option) => option.nickname} // This tells Autocomplete how to get the option label from each option object
+              renderOption={(props, option) => (
+                <Box
+                  component="li"
+                  {...props}
+                  sx={{ display: "flex", alignItems: "center" }}
+                >
+                  <Avatar
+                    src={fetchProfilePicture(option.profilePicture)}
+                    sx={{
+                      width: "24px",
+                      height: "24px",
+                      mr: 1,
+                      border: 1,
+                      borderColor: "#000000",
+                      borderRadius: 1,
+                    }}
+                    variant="square"
+                  />
+                  <Typography>{option.nickname}</Typography>
+                </Box>
+              )}
+              renderInput={(params) => (
+                <TextField {...params} placeholder="@mosserve_DAO_ADMIN" />
+              )}
+            />
           )}
-          renderInput={(params) => (
-            <TextField {...params} placeholder="@mosserve_DAO_ADMIN" />
-          )}
-        />}
           <Typography
             sx={{
               mt: 2,
@@ -271,56 +274,60 @@ const EditProposalModal = ({ proposal, open, handleClose, proposalTags, admins }
             TAG
           </Typography>
           <Box sx={{ display: "flex", gap: 1 }}>
-          {proposalTags &&
-            proposalTags.map((tag) => (
-              <Chip
-                variant="outlined"
-                onClick={() => setSelectedProposalTag(tag._id)}
-                key={tag._id}
-                label={tag._id}
-                clickable
-                sx={{
-                  height: "22px",
-                  fontSize: "14px",
-                  fontWeight:  selectedProposalTag === tag._id ? "bold" : "normal",
-                  bgcolor: "white",
-                  color: "black",
-                  border: selectedProposalTag === tag._id ? 1 : 0,
-                  borderColor: "black",
-                  borderRadius: 1,
-                }}
-              />
-            ))}
-        </Box>
-          {proposal.reviewReason && <Typography
-            sx={{
-              mt: 2,
-              mb: 1,
-              color: "#FF0000",
-              fontSize: "14px",
-              fontWeight: "bold",
-            }}
-          >
-            REQUEST REVIEW
-          </Typography>}
-          {proposal.reviewReason && <TextField
-            disabled
-            value={proposal.reviewReason}
-            variant="outlined"
-            placeholder=""
-            sx={{
-              backgroundColor: "white",
-              borderColor: "#000000",
-              borderRadius: 1,
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": {
-                  borderWidth: "1.5px",
-                  borderColor: "#000000",
+            {proposalTags &&
+              proposalTags.map((tag) => (
+                <Chip
+                  variant="outlined"
+                  onClick={() => setSelectedProposalTag(tag._id)}
+                  key={tag._id}
+                  label={tag._id}
+                  clickable
+                  sx={{
+                    height: "22px",
+                    fontSize: "14px",
+                    fontWeight:
+                      selectedProposalTag === tag._id ? "bold" : "normal",
+                    bgcolor: "white",
+                    color: "black",
+                    border: selectedProposalTag === tag._id ? 1 : 0,
+                    borderColor: "black",
+                    borderRadius: 1,
+                  }}
+                />
+              ))}
+          </Box>
+          {proposal.reviewReason && (
+            <Typography
+              sx={{
+                mt: 2,
+                mb: 1,
+                color: "#FF0000",
+                fontSize: "14px",
+                fontWeight: "bold",
+              }}
+            >
+              REQUEST REVIEW
+            </Typography>
+          )}
+          {proposal.reviewReason && (
+            <TextField
+              disabled
+              value={proposal.reviewReason}
+              variant="outlined"
+              placeholder=""
+              sx={{
+                backgroundColor: "white",
+                borderColor: "#000000",
+                borderRadius: 1,
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderWidth: "1.5px",
+                    borderColor: "#000000",
+                  },
                 },
-               
-              },
-            }}
-          />}
+              }}
+            />
+          )}
           <Typography
             sx={{
               mt: 2,
@@ -333,17 +340,17 @@ const EditProposalModal = ({ proposal, open, handleClose, proposalTags, admins }
             DESCRIPTION
           </Typography>
           <Box>
-          <ReactQuill
-            theme="snow"
-            value={descriptionValue}
-            onChange={setDescriptionValue}
-            style={{
-              backgroundColor: "white",
-              border: "none",
-              borderRadius: "5px",
-            }}
-          />
-        </Box>
+            <ReactQuill
+              theme="snow"
+              value={descriptionValue}
+              onChange={setDescriptionValue}
+              style={{
+                backgroundColor: "white",
+                border: "none",
+                borderRadius: "5px",
+              }}
+            />
+          </Box>
           <Typography
             sx={{
               mt: 2,
@@ -356,70 +363,70 @@ const EditProposalModal = ({ proposal, open, handleClose, proposalTags, admins }
             SCHEDULE
           </Typography>
           <Stack direction="row">
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateTimePicker
-              disablePast
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DateTimePicker
+                disablePast
+                sx={{
+                  backgroundColor: "white",
+                  borderColor: "#000000",
+                  borderRadius: 1,
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderWidth: "1.5px",
+                      borderColor: "#000000",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "#000000",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#000000",
+                    },
+                  },
+                }}
+                label="Start date"
+                value={dayjs(startDate)}
+                onChange={(newValue) => setStartDate(newValue)}
+              />
+            </LocalizationProvider>
+            <Typography
               sx={{
-                backgroundColor: "white",
-                borderColor: "#000000",
-                borderRadius: 1,
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderWidth: "1.5px",
-                    borderColor: "#000000",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#000000",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#000000",
-                  },
-                },
+                ml: 2,
+                mr: 2,
+                mt: 2,
+                mb: 1,
+                color: "#626262",
+                fontSize: "14px",
+                fontWeight: "bold",
               }}
-              label="Start date"
-              value={dayjs(startDate)}
-              onChange={(newValue) => setStartDate(newValue)}
-            />
-          </LocalizationProvider>
-          <Typography
-            sx={{
-              ml: 2,
-              mr: 2,
-              mt: 2,
-              mb: 1,
-              color: "#626262",
-              fontSize: "14px",
-              fontWeight: "bold",
-            }}
-          >
-            to
-          </Typography>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateTimePicker
-              disablePast
-              sx={{
-                backgroundColor: "white",
-                borderColor: "#000000",
-                borderRadius: 1,
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderWidth: "1.5px",
-                    borderColor: "#000000",
+            >
+              to
+            </Typography>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DateTimePicker
+                disablePast
+                sx={{
+                  backgroundColor: "white",
+                  borderColor: "#000000",
+                  borderRadius: 1,
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderWidth: "1.5px",
+                      borderColor: "#000000",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "#000000",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#000000",
+                    },
                   },
-                  "&:hover fieldset": {
-                    borderColor: "#000000",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#000000",
-                  },
-                },
-              }}
-              label="End date"
-              value={dayjs(endDate)}
-              onChange={(newValue) => setEndDate(newValue)}
-            />
-          </LocalizationProvider>
-        </Stack>
+                }}
+                label="End date"
+                value={dayjs(endDate)}
+                onChange={(newValue) => setEndDate(newValue)}
+              />
+            </LocalizationProvider>
+          </Stack>
           {/* <Typography
             sx={{
               mt: 2,
@@ -453,7 +460,8 @@ const EditProposalModal = ({ proposal, open, handleClose, proposalTags, admins }
             Preview
           </Button> */}
           <Button
-            onClick={()=>editProposal()}
+            disabled={!isFormComplete}
+            onClick={() => editProposal()}
             variant="contained"
             sx={{
               color: "#FFFFFF",

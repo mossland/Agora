@@ -25,7 +25,7 @@ const DisconnectKebabMenu = ({ anchorEl, open, handleClose }) => {
   return (
     <Menu
       elevation={2}
-      id="disconnect menu"
+      id="disconnect-menu"
       anchorEl={anchorEl}
       open={open}
       onClose={handleClose}
@@ -37,8 +37,8 @@ const DisconnectKebabMenu = ({ anchorEl, open, handleClose }) => {
         horizontal: "left",
       }}
       transformOrigin={{
-        // vertical: "top",
-        // horizontal: "right",
+        vertical: "top",
+        horizontal: "left",
       }}
       sx={{
         "& .MuiPaper-root": {
@@ -65,5 +65,4 @@ DisconnectKebabMenu.propTypes = {
   anchorEl: PropTypes.any,
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  logout: PropTypes.func.isRequired,
 };

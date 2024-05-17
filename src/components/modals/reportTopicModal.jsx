@@ -13,9 +13,12 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 
 const ReportTopicModal = ({ open, handleCloseModal, topic }) => {
-  const [reason, setReason] = useState(null);
+  const [reason, setReason] = useState("");
 
-  const appHeaders = requestHeaders();
+   const token = localStorage.getItem("accessToken");
+   const userId = localStorage.getItem("_id");
+  const appHeaders = requestHeaders(token);
+
 
   const reportTopic = async (fid) => {
     try {
@@ -23,6 +26,7 @@ const ReportTopicModal = ({ open, handleCloseModal, topic }) => {
         `${import.meta.env.VITE_APP_API_BASE_URL}/forums/report/${fid}`,
         {
           reportReason: reason,
+          reporter: userId
         },
         appHeaders
       );
@@ -160,6 +164,6 @@ export default ReportTopicModal;
 
 ReportTopicModal.propTypes = {
   open: PropTypes.bool.isRequired,
-  handleClose: PropTypes.func.isRequired,
+  handleCloseModal: PropTypes.func.isRequired,
   topic: PropTypes.object,
 };

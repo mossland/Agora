@@ -11,15 +11,15 @@ import {
   Typography,
 } from "@mui/material";
 
-import FlagIcon from "../../../components/icons/flagIcon";
-import axios from "axios";
-import requestHeaders from "../../../utils/restClient";
+import FilledFlagIcon from "../../../components/icons/filledFlagIcon";
 
 import { fetchProfilePicture } from "../../../utils/fetchProfilePicture";
 import ForumLiking from "../../forum/components/forumLiking";
 import ForumComments from "../../forum/components/forumComments";
+import useAuth from "../../../hooks/useAuth";
 
 const PostedTopics = ({ topics }) => {
+  const { isAuthenticated } = useAuth();
   function getTimeDifference(timestamp) {
     // Get the current time in milliseconds
     const currentTime = new Date().getTime();
@@ -48,36 +48,6 @@ const PostedTopics = ({ topics }) => {
     }
   }
 
-  const userId = localStorage.getItem("_id");
-  const appHeaders = requestHeaders();
-
-  async function likeForumTopic(id) {
-    try {
-      await axios.patch(
-        `${import.meta.env.VITE_APP_API_BASE_URL}/like-forum/${id}/${userId}`,
-        {},
-        appHeaders
-      );
-      // setLiked(true)
-      // setUnliked(false)
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async function unlikeForumTopic(id) {
-    try {
-      await axios.patch(
-        `${import.meta.env.VITE_APP_API_BASE_URL}/unlike-forum/${id}/${userId}`,
-        {},
-        appHeaders
-      );
-      // setUnliked(true)
-      // setLiked(false)
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   const [visibleCount, setVisibleCount] = useState(3); 
   const showMoreTopics = () => {
@@ -172,8 +142,8 @@ const PostedTopics = ({ topics }) => {
                         </Box>
                       </Box>
                       <Box sx={{ display: "flex", gap: 1.5 }}>
-                        {topic.pinned && <FlagIcon />}
-                        <ForumLiking forum={topic} />
+                        {topic.pinned && <FilledFlagIcon />}
+                        {isAuthenticated && <ForumLiking forum={topic} />}
                       </Box>
                     </Box>
                     <Box

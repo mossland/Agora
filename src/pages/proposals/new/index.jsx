@@ -1,25 +1,27 @@
-import { Box } from "@mui/material";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import requestHeaders from "../../../utils/restClient";
+import { Box } from "@mui/material";
 
 import NewProposal from "./components/newProposal";
 import Buttons from "./components/buttons";
 import Description from "./components/description";
 import Information from "./components/information";
-import axios from "axios";
-import { useEffect, useState } from "react";
 
 const NewProposalPage = () => {
-  const appHeaders = requestHeaders();
+   const token = localStorage.getItem("accessToken");
+  const appHeaders = requestHeaders(token);
+
   const [inPreview, setInPreview] = useState(false);
   const [admins, setAdmins] = useState(null);
   const [ccdAdmins, setCCdAdmins] = useState([]);
   
   const [title, setTitle] = useState(null);
-  const [descriptionValue, setDescriptionValue] = useState(null);
   const [proposalTags, setProposalTags] = useState(null);
+  const [selectedProposalTag, setSelectedProposalTag] = useState(null);
+  const [descriptionValue, setDescriptionValue] = useState(null);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [selectedProposalTag, setSelectedProposalTag] = useState(null);
 
   const handleChangeAdmins = (event, value) => {
     setCCdAdmins(value);
@@ -45,7 +47,7 @@ const NewProposalPage = () => {
     };
 
     fetchData();
-  }, [appHeaders]);
+  }, [appHeaders, admins]);
 
   // GET tags
   useEffect(() => {
@@ -67,7 +69,7 @@ const NewProposalPage = () => {
     };
 
     fetchData();
-  }, [appHeaders]);
+  }, [appHeaders, proposalTags]);
 
   const isFormComplete = title && descriptionValue && proposalTags && startDate && endDate;
 
@@ -75,7 +77,7 @@ const NewProposalPage = () => {
     <Box sx={{ mt: 2, display: "flex", gap: 1 }}>
       <Box sx={{ flex: 1 }}>
         {inPreview ? (
-          <Description title={title} admins={admins} selectedProposalTag={selectedProposalTag} endDate={endDate} descriptionValue={descriptionValue} />
+          <Description title={title} admins={admins} selectedProposalTag={selectedProposalTag} startDate={startDate} endDate={endDate} descriptionValue={descriptionValue} />
         ) : (
           <NewProposal
             handleChangeAdmins={handleChangeAdmins}

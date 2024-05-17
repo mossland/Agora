@@ -5,7 +5,9 @@ import requestHeaders from "../../../utils/restClient";
 import { Typography } from "@mui/material";
 
 const ForumComments = ({ forum }) => {
-  const appHeaders = requestHeaders();
+   const token = localStorage.getItem("accessToken");
+  const appHeaders = requestHeaders(token);
+
 
   const [topicComments, setTopicComments] = useState(null);
 
@@ -30,10 +32,10 @@ const ForumComments = ({ forum }) => {
       }
     };
 
-    if (forum) {
+    if (forum && !topicComments) { // not sure
       fetchData();
     }
-  }, [forum, appHeaders]);
+  }, [forum, appHeaders, topicComments]);
 
   return (
     <>

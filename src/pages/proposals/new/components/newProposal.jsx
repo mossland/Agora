@@ -105,7 +105,7 @@ const NewProposal = ({
           TITLE
         </Typography>
         <TextField
-          value={title}
+          value={title || ""}
           onChange={handleChangeTitle}
           variant="outlined"
           placeholder="Proposal Title"
@@ -294,7 +294,7 @@ const NewProposal = ({
                 },
               }}
               label="Start date"
-              value={startDate}
+              value={startDate || null}
               onChange={(newValue) => setStartDate(newValue)}
             />
           </LocalizationProvider>
@@ -332,7 +332,7 @@ const NewProposal = ({
                 },
               }}
               label="End date"
-              value={endDate}
+              value={endDate || null}
               onChange={(newValue) => setEndDate(newValue)}
             />
           </LocalizationProvider>
@@ -354,16 +354,19 @@ const NewProposal = ({
 };
 
 NewProposal.propTypes = {
-  admins: PropTypes.array,
-  tags: PropTypes.array,
   title: PropTypes.string,
   setTitle: PropTypes.func,
+  admins: PropTypes.array,
+  tags: PropTypes.array,
+  selectedProposalTag: PropTypes.string,
+  setSelectedProposalTag: PropTypes.func,
   descriptionValue: PropTypes.string,
   setDescriptionValue: PropTypes.func,
   startDate: PropTypes.object, //to-do: check this
   setStartDate: PropTypes.func,
   endDate: PropTypes.object, //to-do: check this
   setEndDate: PropTypes.func,
+  handleChangeAdmins: PropTypes.func,
 };
 
 export default NewProposal;

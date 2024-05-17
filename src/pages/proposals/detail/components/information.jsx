@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { Box, Paper, Typography } from "@mui/material";
-import { formatDate, formatDateTime } from "../../../../utils/formatDate";
+import { formatDateTime } from "../../../../utils/formatDate";
 
 const Information = ({ proposal }) => {
   return (

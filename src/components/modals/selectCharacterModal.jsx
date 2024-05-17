@@ -39,7 +39,9 @@ const SelectCharacterModal = ({
       await login(wallet);
       handleCloseNetworkModal();
       handleClose();
-    } catch (e) {}
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   return (
@@ -197,4 +199,6 @@ export default SelectCharacterModal;
 SelectCharacterModal.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
+  wallet: PropTypes.string,
+  handleCloseNetworkModal: PropTypes.func.isRequired,
 };

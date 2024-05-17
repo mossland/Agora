@@ -14,9 +14,12 @@ import requestHeaders from "../../utils/restClient";
 
 const ReportCommentModal = ({ open, handleClose, comment }) => {
 
-  const [reason, setReason] = useState(null)
+  const [reason, setReason] = useState("")
 
-  const appHeaders = requestHeaders();
+   const token = localStorage.getItem("accessToken");
+   const userId = localStorage.getItem("_id");
+  const appHeaders = requestHeaders(token);
+
 
   const reportComment = async (cid) => {
     try {
@@ -24,6 +27,7 @@ const ReportCommentModal = ({ open, handleClose, comment }) => {
         `${import.meta.env.VITE_APP_API_BASE_URL}/comments/report/${cid}`,
         {
           reportReason: reason,
+          reporter: userId
         },
         appHeaders
       );

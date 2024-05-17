@@ -1,9 +1,9 @@
-import PropTypes from "prop-types";
-import { Box, Paper, Typography } from "@mui/material";
-
-import brick from "../../../assets/images/brick.png";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import PropTypes from "prop-types";
+
+import { Box, Paper, Typography } from "@mui/material";
+import brick from "../../../assets/images/brick.png";
 
 const Overview = ({ proposalStats }) => {
   const [treasury, setTreasuryAmount] = useState(null);
@@ -64,7 +64,6 @@ const Overview = ({ proposalStats }) => {
           sx={{
             ml: 1,
             color: "#000000",
-            // fontSize: "20px",
             fontFamily: "",
             fontWeight: "bold",
           }}
@@ -74,8 +73,10 @@ const Overview = ({ proposalStats }) => {
       </Box>
       <Box
         component="img"
+        onClick={()=>{window.location.href = 'https://google.com';}}
         src={brick}
         sx={{
+          cursor: "pointer",
           m: "2px",
           height: "189px",
           display: "flex",

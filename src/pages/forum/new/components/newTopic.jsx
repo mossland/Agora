@@ -6,7 +6,6 @@ import "react-quill/dist/quill.snow.css";
 const NewTopic = ({
   title,
   setTitle,
-  admins,
   forumTags,
   selectedForumTag,
   setSelectedForumTag,
@@ -101,39 +100,6 @@ const NewTopic = ({
             },
           }}
         />
-
-        {/* <Typography
-          sx={{
-            mt: 2,
-            mb: 1,
-            color: "#626262",
-            fontSize: "14px",
-            fontWeight: "bold",
-          }}
-        >
-          CC.
-        </Typography>
-        <TextField
-          variant="outlined"
-          placeholder="@mosserve_DAO_ADMIN"
-          sx={{
-            backgroundColor: "white",
-            borderColor: "#000000",
-            borderRadius: 1,
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                borderWidth: "1.5px",
-                borderColor: "#000000",
-              },
-              "&:hover fieldset": {
-                borderColor: "#000000",
-              },
-              "&.Mui-focused fieldset": {
-                borderColor: "#000000",
-              },
-            },
-          }}
-        /> */}
         <Typography
           sx={{
             mt: 2,
@@ -198,10 +164,11 @@ const NewTopic = ({
 export default NewTopic;
 
 NewTopic.propTypes = {
-  setDescriptionValue: PropTypes.func,
   setTitle: PropTypes.func,
   title: PropTypes.string,
+  forumTags: PropTypes.array,
+  selectedForumTag: PropTypes.string,
+  setSelectedForumTag: PropTypes.func,
   descriptionValue: PropTypes.string,
-  admins: PropTypes.array,
-  tags: PropTypes.array,
+  setDescriptionValue: PropTypes.func,
 };

@@ -1,8 +1,10 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import { Box, Button, Paper } from "@mui/material";
 import axios from "axios";
 import requestHeaders from "../../../../utils/restClient";
-import { useNavigate } from "react-router-dom";
+import { Box, Button, CircularProgress, Paper } from "@mui/material";
+import { createNewProposalTx } from "../../../../utils/contractInteraction";
 
 const Buttons = ({
   setInPreview,
@@ -13,19 +15,23 @@ const Buttons = ({
   endDate,
   selectedProposalTag,
   ccdAdmins,
-  isFormComplete
+  isFormComplete,
 }) => {
-  const appHeaders = requestHeaders();
+  const [loading, setLoading] = useState(false);
+  const token = localStorage.getItem("accessToken");
+  const wallet = localStorage.getItem("walletAddress");
+  const appHeaders = requestHeaders(token);
+
   const userId = localStorage.getItem("_id");
 
-  const navigate = useNavigate()
-  
+  const navigate = useNavigate();
+
   async function postNewProposal() {
+    setLoading(true);
     try {
-      // to-do: add validation
-      const adminIds = ccdAdmins.map(i => i._id)
-      console.log(adminIds)
-      await axios.post(
+      const adminIds = ccdAdmins.map((i) => i._id);
+
+      const response = await axios.post(
         `${import.meta.env.VITE_APP_API_BASE_URL}/new-proposal`,
         {
           title: title,
@@ -38,10 +44,30 @@ const Buttons = ({
         },
         appHeaders
       );
-      navigate("/proposals")
+
+      // Trigger blockchain tx for new proposal
+      try {
+        await createNewProposalTx(
+          wallet,
+          startDate,
+          endDate,
+          response.data._id
+        );
+      } catch (e) {
+        // Automatically set proposal status to rejected if the transaction fails or is denied by user
+        await axios.patch(
+          `${import.meta.env.VITE_APP_API_BASE_URL}/proposals/reject/${
+            response.data._id
+          }`,
+          appHeaders
+        );
+      }
+      navigate("/proposals");
     } catch (error) {
       console.log(error);
       //setError(true);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -87,7 +113,8 @@ const Buttons = ({
           <Button
             onClick={() => postNewProposal()}
             variant="contained"
-            disabled={!isFormComplete}
+            // disabled={!isFormComplete}
+            disabled={!isFormComplete || loading}
             sx={{
               px: 12,
               color: "#FFFFFF",
@@ -104,7 +131,11 @@ const Buttons = ({
               },
             }}
           >
-            Submit
+            {loading ? (
+              <CircularProgress size={24} sx={{ width: "100%", color: "#FFFFFF" }} />
+            ) : (
+              "Submit"
+            )}
           </Button>
         </Box>
       </Paper>

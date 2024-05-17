@@ -7,7 +7,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const ForumDetails = () => {
-  const appHeaders = requestHeaders();
+   const token = localStorage.getItem("accessToken");
+  const appHeaders = requestHeaders(token);
+
   const params = useParams();
   const topicId = params.id;
 
@@ -46,7 +48,7 @@ const ForumDetails = () => {
     if (topicId) {
       fetchData();
     }
-  }, [topicId, appHeaders]);
+  }, [appHeaders, topic, topicId, topicComments]);
 
   return (
     <>

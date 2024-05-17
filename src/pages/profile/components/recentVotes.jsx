@@ -21,7 +21,6 @@ import { getTagStyle } from "../../../utils/getTagStyle";
 import { formatDate } from "../../../utils/formatDate";
 
 const RecentVotes = ({ votes }) => {
-  console.log(votes);
 
   function fetchVotingStatus(p) {
     const now = new Date();
@@ -31,7 +30,6 @@ const RecentVotes = ({ votes }) => {
       return "Ongoing";
     }
     if (now >= endDate) {
-      // to-do: check voting result
       if (p.extended === true && now < Date(p.extendedEndDate)) {
         return "Extended";
       }
@@ -212,7 +210,7 @@ const RecentVotes = ({ votes }) => {
                         fontWeight: "bold",
                       }}
                     >
-                      {"100"} MOC
+                      {vote.initialMocBalance} MOC
                     </TableCell>
                   </TableRow>
                 ))}

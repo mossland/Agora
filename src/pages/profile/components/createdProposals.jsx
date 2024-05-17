@@ -26,7 +26,9 @@ import { getStatusStyle } from "../../../utils/getStatusStyle";
 import { getTagStyle } from "../../../utils/getTagStyle";
 
 const CreatedProposals = ({ proposals }) => {
-  const appHeaders = requestHeaders();
+   const token = localStorage.getItem("accessToken");
+  const appHeaders = requestHeaders(token);
+
 
   const [admins, setAdmins] = useState(null);
   const [proposalTags, setProposalTags] = useState(null);
@@ -109,7 +111,7 @@ const CreatedProposals = ({ proposals }) => {
       }
 
       if (now > endDate) {
-        return "ENDED"; // to-do: check if extended
+        return "ENDED"; 
       }
     }
   }

@@ -7,7 +7,9 @@ import axios from "axios";
 import requestHeaders from "../../../utils/restClient";
 
 const ProposalVotes = ({ proposal }) => {
-  const appHeaders = requestHeaders();
+   const token = localStorage.getItem("accessToken");
+  const appHeaders = requestHeaders(token);
+
   const [proposalVotes, setProposalVotes] = useState(null);
 
   // GET proposal votes

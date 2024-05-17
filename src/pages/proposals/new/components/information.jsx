@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { Box, Paper, Typography, Stack } from "@mui/material";
 
-import { formatDate, formatDateTime } from "../../../../utils/formatDate";
+import { formatDate } from "../../../../utils/formatDate";
 
 const Information = ({ startDate, endDate }) => {
   return (
@@ -70,14 +70,6 @@ const Information = ({ startDate, endDate }) => {
                 {endDate && formatDate(endDate.toDate())}
               </Typography>
             </Stack>
-          </Box>
-          <Box sx={{}}>
-            <Typography variant="body1" gutterBottom>
-              {/* {formatDateTime(proposal.startDate)} */}
-            </Typography>
-            <Typography variant="body1" gutterBottom>
-              {/* {formatDateTime(proposal.endDate)} */}
-            </Typography>
           </Box>
         </Box>
       </Paper>

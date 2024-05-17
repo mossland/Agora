@@ -18,6 +18,24 @@ import requestHeaders from "../../../utils/restClient";
 import ChangeCharacterModal from "../../../components/modals/changeCharacterModal";
 
 const Information = ({ user, userStats, userTokens }) => {
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 0, // No decimal places
+    maximumFractionDigits: 0, // No decimal places
+  });
+
+  // Function to format number without currency symbol
+  function formatWithoutCurrency(value) {
+    // Format the value as currency
+    let formatted = formatter.format(value);
+
+    // Remove the currency symbol (assumes the currency symbol is at the start)
+    formatted = formatted.replace("$", "").trim();
+
+    return formatted;
+  }
+
   // Edit Logic
   const [isEditing, setIsEditing] = useState(false);
   const [editedUsername, setEditedUsername] = useState(user.nickname);
@@ -52,26 +70,14 @@ const Information = ({ user, userStats, userTokens }) => {
     setIsEditing(false);
   };
 
-  const appHeaders = requestHeaders();
+  const token = localStorage.getItem("accessToken");
+  const appHeaders = requestHeaders(token);
 
   const editUserNickname = async (uid) => {
     try {
       await axios.patch(
         `${import.meta.env.VITE_APP_API_BASE_URL}/users/edit-nickname/${uid}`,
         { nickname: editedUsername },
-        appHeaders
-      );
-    } catch (error) {
-      console.log(error);
-      //setError(true);
-    }
-  };
-
-  const editUserPFP = async (uid) => {
-    try {
-      await axios.patch(
-        `${import.meta.env.VITE_APP_API_BASE_URL}/users/edit-pfp/${uid}`,
-        // { pfp: newlyChosenPFP },
         appHeaders
       );
     } catch (error) {
@@ -300,7 +306,7 @@ const Information = ({ user, userStats, userTokens }) => {
                         fontWeight: "bold",
                       }}
                     >
-                      {"992,501"} MOC
+                      {formatWithoutCurrency(userTokens)} MOC
                     </Typography>
                   </Box>
                 )}
@@ -433,4 +439,5 @@ export default Information;
 Information.propTypes = {
   user: PropTypes.object,
   userStats: PropTypes.object,
+  userToken: PropTypes.any,
 };
