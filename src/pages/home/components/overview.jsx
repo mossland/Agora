@@ -3,8 +3,7 @@ import axios from "axios";
 import PropTypes from "prop-types";
 
 import { Box, Paper, Typography } from "@mui/material";
-import brick from "../../../assets/images/brick.png";
-
+import banner from "../../../assets/images/mosland-banner.webp";
 const Overview = ({ proposalStats }) => {
   const [treasury, setTreasuryAmount] = useState(null);
 
@@ -74,7 +73,7 @@ const Overview = ({ proposalStats }) => {
       <Box
         component="img"
         onClick={()=>{window.location.href = 'https://google.com';}}
-        src={brick}
+        src={banner}
         sx={{
           cursor: "pointer",
           m: "2px",

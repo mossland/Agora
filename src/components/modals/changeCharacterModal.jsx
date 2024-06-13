@@ -16,6 +16,7 @@ import requestHeaders from "../../utils/restClient";
 const ChangeCharacterModal = ({
   open,
   handleClose,
+  onProfilePictureChange,
 }) => {
 
    const token = localStorage.getItem("accessToken");
@@ -35,8 +36,9 @@ const ChangeCharacterModal = ({
         { pfp: pfpSelected },
         appHeaders
       );
+      onProfilePictureChange(pfpSelected);
       handleClose()
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       console.log(error);
       //setError(true);

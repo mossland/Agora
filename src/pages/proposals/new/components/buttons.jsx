@@ -54,6 +54,7 @@ const Buttons = ({
           response.data._id
         );
       } catch (e) {
+        console.log("Transaction error during proposal creation - auto rejecting proposal")
         // Automatically set proposal status to rejected if the transaction fails or is denied by user
         await axios.patch(
           `${import.meta.env.VITE_APP_API_BASE_URL}/proposals/reject/${
@@ -62,12 +63,13 @@ const Buttons = ({
           appHeaders
         );
       }
-      navigate("/proposals");
     } catch (error) {
+      console.log("Transaction error during proposal creation 2 - auto rejecting proposal");
       console.log(error);
       //setError(true);
     } finally {
       setLoading(false);
+      navigate("/proposals");
     }
   }
 
@@ -86,6 +88,30 @@ const Buttons = ({
         }}
       >
         <Box sx={{ m: 2, display: "flex", flexDirection: "column", gap: 1.5 }}>
+          {preview && (
+            <Button
+              onClick={() => setInPreview(false)}
+              variant="contained"
+              // disabled={!isFormComplete}
+              sx={{
+                px: 12,
+                color: "#000000",
+                background: "#FFFFFF",
+                border: 1.5,
+                borderColor: "#000000",
+                borderRadius: "5px",
+                boxShadow: "4px 4px 0px #000000",
+                textTransform: "none",
+                fontWeight: "bold",
+                "&:hover": {
+                  background: "#CCCCCC",
+                  boxShadow: "4px 4px 0px #000000",
+                },
+              }}
+            >
+              Back
+            </Button>
+          )}
           {!preview && (
             <Button
               onClick={() => setInPreview(true)}
@@ -118,7 +144,7 @@ const Buttons = ({
             sx={{
               px: 12,
               color: "#FFFFFF",
-              background: "#7D7D7D",
+              background: "linear-gradient(#7D7D7D, #929292)",
               border: 1.5,
               borderColor: "#000000",
               borderRadius: "5px",
@@ -126,13 +152,17 @@ const Buttons = ({
               textTransform: "none",
               fontWeight: "bold",
               "&:hover": {
-                background: "#474747",
+                background:
+                  "linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), linear-gradient(#7D7D7D, #929292)",
                 boxShadow: "4px 4px 0px #000000",
               },
             }}
           >
             {loading ? (
-              <CircularProgress size={24} sx={{ width: "100%", color: "#FFFFFF" }} />
+              <CircularProgress
+                size={24}
+                sx={{ width: "100%", color: "#FFFFFF" }}
+              />
             ) : (
               "Submit"
             )}
@@ -152,6 +182,8 @@ Buttons.propTypes = {
   endDate: PropTypes.object, //to-do: check this
   tag: PropTypes.string,
   ccdAdmins: PropTypes.array,
+  selectedProposalTag: PropTypes.string,
+  isFormComplete: PropTypes.bool,
 };
 
 export default Buttons;

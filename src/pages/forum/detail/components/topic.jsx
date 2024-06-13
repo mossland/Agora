@@ -211,18 +211,19 @@ const Topic = ({ topic, topicComments }) => {
               {topic.title}
             </Typography>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-            {topic.pinned && <FilledFlagIcon />}
-              {isAuthenticated && liked === false &&
+              {topic.pinned && <FilledFlagIcon />}
+              {isAuthenticated &&
+                liked === false &&
                 (!topic.likers.includes(userId) || unliked) && (
                   <HeartIcon onClick={() => likeForumTopic(topic._id)} />
                 )}
-              { unliked === false &&
+              {unliked === false &&
                 (topic.likers.includes(userId) || liked) && (
                   <FilledHeartIcon
                     onClick={() => unlikeForumTopic(topic._id)}
                   />
                 )}
-              {isAuthenticated &&<DotIcon onClick={handleGeneralMenuClick} />}
+              {isAuthenticated && <DotIcon onClick={handleGeneralMenuClick} />}
               <ReportKebabMenu
                 anchorEl={generalAnchorEl}
                 open={generalOpen}
@@ -325,17 +326,21 @@ const Topic = ({ topic, topicComments }) => {
               py: 1,
               width: "200px",
               color: "white",
-              background: "linear-gradient(#0148FF, #0B89FF)",
+              background: "linear-gradient(#0047FF, #0A89FF)",
               border: 1.5,
               borderColor: "#000000",
               borderRadius: "5px",
               boxShadow: "4px 4px 0px #000000",
               textTransform: "none",
               fontWeight: "bold",
-              "&:hover": {},
+              "&:hover": {
+                background:
+                  "linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), linear-gradient(#0047FF, #0A89FF)",
+                boxShadow: "4px 4px 0px #000000",
+              },
             }}
           >
-            POST
+            POST COMMENT
           </Button>
         </Box>
 
@@ -411,13 +416,15 @@ const Topic = ({ topic, topicComments }) => {
                         {comment.likers && comment.likers.length}
                       </Typography>
                       <CommentLiking comment={comment} />
-                      {isAuthenticated &&<DotIcon
-                        width="15px"
-                        height="15px"
-                        onClick={(e) =>
-                          handleReportCommentMenuClick(e, comment)
-                        }
-                      />}
+                      {isAuthenticated && (
+                        <DotIcon
+                          width="15px"
+                          height="15px"
+                          onClick={(e) =>
+                            handleReportCommentMenuClick(e, comment)
+                          }
+                        />
+                      )}
                       <ReportKebabMenuComment
                         anchorEl={reportCommentAnchorEl}
                         open={Boolean(reportCommentAnchorEl)}

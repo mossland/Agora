@@ -17,6 +17,7 @@ import { fetchProfilePicture } from "../../../utils/fetchProfilePicture";
 import ForumLiking from "../../forum/components/forumLiking";
 import ForumComments from "../../forum/components/forumComments";
 import useAuth from "../../../hooks/useAuth";
+import requestHeaders from "../../../utils/restClient";
 
 const PostedTopics = ({ topics }) => {
   const { isAuthenticated } = useAuth();
@@ -47,7 +48,6 @@ const PostedTopics = ({ topics }) => {
       return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
     }
   }
-
 
   const [visibleCount, setVisibleCount] = useState(3); 
   const showMoreTopics = () => {

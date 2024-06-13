@@ -7,7 +7,7 @@ import requestHeaders from "../../utils/restClient";
 import axios from "axios";
 
 const Forum = () => {
-   const token = localStorage.getItem("accessToken");
+  const token = localStorage.getItem("accessToken");
   const appHeaders = requestHeaders(token);
 
   const [forumCategories, setForumCategories] = useState(null);
@@ -15,18 +15,16 @@ const Forum = () => {
   const [filteredForums, setFilteredForums] = useState(null);
   const [loading, setLoading] = useState(true);
 
-
   // Category filter for radio button
-  const [selectedValue, setSelectedValue] = useState("General");
+  const [selectedValue, setSelectedValue] = useState("All");
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
-    if (event.target.value === "General") {
-      setFilteredForums(forums)
-    } 
-    else {
-      const filtered = forums.filter(i => i.category === event.target.value)
-    setFilteredForums(filtered)
+    if (event.target.value === "All") {
+      setFilteredForums(forums);
+    } else {
+      const filtered = forums.filter((i) => i.category === event.target.value);
+      setFilteredForums(filtered);
     }
   };
 
@@ -35,22 +33,27 @@ const Forum = () => {
       try {
         if (!forums || !forumCategories) {
           const [forumsResponse, categoriesResponse] = await Promise.all([
-            axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/agora-forums`, { headers: appHeaders }),
-            axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/forums/categories`, { headers: appHeaders })
+            axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/agora-forums`, {
+              headers: appHeaders,
+            }),
+            axios.get(
+              `${import.meta.env.VITE_APP_API_BASE_URL}/forums/categories`,
+              { headers: appHeaders }
+            ),
           ]);
           setForums(forumsResponse.data);
-          setFilteredForums(forumsResponse.data)
+          setFilteredForums(forumsResponse.data);
           setForumCategories(categoriesResponse.data);
         }
       } catch (error) {
-        console.error('Failed to fetch data:', error);
+        console.error("Failed to fetch data:", error);
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [appHeaders, forums, forumCategories]); 
+  }, [appHeaders, forums, forumCategories]);
 
   return (
     <>
@@ -67,7 +70,11 @@ const Forum = () => {
         </Box>
       ) : (
         <Box sx={{ mt: 2, display: "flex", gap: 1 }}>
-          <Categories selectedValue={selectedValue} handleChange={handleChange} categories={forumCategories} />
+          <Categories
+            selectedValue={selectedValue}
+            handleChange={handleChange}
+            categories={forumCategories}
+          />
           <TopicGeneral selectedValue={selectedValue} forums={filteredForums} />
         </Box>
       )}

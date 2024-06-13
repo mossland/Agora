@@ -1,7 +1,9 @@
+import axios from "axios";
 import abi from "../contracts/ProposalVoting.json";
 
 export const contractABIProposalVoting = abi;
 import Web3 from "web3";
+import requestHeaders from "./restClient";
 
 export const createNewProposalTx = async (
   wallet,
@@ -55,6 +57,14 @@ export const createNewProposalTx = async (
     return txHash;
   } catch (error) {
     console.log(error);
+    const token = localStorage.getItem("accessToken");
+    const appHeaders = requestHeaders(token);
+    await axios.patch(
+      `${import.meta.env.VITE_APP_API_BASE_URL}/proposals/reject/${
+        proposalIdMongo
+      }`,
+      appHeaders
+    );
     return "ERROR";
   }
 };

@@ -217,7 +217,9 @@ const AllProposals = ({ proposals, stats }) => {
             <Typography sx={{ fontSize: "20px", fontWeight: "bold" }}>
               {stats.passed}
               {"/"}
-              {stats.approved} ({(stats.passed/stats.approved).toFixed(2)}%)
+              {stats.approved}{" "}
+              {stats.approved > 0 &&
+                `(${(stats.passed / stats.approved).toFixed(2)}%)`}
             </Typography>
           )}
         </Box>
@@ -337,7 +339,7 @@ const AllProposals = ({ proposals, stats }) => {
               py: 1,
               width: "200px",
               color: "white",
-              background: "linear-gradient(#0148FF, #0B89FF)",
+              background: "linear-gradient(#0047FF, #0A89FF)",
               border: 1.5,
               borderColor: "#000000",
               borderRadius: "5px",
@@ -347,7 +349,7 @@ const AllProposals = ({ proposals, stats }) => {
               transition: "all 0.3s ease", // not working
               "&:hover": {
                 background:
-                  "linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), linear-gradient(#0148FF, #0B89FF)",
+                  "linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), linear-gradient(#0047FF, #0A89FF)",
                 boxShadow: "4px 4px 0px #000000",
               },
             }}
@@ -376,7 +378,9 @@ const AllProposals = ({ proposals, stats }) => {
             {sortedProposals.length <= 0 ? (
               <TableRow sx={{ my: 2 }}>
                 <TableCell>
-                  <Typography sx={{ textAlign: "center" }}>No proposals.</Typography>
+                  <Typography sx={{ textAlign: "center" }}>
+                    No proposals.
+                  </Typography>
                 </TableCell>
               </TableRow>
             ) : (
@@ -546,7 +550,7 @@ const AllProposals = ({ proposals, stats }) => {
               px: 4,
               py: 1,
               color: "white",
-              background: "#474747",
+              background: "linear-gradient(#474747, #646464)",
               border: 1.5,
               borderColor: "#000000",
               borderRadius: "5px",
@@ -554,7 +558,8 @@ const AllProposals = ({ proposals, stats }) => {
               textTransform: "none",
               fontWeight: "bold",
               "&:hover": {
-                background: "#6C6C6C",
+                background:
+                  "linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), linear-gradient(#474747, #646464)",
                 boxShadow: "4px 4px 0px #000000",
               },
             }}

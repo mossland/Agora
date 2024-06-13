@@ -67,30 +67,40 @@ const TopicGeneral = ({ forums, selectedValue }) => {
   const handleSearchChange = (event) => {
     setSearchInput(event.target.value.toLowerCase());
   };
-  
+
   const sortedAndFilteredForums = useMemo(() => {
     const filtered = forums.filter(
       (forum) =>
         forum.title.toLowerCase().includes(searchInput) ||
-        (forum.author && forum.author.nickname.toLowerCase().includes(searchInput))
+        (forum.author &&
+          forum.author.nickname.toLowerCase().includes(searchInput))
     );
 
-    switch (sort) {
-      case 'latest':
-        return filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-      case 'new-register':
-        return filtered.sort((a, b) => new Date(b.author.createdAt) - new Date(a.author.createdAt));
-      // case 'ends-soon':
-      //   // Sort by ending soon (assuming there is an endDate)
-      //   return filtered.filter(a => new Date(a.endDate) > new Date()).sort((a, b) => new Date(a.endDate) - new Date(b.endDate));
-      case 'hyped':
-        // Sort by a combination of views and likes, assuming both are integers
-        return filtered.sort((a, b) => (b.views + b.likers.length) - (a.views + a.likers.length));
-      default:
-        return filtered;
-    }
-  }, [forums, searchInput, sort]);
+    const pinnedForums = filtered.filter((forum) => forum.pinned);
+    const unpinnedForums = filtered.filter((forum) => !forum.pinned);
 
+    const sortForums = (forumList) => {
+      switch (sort) {
+        case "latest":
+          return forumList.sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          );
+        case "new-register":
+          return forumList.sort(
+            (a, b) =>
+              new Date(b.author.createdAt) - new Date(a.author.createdAt)
+          );
+        case "hyped":
+          return forumList.sort(
+            (a, b) => b.views + b.likers.length - (a.views + a.likers.length)
+          );
+        default:
+          return forumList;
+      }
+    };
+
+    return [...sortForums(pinnedForums), ...sortForums(unpinnedForums)];
+  }, [forums, searchInput, sort]);
 
   const [visibleCount, setVisibleCount] = useState(5);
   const handleViewMoreTopics = () => {
@@ -265,7 +275,7 @@ const TopicGeneral = ({ forums, selectedValue }) => {
               px: 4,
               py: 1,
               color: "white",
-              background: "linear-gradient(#0148FF, #0B89FF)",
+              background: "linear-gradient(#0047FF, #0A89FF)",
               border: 1.5,
               borderColor: "#000000",
               borderRadius: "5px",
@@ -274,7 +284,7 @@ const TopicGeneral = ({ forums, selectedValue }) => {
               fontWeight: "bold",
               "&:hover": {
                 background:
-                  "linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), linear-gradient(#0148FF, #0B89FF)",
+                  "linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), linear-gradient(#0047FF, #0A89FF)",
                 boxShadow: "4px 4px 0px #000000",
               },
             }}
@@ -297,129 +307,151 @@ const TopicGeneral = ({ forums, selectedValue }) => {
           {sortedAndFilteredForums && sortedAndFilteredForums.length === 0 && (
             <Typography>No active forum topics.</Typography>
           )}
-          {sortedAndFilteredForums && sortedAndFilteredForums.slice(0, visibleCount).map((forum) => (
-            <ListItem
-              key={forum._id}
-              sx={{
-                bgcolor: "#FFFFFF",
-                borderRadius: "8px",
-                mb: 0.5,
-              }}
-            >
-              <Box
+          {sortedAndFilteredForums &&
+            sortedAndFilteredForums.slice(0, visibleCount).map((forum) => (
+              <ListItem
+                key={forum._id}
                 sx={{
-                  width: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 3,
+                  bgcolor: "#FFFFFF",
+                  borderRadius: "8px",
+                  mb: 0.5,
                 }}
               >
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
+                <NavLink
+                  to={`/forum/${forum._id}`}
+                  style={{
+                    width: "100%",
+                    color: "inherit",
+                    textDecoration: "none",
                   }}
                 >
-                  <Box>
-                    <Typography sx={{ fontSize: "20px", fontWeight: "bold" }}>
-                      <NavLink
-                        to={`/forum/${forum._id}`}
-                        style={{ color: "inherit", textDecoration: "none" }}
-                      >
-                        {forum.title}
-                      </NavLink>
-                    </Typography>
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
-                      <Typography sx={{ fontSize: "14px" }}>
-                        {getTimeDifference(forum.createdAt)}
-                      </Typography>
-                    </Box>
-                  </Box>
-                  <Box sx={{ display: "flex", gap: 1.5 }}>
-                    {forum.pinned && <FilledFlagIcon />}
-                    {isAuthenticated && <ForumLiking forum={forum} />}
-                  </Box>
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-                    <Avatar
-                      src={fetchProfilePicture(forum.author.profilePicture)}
+                  <Box
+                    sx={{
+                      width: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 3,
+                    }}
+                  >
+                    <Box
                       sx={{
-                        width: "24px",
-                        height: "24px",
-                        border: 1,
-                        borderColor: "#000000",
-                        borderRadius: 1,
+                        display: "flex",
+                        justifyContent: "space-between",
                       }}
-                      variant="square"
-                    />
-                    <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
-                      {forum.author.nickname}
-                    </Typography>
+                    >
+                      <Box>
+                        <Typography
+                          sx={{ fontSize: "20px", fontWeight: "bold" }}
+                        >
+                          {forum.title}
+                        </Typography>
+                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                          <Typography sx={{ fontSize: "14px" }}>
+                            {getTimeDifference(forum.createdAt)}
+                          </Typography>
+                        </Box>
+                      </Box>
+                      <Box sx={{ display: "flex", gap: 1.5 }}>
+                        {forum.pinned && <FilledFlagIcon />}
+                        {isAuthenticated && <ForumLiking forum={forum} />}
+                      </Box>
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 1.5 }}
+                      >
+                        <Avatar
+                          src={fetchProfilePicture(forum.author.profilePicture)}
+                          sx={{
+                            width: "24px",
+                            height: "24px",
+                            border: 1,
+                            borderColor: "#000000",
+                            borderRadius: 1,
+                          }}
+                          variant="square"
+                        />
+                        <Typography
+                          sx={{ fontSize: "14px", fontWeight: "bold" }}
+                        >
+                          {forum.author.nickname}
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 3 }}
+                      >
+                        <Box sx={{ display: "flex", gap: 1 }}>
+                          <Typography
+                            sx={{ fontSize: "14px", fontWeight: "bold" }}
+                          >
+                            {forum.views}
+                          </Typography>
+                          <Typography sx={{ fontSize: "14px" }}>
+                            Views
+                          </Typography>
+                        </Box>
+                        <Box sx={{ display: "flex", gap: 1 }}>
+                          <ForumComments forum={forum} />
+                        </Box>
+                        <Box sx={{ display: "flex", gap: 1 }}>
+                          <Typography
+                            sx={{ fontSize: "14px", fontWeight: "bold" }}
+                          >
+                            {forum.likers.length}
+                          </Typography>
+                          <Typography sx={{ fontSize: "14px" }}>
+                            Likes
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </Box>
                   </Box>
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
-                    <Box sx={{ display: "flex", gap: 1 }}>
-                      <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
-                        {forum.views}
-                      </Typography>
-                      <Typography sx={{ fontSize: "14px" }}>Views</Typography>
-                    </Box>
-                    <Box sx={{ display: "flex", gap: 1 }}>
-                      <ForumComments forum={forum} />
-                    </Box>
-                    <Box sx={{ display: "flex", gap: 1 }}>
-                      <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
-                        {forum.likers.length}
-                      </Typography>
-                      <Typography sx={{ fontSize: "14px" }}>Likes</Typography>
-                    </Box>
-                  </Box>
-                </Box>
-              </Box>
-            </ListItem>
-          ))}
+                </NavLink>
+              </ListItem>
+            ))}
         </List>
       )}
 
-      {sortedAndFilteredForums && sortedAndFilteredForums.length > visibleCount && (
-        <Box
-          sx={{
-            my: 1,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Button
-            onClick={handleViewMoreTopics}
-            variant="contained"
+      {sortedAndFilteredForums &&
+        sortedAndFilteredForums.length > visibleCount && (
+          <Box
             sx={{
-              px: 4,
-              py: 1,
-              color: "white",
-              background: "#474747",
-              border: 1.5,
-              borderColor: "#000000",
-              borderRadius: "5px",
-              boxShadow: "4px 4px 0px #000000",
-              textTransform: "none",
-              fontWeight: "bold",
-              "&:hover": {
-                background: "#6C6C6C",
-                boxShadow: "4px 4px 0px #000000",
-              },
+              my: 1,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            VIEW MORE TOPICS
-          </Button>
-        </Box>
-      )}
+            <Button
+              onClick={handleViewMoreTopics}
+              variant="contained"
+              sx={{
+                px: 4,
+                py: 1,
+                color: "white",
+                background: "#474747",
+                border: 1.5,
+                borderColor: "#000000",
+                borderRadius: "5px",
+                boxShadow: "4px 4px 0px #000000",
+                textTransform: "none",
+                fontWeight: "bold",
+                "&:hover": {
+                  background: "#6C6C6C",
+                  boxShadow: "4px 4px 0px #000000",
+                },
+              }}
+            >
+              VIEW MORE TOPICS
+            </Button>
+          </Box>
+        )}
     </Paper>
   );
 };

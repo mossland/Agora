@@ -25,6 +25,9 @@ function Header() {
   const pfp = localStorage.getItem("profilePicture");
   const wallet = localStorage.getItem("walletAddress");
 
+  // const contractAddress = import.meta.env.VITE_APP_VOTING_CONTRACT;
+  // console.log(contractAddress)
+
 
   // Modal Logic
   const [isNetworkModalOpen, setNetworkModalOpen] = useState(false);
@@ -112,7 +115,7 @@ function Header() {
                   boxShadow: "3px 3px 0px #000000",
                 },
               }}
-              onClick={() => console.log("Redirect to admin")}
+              href={"https://mossland-admin.vercel.app/"}
             >
               Admin
             </Button>

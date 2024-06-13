@@ -61,6 +61,7 @@ const AgorasHighlights = ({ highlights }) => {
         >
           {highlights.slice(0, 3).map((highlight) => (
             <ListItem
+              
               key={highlight._id}
               sx={{
                 display: "flex",
@@ -68,8 +69,11 @@ const AgorasHighlights = ({ highlights }) => {
                 gap: 2,
               }}
             >
+              <Box sx={{ mt: "10px" }}>
+
               <MIcon />
-              <Box>
+              </Box>
+              <Box sx={{ cursor: "pointer" }} onClick={()=>{ highlight.startDate ? window.location.href = `proposals/${highlight._id}`: window.location.href = `forum/${highlight._id}`}}>
                 <Typography sx={{ fontSize: "16", fontWeight: "bold" }}>
                   {highlight.title}
                 </Typography>

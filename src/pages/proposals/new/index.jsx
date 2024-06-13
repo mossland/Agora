@@ -71,7 +71,7 @@ const NewProposalPage = () => {
     fetchData();
   }, [appHeaders, proposalTags]);
 
-  const isFormComplete = title && descriptionValue && proposalTags && startDate && endDate;
+  const isFormComplete = title && descriptionValue && selectedProposalTag && startDate && endDate;
 
   return (
     <Box sx={{ mt: 2, display: "flex", gap: 1 }}>

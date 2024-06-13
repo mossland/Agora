@@ -7,12 +7,16 @@ import Information from "./components/information";
 import RecentVotes from "./components/recentVotes";
 import CreatedProposals from "./components/createdProposals";
 import PostedTopics from "./components/postedTopics";
+import { isValidToken } from "../../utils/jwt";
 
 const Profile = () => {
   const id = localStorage.getItem("_id");
   const wallet = localStorage.getItem("walletAddress");
 
   const token = localStorage.getItem("accessToken");
+  if (!token || !isValidToken(token)) {
+    window.location.href = "/"
+  }
   const appHeaders = requestHeaders(token);
 
   const [userData, setUserData] = useState(null);
@@ -53,6 +57,17 @@ const Profile = () => {
             const humanReadableBalance = response.data.items[0].balance / (10 ** response.data.items[0].contract.decimals)
             setUserMocBalance(humanReadableBalance)
           }
+          // const response = await axios.get(
+          //   `https://tmetaverse.moss.land/backend/user/630e004b0b00c0b91aae29d3/${wallet}/mmoc`,
+          //   { headers: appHeaders }
+          // );
+          // console.log(response.data)
+          if (response.data.items.length === 0) {
+            setUserMocBalance(0)
+          } else {
+            const humanReadableBalance = response.data.items[0].balance / (10 ** response.data.items[0].contract.decimals)
+            setUserMocBalance(humanReadableBalance)
+          }
           
         }
       } catch (error) {
@@ -66,47 +81,40 @@ const Profile = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+
+        if (!isValidToken(token)) {
+          window.location.href = "/";
+          return;
+        }
+
         if (
-          userData === null ||
+          token && 
+          (userData === null ||
           userProposals === null ||
           userVotes === null ||
-          userTopics === null
+          userTopics === null)
         ) {
-          const userProfileResponse = axios.get(
-            // `http://localhost:3000/user/${id}`,
+          const userProfileResponse = await axios.get(
             `${import.meta.env.VITE_APP_API_BASE_URL}/user/${id}`,
-            { headers: appHeaders }
+            appHeaders
           );
-          const userProposalsResponse = axios.get(
+          const userProposalsResponse = await axios.get(
             `${import.meta.env.VITE_APP_API_BASE_URL}/proposals-by-user/${id}`,
-            { headers: appHeaders }
+            appHeaders
           );
-          const userVotesResponse = axios.get(
+          const userVotesResponse = await axios.get(
             `${import.meta.env.VITE_APP_API_BASE_URL}/votes-by-user/${id}`,
-            //`http://localhost:3000/votes-by-user/${id}`,
-            { headers: appHeaders }
+            appHeaders
           );
-          const userTopicsResponse = axios.get(
+          const userTopicsResponse = await axios.get(
             `${import.meta.env.VITE_APP_API_BASE_URL}/forums-by-user/${id}`,
-            { headers: appHeaders }
+            appHeaders
           );
 
-          const [
-            userDataResponse,
-            proposalsResponse,
-            votesResponse,
-            topicsResponse,
-          ] = await Promise.all([
-            userProfileResponse,
-            userProposalsResponse,
-            userVotesResponse,
-            userTopicsResponse,
-          ]);
-
-          setUserData(userDataResponse.data);
-          setUserProposals(proposalsResponse.data);
-          setUserVotes(votesResponse.data);
-          setUserTopics(topicsResponse.data);
+          setUserData(userProfileResponse.data);
+          setUserProposals(userProposalsResponse.data);
+          setUserVotes(userVotesResponse.data);
+          setUserTopics(userTopicsResponse.data);
         }
       } catch (error) {
         console.error("Failed to fetch user data:", error);
@@ -116,7 +124,7 @@ const Profile = () => {
     };
 
     fetchData();
-  }, [id, appHeaders]);
+  }, [id, token, userData, userProposals, userVotes, userTopics]);
 
   return (
     <>

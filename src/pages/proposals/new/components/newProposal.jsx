@@ -16,6 +16,7 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { fetchProfilePicture } from "../../../../utils/fetchProfilePicture";
+import dayjs from "dayjs";
 
 const NewProposal = ({
   title,
@@ -35,6 +36,20 @@ const NewProposal = ({
   const handleChangeTitle = (event) => {
     setTitle(event.target.value);
   };
+
+  // Calculate the minimum start date (7 days from now)
+  const minStartDate = dayjs().add(7, 'day');
+
+   // Calculate the minimum end date (7 days from the selected start date)
+   const minEndDate = startDate ? dayjs(startDate).add(7, 'day') : null;
+
+   const handleStartDateChange = (newValue) => {
+     setStartDate(newValue);
+     // Reset end date if it is before the new start date + 7 days
+     if (endDate && dayjs(newValue).add(7, 'day').isAfter(endDate)) {
+       setEndDate(null);
+     }
+   };
 
 
   return (
@@ -275,6 +290,7 @@ const NewProposal = ({
         <Stack direction="row">
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateTimePicker
+              // minDate={minStartDate}
               disablePast
               sx={{
                 backgroundColor: "white",
@@ -295,7 +311,7 @@ const NewProposal = ({
               }}
               label="Start date"
               value={startDate || null}
-              onChange={(newValue) => setStartDate(newValue)}
+              onChange={(newValue) => handleStartDateChange(newValue)}
             />
           </LocalizationProvider>
           <Typography
@@ -333,6 +349,7 @@ const NewProposal = ({
               }}
               label="End date"
               value={endDate || null}
+              minDate={minEndDate}
               onChange={(newValue) => setEndDate(newValue)}
             />
           </LocalizationProvider>
@@ -367,6 +384,7 @@ NewProposal.propTypes = {
   endDate: PropTypes.object, //to-do: check this
   setEndDate: PropTypes.func,
   handleChangeAdmins: PropTypes.func,
+  proposalTags: PropTypes.array,
 };
 
 export default NewProposal;

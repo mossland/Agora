@@ -15,10 +15,9 @@ import CloseIcon from "@mui/icons-material/Close";
 const ReportTopicModal = ({ open, handleCloseModal, topic }) => {
   const [reason, setReason] = useState("");
 
-   const token = localStorage.getItem("accessToken");
-   const userId = localStorage.getItem("_id");
+  const token = localStorage.getItem("accessToken");
+  const userId = localStorage.getItem("_id");
   const appHeaders = requestHeaders(token);
-
 
   const reportTopic = async (fid) => {
     try {
@@ -26,7 +25,7 @@ const ReportTopicModal = ({ open, handleCloseModal, topic }) => {
         `${import.meta.env.VITE_APP_API_BASE_URL}/forums/report/${fid}`,
         {
           reportReason: reason,
-          reporter: userId
+          reporter: userId,
         },
         appHeaders
       );
@@ -138,7 +137,7 @@ const ReportTopicModal = ({ open, handleCloseModal, topic }) => {
               width: "100%",
               height: "44px",
               color: "#FFFFFF",
-              background: "#7D7D7D",
+              background: "linear-gradient(#7D7D7D, #929292)",
               border: 1.5,
               borderColor: "#000000",
               borderRadius: "8px",
@@ -147,7 +146,8 @@ const ReportTopicModal = ({ open, handleCloseModal, topic }) => {
               fontSize: "18px",
               fontWeight: "bold",
               "&:hover": {
-                background: "#CCCCCC",
+                background:
+                  "linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), linear-gradient(#7D7D7D, #929292)",
                 boxShadow: "4px 4px 0px #000000",
               },
             }}

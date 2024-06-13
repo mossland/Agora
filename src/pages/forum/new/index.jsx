@@ -64,7 +64,7 @@ const NewForum = () => {
     fetchData();
   }, [appHeaders, forumTags]);
 
-  const isFormComplete = title && descriptionValue && forumTags;
+  const isFormComplete = title && descriptionValue && selectedForumTag;
 
   return (
     <Box sx={{ mt: 2, display: "flex", gap: 1 }}>

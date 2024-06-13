@@ -21,7 +21,6 @@ import { getTagStyle } from "../../../utils/getTagStyle";
 import { formatDate } from "../../../utils/formatDate";
 
 const RecentVotes = ({ votes }) => {
-
   function fetchVotingStatus(p) {
     const now = new Date();
     const startDate = new Date(p.startDate);
@@ -30,7 +29,7 @@ const RecentVotes = ({ votes }) => {
       return "Ongoing";
     }
     if (now >= endDate) {
-      if (p.extended === true && now < Date(p.extendedEndDate)) {
+      if (p.extended) {
         return "Extended";
       }
       return "Ended";
@@ -42,9 +41,6 @@ const RecentVotes = ({ votes }) => {
   }
 
   const [visibleCount, setVisibleCount] = useState(5);
-  const showMoreVotes = () => {
-    setVisibleCount(votes.length); // Show all votes
-  };
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
@@ -233,7 +229,7 @@ const RecentVotes = ({ votes }) => {
                 px: 4,
                 py: 1,
                 color: "#000000",
-                background: "#FFFFFF",
+                background: "linear-gradient(#474747, #646464)",
                 border: 1.5,
                 borderColor: "#000000",
                 borderRadius: "5px",
@@ -241,7 +237,8 @@ const RecentVotes = ({ votes }) => {
                 textTransform: "none",
                 fontWeight: "bold",
                 "&:hover": {
-                  background: "#CCCCCC",
+                  background:
+                    "linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), linear-gradient(#474747, #646464)",
                   boxShadow: "4px 4px 0px #000000",
                 },
               }}

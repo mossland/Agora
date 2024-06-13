@@ -70,7 +70,7 @@ const RecentActivity = ({ activity }) => {
           Recent Activity
         </Typography>
       </Box>
-
+      {activity.length === 0 && <Typography sx={{mt: 2}}>There is no recent activity.</Typography>}
       {activity && (
         <List
           aria-labelledby=""
@@ -95,6 +95,7 @@ const RecentActivity = ({ activity }) => {
                   <Avatar
                     src={fetchProfilePicture(a._doc.author.profilePicture)}
                     sx={{
+                      mt: "5px",
                       width: "32px",
                       height: "32px",
                       border: 1,
@@ -120,6 +121,7 @@ const RecentActivity = ({ activity }) => {
                   <Avatar
                     src={fetchProfilePicture(a._doc.voter.profilePicture)}
                     sx={{
+                      mt: "5px",
                       width: "32px",
                       height: "32px",
                       border: 1,

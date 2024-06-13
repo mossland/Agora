@@ -1,16 +1,15 @@
 import PropTypes from "prop-types";
 import { createContext, useEffect, useReducer } from "react";
 import axios from "axios";
-import { isValidToken, setSession } from "../utils/jwt";
+import { isValidToken, setSession, handleTokenExpired } from "../utils/jwt";
 import { Web3 } from "web3";
+import { jwtDecode } from "jwt-decode";
 
 const initialState = {
   isAuthenticated: false,
   isInitialized: false,
   user: null,
 };
-
-
 
 const handlers = {
   INITIALIZE: (state, action) => {
@@ -88,6 +87,8 @@ function AuthProvider({ children }) {
             },
           });
         } else {
+          const decoded = jwtDecode(accessToken);
+          handleTokenExpired(decoded)
           dispatch({
             type: "INITIALIZE",
             payload: {

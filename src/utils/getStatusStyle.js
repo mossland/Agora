@@ -21,3 +21,17 @@ export const getStatusStyle = (status) => {
       return {};
   }
 };
+
+export const getVoteStyle = (status) => {
+  switch (status) {
+    case "For":
+      return { color: "#02AD3C", backgroundColor: "#CCEFD8" };
+    case "Against":
+      return { color: "#FF2869", backgroundColor: "#FFD4E1" };
+    case "Abstain":
+      return { color: "#D48C00", backgroundColor: "#F6E8CC" };
+    default:
+      return {};
+  }
+};
+

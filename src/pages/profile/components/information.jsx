@@ -22,7 +22,7 @@ const Information = ({ user, userStats, userTokens }) => {
     style: "currency",
     currency: "USD",
     minimumFractionDigits: 0, // No decimal places
-    maximumFractionDigits: 0, // No decimal places
+    maximumFractionDigits: 2, // No decimal places
   });
 
   // Function to format number without currency symbol
@@ -39,11 +39,17 @@ const Information = ({ user, userStats, userTokens }) => {
   // Edit Logic
   const [isEditing, setIsEditing] = useState(false);
   const [editedUsername, setEditedUsername] = useState(user.nickname);
+  const [profilePicture, setProfilePicture] = useState(user.profilePicture);
 
-  const isChanged = editedUsername !== user.nickname;
+  const isChanged =
+    editedUsername !== user.nickname || profilePicture !== user.profilePicture;
 
   const handleEditClick = () => {
     setIsEditing(true);
+  };
+
+  const handleProfilePictureChange = (newProfilePicture) => {
+    setProfilePicture(newProfilePicture);
   };
 
   const handleChipClick = () => {
@@ -65,11 +71,11 @@ const Information = ({ user, userStats, userTokens }) => {
   const handleSave = async () => {
     if (isChanged) {
       await editUserNickname(user._id);
+      localStorage.setItem("profilePicture", profilePicture);
       window.location.reload();
     }
     setIsEditing(false);
   };
-
   const token = localStorage.getItem("accessToken");
   const appHeaders = requestHeaders(token);
 
@@ -77,7 +83,7 @@ const Information = ({ user, userStats, userTokens }) => {
     try {
       await axios.patch(
         `${import.meta.env.VITE_APP_API_BASE_URL}/users/edit-nickname/${uid}`,
-        { nickname: editedUsername },
+        { nickname: editedUsername, profilePicture: profilePicture },
         appHeaders
       );
     } catch (error) {
@@ -167,13 +173,17 @@ const Information = ({ user, userStats, userTokens }) => {
           <Box sx={{ position: "relative" }}>
             <Avatar
               sx={{
-                width: "100%",
+                width: "98%",
                 height: "auto",
                 borderRadius: 2,
                 outline: isEditing && "150px solid rgba(250, 250, 250, 0.65)",
                 outlineOffset: "-150px",
+                bgcolor: "#C4C4C4",
+                border: 0.5,
+                borderColor: "#000000",
+                ml: 0.25,
               }}
-              src={fetchProfilePicture(user.profilePicture)}
+              src={fetchProfilePicture(profilePicture)}
               variant="rounded"
             />
             {isEditing && (
@@ -201,7 +211,11 @@ const Information = ({ user, userStats, userTokens }) => {
             )}
           </Box>
         )}
-        <ChangeCharacterModal open={isModalOpen} handleClose={handleClose} />
+        <ChangeCharacterModal
+          open={isModalOpen}
+          handleClose={handleClose}
+          onProfilePictureChange={handleProfilePictureChange}
+        />
         {user && (
           <Box sx={{ p: 2, display: "flex", flexDirection: "column", gap: 2 }}>
             <Box>
@@ -287,7 +301,7 @@ const Information = ({ user, userStats, userTokens }) => {
                     </Typography>
                   </Box>
                 )}
-                {userTokens && (
+                {userTokens !== undefined && userTokens !== null && (
                   <Box
                     sx={{ display: "flex", justifyContent: "space-between" }}
                   >

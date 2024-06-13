@@ -25,6 +25,7 @@ const ProposalDetails = () => {
   const [proposal, setProposal] = useState(null);
   const [proposalVotes, setProposalVotes] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [proposalLoading, setProposalLoading] = useState(true);
 
   const contractAddress = import.meta.env.VITE_APP_VOTING_CONTRACT;
 
@@ -32,6 +33,7 @@ const ProposalDetails = () => {
     const fetchData = async () => {
       try {
         if (proposal === null) {
+          setProposalLoading(true); // Start loading for proposal data
           // Fetch on-chain proposal events
 
           if (wallet) {
@@ -57,6 +59,7 @@ const ProposalDetails = () => {
                   { headers: appHeaders }
                 );
                 setProposal(proposalResponse.data);
+                setProposalLoading(false); // End loading for proposal data
                 if (
                   proposalResponse.data.smartContractId == undefined ||
                   proposalResponse.data.smartContractId == null
@@ -104,6 +107,7 @@ const ProposalDetails = () => {
               { headers: appHeaders }
             );
             setProposal(proposalResponse.data);
+            setProposalLoading(false); // End loading for proposal data
           }
         }
         if (proposalVotes === null) {
@@ -114,7 +118,6 @@ const ProposalDetails = () => {
             { headers: appHeaders }
           );
           setProposalVotes(votesResponse.data);
-          // setLoading(false);
         }
       } catch (error) {
         console.error("Failed to fetch data:", error);
@@ -141,23 +144,33 @@ const ProposalDetails = () => {
         >
           <CircularProgress />
         </Box>
-      ) : (
+      ) : proposalLoading ? (
+        <Box
+          sx={{
+            height: "80vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      ) : proposal ? (
         <Box sx={{ mt: 2, display: "flex", gap: 1 }}>
           <Box sx={{ flex: 1 }}>
-            {proposal && <Description proposal={proposal} />}
-            {!proposal && (
-              <Typography sx={{ mt: 10 }}>
-                Proposal not found. Please try again.
-              </Typography>
-            )}
+            <Description proposal={proposal} />
           </Box>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
             <Vote proposal={proposal} votes={proposalVotes} />
             <Information proposal={proposal} />
-            {( proposal && now >= proposal.endDate && proposal.votingClosed && proposal.smartContractId) ? <FinalResult proposal={proposal} votes={proposalVotes} /> : <CurrentResult proposal={proposal} votes={proposalVotes} />}
+            <CurrentResult proposal={proposal} votes={proposalVotes} />
             <Votes proposal={proposal} votes={proposalVotes} />
           </Box>
         </Box>
+      ) : (
+        <Typography sx={{ mt: 10 }}>
+          Proposal not found. Please try again.
+        </Typography>
       )}
     </>
   );

@@ -27,7 +27,6 @@ const Description = ({
     }
 
     if (now > endDate) {
-      // to-do: handle extended
       return "Ended";
     }
   }

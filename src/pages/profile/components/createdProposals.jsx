@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import requestHeaders from "../../../utils/restClient";
 import {
   Box,
   Button,
@@ -19,16 +20,13 @@ import MIcon from "../../../components/icons/mSquareIcon";
 import EditProposalModal from "./editProposalModal";
 
 import { formatDate } from "../../../utils/formatDate";
-import requestHeaders from "../../../utils/restClient";
-import { useNavigate } from "react-router-dom";
 
 import { getStatusStyle } from "../../../utils/getStatusStyle";
 import { getTagStyle } from "../../../utils/getTagStyle";
 
 const CreatedProposals = ({ proposals }) => {
-   const token = localStorage.getItem("accessToken");
+  const token = localStorage.getItem("accessToken");
   const appHeaders = requestHeaders(token);
-
 
   const [admins, setAdmins] = useState(null);
   const [proposalTags, setProposalTags] = useState(null);
@@ -75,7 +73,6 @@ const CreatedProposals = ({ proposals }) => {
     fetchData();
   }, [appHeaders]);
 
-  const navigate = useNavigate();
   function computeStatusLabel(startDate, endDate, status, proposal) {
     if (status === "In Review") {
       return status.toUpperCase();
@@ -111,7 +108,7 @@ const CreatedProposals = ({ proposals }) => {
       }
 
       if (now > endDate) {
-        return "ENDED"; 
+        return "ENDED";
       }
     }
   }
@@ -431,7 +428,7 @@ const CreatedProposals = ({ proposals }) => {
                 px: 4,
                 py: 1,
                 color: "#000000",
-                background: "#FFFFFF",
+                background: "linear-gradient(#474747, #646464)",
                 border: 1.5,
                 borderColor: "#000000",
                 borderRadius: "5px",
@@ -439,7 +436,8 @@ const CreatedProposals = ({ proposals }) => {
                 textTransform: "none",
                 fontWeight: "bold",
                 "&:hover": {
-                  background: "#CCCCCC",
+                  background:
+                    "linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), linear-gradient(#474747, #646464)",
                   boxShadow: "4px 4px 0px #000000",
                 },
               }}

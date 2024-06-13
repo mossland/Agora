@@ -56,14 +56,14 @@ const Categories = ({ categories, selectedValue, handleChange }) => {
         <FormControl sx={{ p: 2 }}>
           <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
-            defaultValue="General"
+            defaultValue="All"
             name="radio-buttons-group"
             value={selectedValue}
             onChange={handleChange}
           >
             <FormControlLabel
               key={"general"}
-              value={"General"}
+              value={"All"}
               control={
                 <Radio
                   sx={{
@@ -71,7 +71,7 @@ const Categories = ({ categories, selectedValue, handleChange }) => {
                   }}
                 />
               }
-              label={"General"}
+              label={"All"}
               componentsProps={{
                 typography: { fontWeight: "bold" },
               }}

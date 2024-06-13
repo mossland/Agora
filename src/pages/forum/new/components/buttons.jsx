@@ -54,6 +54,30 @@ const Buttons = ({
         }}
       >
         <Box sx={{ m: 2, display: "flex", flexDirection: "column", gap: 1.5 }}>
+        {preview && (
+            <Button
+              onClick={() => setInPreview(false)}
+              variant="contained"
+              // disabled={!isFormComplete}
+              sx={{
+                px: 12,
+                color: "#000000",
+                background: "#FFFFFF",
+                border: 1.5,
+                borderColor: "#000000",
+                borderRadius: "5px",
+                boxShadow: "4px 4px 0px #000000",
+                textTransform: "none",
+                fontWeight: "bold",
+                "&:hover": {
+                  background: "#CCCCCC",
+                  boxShadow: "4px 4px 0px #000000",
+                },
+              }}
+            >
+              Back
+            </Button>
+          )}
           {!preview && (
             <Button
               onClick={() => setInPreview(true)}
@@ -85,7 +109,7 @@ const Buttons = ({
             sx={{
               px: 12,
               color: "#FFFFFF",
-              background: "#7D7D7D",
+              background: "linear-gradient(#7D7D7D, #929292)",
               border: 1.5,
               borderColor: "#000000",
               borderRadius: "5px",
@@ -93,7 +117,8 @@ const Buttons = ({
               textTransform: "none",
               fontWeight: "bold",
               "&:hover": {
-                background: "#474747",
+                background:
+                "linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), linear-gradient(#7D7D7D, #929292)",
                 boxShadow: "4px 4px 0px #000000",
               },
             }}

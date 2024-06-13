@@ -29,9 +29,8 @@ const EditProposalModal = ({
   proposalTags,
   admins,
 }) => {
-   const token = localStorage.getItem("accessToken");
+  const token = localStorage.getItem("accessToken");
   const appHeaders = requestHeaders(token);
-
 
   const [inPreview, setInPreview] = useState(false);
 
@@ -48,7 +47,6 @@ const EditProposalModal = ({
             if (foundAdmin.length > 0) {
               filtered.push(foundAdmin[0]);
             }
-           
           }
 
           setCCdAdmins(filtered);
@@ -71,7 +69,8 @@ const EditProposalModal = ({
 
   const [selectedProposalTag, setSelectedProposalTag] = useState(proposal.tag);
 
-  const isFormComplete = title && descriptionValue && selectedProposalTag && startDate && endDate;
+  const isFormComplete =
+    title && descriptionValue && selectedProposalTag && startDate && endDate;
 
   const handleChangeTitle = (event) => {
     setTitle(event.target.value);
@@ -351,7 +350,7 @@ const EditProposalModal = ({
               }}
             />
           </Box>
-          <Typography
+          {/* <Typography
             sx={{
               mt: 2,
               mb: 1,
@@ -361,8 +360,8 @@ const EditProposalModal = ({
             }}
           >
             SCHEDULE
-          </Typography>
-          <Stack direction="row">
+          </Typography> */}
+          {/* <Stack direction="row">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DateTimePicker
                 disablePast
@@ -426,7 +425,7 @@ const EditProposalModal = ({
                 onChange={(newValue) => setEndDate(newValue)}
               />
             </LocalizationProvider>
-          </Stack>
+          </Stack> */}
           {/* <Typography
             sx={{
               mt: 2,
@@ -465,7 +464,7 @@ const EditProposalModal = ({
             variant="contained"
             sx={{
               color: "#FFFFFF",
-              background: "#7D7D7D",
+              background: "linear-gradient(#7D7D7D, #929292)",
               border: 1.5,
               borderColor: "#000000",
               borderRadius: "5px",
@@ -473,7 +472,8 @@ const EditProposalModal = ({
               textTransform: "none",
               fontWeight: "bold",
               "&:hover": {
-                background: "#474747",
+                background:
+                  "linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), linear-gradient(#7D7D7D, #929292)",
                 boxShadow: "4px 4px 0px #000000",
               },
             }}

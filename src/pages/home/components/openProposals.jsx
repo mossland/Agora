@@ -186,7 +186,7 @@ const OpenProposals = ({ ongoingProposals }) => {
                 px: 4,
                 py: 1,
                 color: "white",
-                background: "#474747",
+                background: "linear-gradient(#474747, #646464)",
                 border: 1.5,
                 borderColor: "#000000",
                 borderRadius: "5px",
@@ -194,7 +194,8 @@ const OpenProposals = ({ ongoingProposals }) => {
                 textTransform: "none",
                 fontWeight: "bold",
                 "&:hover": {
-                  background: "#6C6C6C",
+                  background:
+                    "linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), linear-gradient(#474747, #646464)",
                   boxShadow: "4px 4px 0px #000000",
                 },
               }}

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Box, Paper, LinearProgress, Typography } from "@mui/material";
+import { Box, LinearProgress, Paper, Stack, Typography } from "@mui/material";
 import { getProposalResult } from "../../../../utils/contractInteraction";
 
 function LinearProgressWithLabel({ value, color = "#ff0000", ...props }) {
@@ -44,25 +44,25 @@ function LinearProgressWithLabel({ value, color = "#ff0000", ...props }) {
 }
 
 const FinalResult = ({ proposal, votes }) => {
-
   const wallet = localStorage.getItem("walletAddress");
-  const [finalResult, setProposalFinalResult] = useState(null)
-  const [resultRetrievalError, setResultRetrievalError] = useState(false)
+  const [finalResult, setProposalFinalResult] = useState(null);
+  const [resultRetrievalError, setResultRetrievalError] = useState(false);
 
   useEffect(() => {
     (async () => {
       //setLoading(true);
       try {
-        if (wallet && 
-          finalResult == null && proposal.votingClosed &&
+        if (
+          wallet &&
+          finalResult == null &&
+          proposal.votingClosed &&
           proposal.smartContractId !== null &&
           proposal.smartContractId !== undefined
         ) {
           const result = await getProposalResult(proposal.smartContractId); // If positive, passed. If negative, failed. If 0, tie.
-          console.log(result);
           setProposalFinalResult(result);
         } else {
-          setResultRetrievalError(true)
+          setResultRetrievalError(true);
         }
       } catch (error) {
         console.log(error);
@@ -111,7 +111,14 @@ const FinalResult = ({ proposal, votes }) => {
             </Typography>
           </Box>
           <Box sx={{ m: 2 }}>
-          {resultRetrievalError && <Stack sx={{maxWidth: "300px"}}><Typography>Couldn't fetch the final voting result for this proposal from the Luniverse chain. Have you connected your wallet?</Typography></Stack>}
+            {resultRetrievalError && (
+              <Stack sx={{ maxWidth: "300px" }}>
+                <Typography>
+                  Couldn't fetch the final voting result for this proposal from
+                  the Luniverse chain. Have you connected your wallet?
+                </Typography>
+              </Stack>
+            )}
             <Box sx={{ mb: 1, display: "flex" }}>
               <Typography
                 sx={{
@@ -168,6 +175,11 @@ const FinalResult = ({ proposal, votes }) => {
 };
 
 export default FinalResult;
+
+LinearProgressWithLabel.propTypes = {
+  value: PropTypes.number,
+  color: PropTypes.string,
+};
 
 FinalResult.propTypes = {
   proposal: PropTypes.object,

@@ -1,7 +1,15 @@
 import PropTypes from "prop-types";
-import { Avatar, Box, List, ListItem, Paper, Typography } from "@mui/material";
-
+import {
+  Avatar,
+  Box,
+  Chip,
+  List,
+  ListItem,
+  Paper,
+  Typography,
+} from "@mui/material";
 import { fetchProfilePicture } from "../../../../utils/fetchProfilePicture";
+import { getVoteStyle } from "../../../../utils/getStatusStyle";
 
 const Votes = ({ proposal, votes }) => {
   return (
@@ -55,7 +63,9 @@ const Votes = ({ proposal, votes }) => {
                 }}
               >
                 {votes.length === 0 && (
-                  <Typography sx={{mb: 1, mt: 1}}>No votes on this proposal.</Typography>
+                  <Typography sx={{ mb: 1, mt: 1 }}>
+                    No votes on this proposal.
+                  </Typography>
                 )}
                 {votes.map((vote) => (
                   <ListItem
@@ -74,7 +84,9 @@ const Votes = ({ proposal, votes }) => {
                         borderColor: "#000000",
                         borderRadius: 1,
                       }}
-                      src={fetchProfilePicture(proposal.proponent.profilePicture)}
+                      src={fetchProfilePicture(
+                        proposal.proponent.profilePicture
+                      )}
                       variant="square"
                     />
                     <Typography
@@ -82,14 +94,21 @@ const Votes = ({ proposal, votes }) => {
                     >
                       {vote.voter.nickname}
                     </Typography>
-                    <Typography
-                      sx={{ flex: 1, fontSize: "14px", fontWeight: "bold" }}
-                    >
-                      {vote.type}
-                    </Typography>
-                    <Typography
-                      sx={{ fontSize: "14px", fontWeight: "bold" }}
-                    >
+                    <Chip
+                      label={vote.type}
+                      sx={{
+                        mr: 3,
+                        height: "19px",
+                        fontSize: "12px",
+                        fontWeight: "bold",
+                        borderRadius: "4px",
+                        "& .MuiChip-label": {
+                          px: "5px",
+                        },
+                        ...getVoteStyle(vote.type),
+                      }}
+                    ></Chip>
+                    <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
                       {vote.initialMocBalance} MOC
                     </Typography>
                   </ListItem>

@@ -129,7 +129,7 @@ const ReportCommentModal = ({ open, handleClose, comment }) => {
               width: "100%",
               height: "44px",
               color: "#FFFFFF",
-              background: "#7D7D7D",
+              background: "linear-gradient(#7D7D7D, #929292)",
               border: 1.5,
               borderColor: "#000000",
               borderRadius: "8px",
@@ -138,7 +138,8 @@ const ReportCommentModal = ({ open, handleClose, comment }) => {
               fontSize: "18px",
               fontWeight: "bold",
               "&:hover": {
-                background: "#CCCCCC",
+                background:
+                "linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), linear-gradient(#7D7D7D, #929292)",
                 boxShadow: "4px 4px 0px #000000",
               },
             }}

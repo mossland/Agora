@@ -49,8 +49,10 @@ const Description = ({ proposal }) => {
       return "Ongoing";
     }
 
-    if (now > endDate) {
-      // to-do: handle extended
+    if (now >= endDate) {
+      if (proposal.extended) {
+        return "Extended";
+      }
       return "Ended";
     }
   }
