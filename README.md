@@ -116,7 +116,9 @@ These tasks aim to lay a solid foundation for the Agora project, ensuring that w
 
 # 각 project repo address
 admin : [https://github.com/mossland/Agora_frontend_dashboard]
+
 backend : [https://github.com/mossland/Agora_backend]
+
 frontend : [https://github.com/mossland/Agora_frontend]
   
 ## 예상 일정 및 투두(매주 업데이트 예정) 
@@ -210,3 +212,7 @@ To-do:
 - [ ] Transition user’s MOC balance API once it is ready from Mossland
 - [ ] Undergoing admin QA
 - [ ] Undergoing front-end QA
+
+# Mossland Agora Codebase Docs
+- [Link](https://ll0-3.gitbook.io/mossland-agora)
+
