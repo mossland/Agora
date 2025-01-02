@@ -12,6 +12,24 @@ Governance and Proposal Process: Agora simplifies the proposal process, making i
 
 Community-Centric Approach: We believe in the power of community. Agora is not just a governance tool; it's a platform for discussion, debate, and collaboration. Every member has the opportunity to contribute, comment, and influence the course of the DAO.
 
+# Repository Access and Collaboration
+
+The Agora project is currently being developed in private repositories to maintain security and confidentiality during this phase. If you are interested in contributing to the development of Agora or collaborating on the project, please reach out to us at **[contact@moss.land](mailto:contact@moss.land)**.
+
+Once approved, you will be granted access to the following repositories:
+
+1. **[Agora Frontend](https://github.com/mossland/Agora_frontend)**  
+   Handles the user-facing interface of the Agora governance platform, including proposal creation and voting mechanisms.
+
+2. **[Agora Admin Dashboard](https://github.com/mossland/Agora_frontend_dashboard)**  
+   Dedicated to the administrative tools for managing proposals, monitoring DAO activities, and ensuring smooth platform governance.
+
+3. **[Agora Backend](https://github.com/mossland/Agora_backend)**  
+   Provides backend support for Agora, including API endpoints, database management, and Web3 integration for blockchain functionalities.
+
+We welcome contributors with expertise in front-end and back-end development, Web3 integration, or UI/UX design. Join us to shape the future of Mossland DAO!
+
+
 # Milestone #1(2024/1/16-2024/2/15)
 
 For Milestone #1, our focus is to develop a comprehensive Product Requirement Document (PRD) that encapsulates the following key features:
