@@ -53,11 +53,11 @@ In terms of research and development strategy, we will:
 These tasks aim to lay a solid foundation for the Agora project, ensuring that we deliver a product that is not only technically robust but also user-friendly and aligned with the Mossland community's needs.
 
 # Related docs 
-- [https://abit.ly/bpx5go]
-- [https://www.figma.com/file/3pLLZ0vr1jbVmMyHnai6cK/Mossland-Agora-project?type=design&node-id=14%3A152&mode=design&t=N7GjpNJdQEJJSt3O-1]
+- [Notion Link](https://abit.ly/bpx5go)
+- [Figma Link](https://www.figma.com/file/3pLLZ0vr1jbVmMyHnai6cK/Mossland-Agora-project?type=design&node-id=14%3A152&mode=design&t=N7GjpNJdQEJJSt3O-1)
   
 # Feedback from the foundation 
-[https://docs.google.com/document/d/1oYboOYPCcf-WMpDnOoPAojkih-mUeG-7Ujy0MDUwtRA/edit?pli=1]
+- [Docs Link](https://docs.google.com/document/d/1oYboOYPCcf-WMpDnOoPAojkih-mUeG-7Ujy0MDUwtRA/edit?pli=1)
 
 ## WEEK 1(1/16~1/23)
 - - project kick off/w mean
@@ -73,14 +73,13 @@ These tasks aim to lay a solid foundation for the Agora project, ensuring that w
 - [x]  기획서 초안 작성
 - [PRD Draft(작업 중)](https://www.notion.so/PRD-Draft-ff444fb304c54389965514b7f9078105?pvs=21)
 - [x]  레퍼런스 리서치
-      - (https://www.figma.com/file/3pLLZ0vr1jbVmMyHnai6cK/Mossland-Agora-project?type=design&node-id=2%3A2&mode=design&t=UoxS2rhK3ry7BDwO-1)
+      - [Figma Link](https://www.figma.com/file/3pLLZ0vr1jbVmMyHnai6cK/Mossland-Agora-project?type=design&node-id=2%3A2&mode=design&t=UoxS2rhK3ry7BDwO-1)
 
 ## Week 3(1/31-2/6)
 
 - [x]  유저 플로우별 상세 기획
 - [x]  프로덕트 룩앤필/네이밍/로고
-- [x]  디자인 - lofi 작업 시작(~1차 공유 : 2/7 수요일)
-     https://www.figma.com/file/3pLLZ0vr1jbVmMyHnai6cK/Mossland-Agora-project?type=design&node-id=122-2163&mode=design&t=DBBPlL3D0oA7L97E-0
+- [x]  디자인 - lofi 작업 시작(~1차 공유 : 2/7 수요일) [Figma Link](https://www.figma.com/file/3pLLZ0vr1jbVmMyHnai6cK/Mossland-Agora-project?type=design&node-id=122-2163&mode=design&t=DBBPlL3D0oA7L97E-0)
     - [x]  메인화면/유저 플로우(~2/7)
     - [x]  디자인 컨셉(~2/7)
 - [x]  DAO 운영 관련 정책 update 
@@ -92,14 +91,12 @@ These tasks aim to lay a solid foundation for the Agora project, ensuring that w
 현 lofi 기준으로 자잘한 수정사항 업데이트는 계속 진행 중입니다
 웹앱 기준으로 고려했어서, 웹 기준으로 디자인을 진행했는데 반응형에 따라 모바일 화면 대응은 이번 스콥에서는 어려울 것 같습니다. 웹 디자인 시 각 섹션을 모듈로 제작하긴 했어서 모바일은 스콥 확정 후, phase 2에 project showcase 등 추가되는 화면들 포함해서 같이 대응할 수 있도록 할게요. (사실 웹 dapp 중에 모바일 까지 뎁스있게 대응하는 경우가 많지는 않아서, 저희도 mossverse 에서는 웹으로 띄울거고, agora 단독으로 이용 하는 시나리오 정도 고려되는데, 해당 부분은 우선순위를 살짝 조정하도록 하겠습니다
 
-- [x]  어드민 스펙 update 
-(https://www.notion.so/chelsealee97/PRD-Draft-ff444fb304c54389965514b7f9078105?pvs=4#0b26e757a90a45a9b42ba716057663f4)    
+- [x]  어드민 스펙 update [Notion Link](https://www.notion.so/chelsealee97/PRD-Draft-ff444fb304c54389965514b7f9078105?pvs=4#0b26e757a90a45a9b42ba716057663f4)    
 - [x] lofi 수정사항 반영
-- [x]  Hifi 작업
-      [https://www.figma.com/file/3pLLZ0vr1jbVmMyHnai6cK/Mossland-Agora-project?type=design&node-id=14-152&mode=design&t=1fco7widi9txyTH3-0]
+- [x]  Hifi 작업 [Figma Link](https://www.figma.com/file/3pLLZ0vr1jbVmMyHnai6cK/Mossland-Agora-project?type=design&node-id=14-152&mode=design&t=1fco7widi9txyTH3-0)
 - [x]  어드민 명세 추가/어드민 화면 업데이트
-- [x]  1차 피드백 반영
-      [https://docs.google.com/document/d/1oYboOYPCcf-WMpDnOoPAojkih-mUeG-7Ujy0MDUwtRA/edit?usp=sharing]
+- [x]  1차 피드백 반영 [Docs Link
+](https://docs.google.com/document/d/1oYboOYPCcf-WMpDnOoPAojkih-mUeG-7Ujy0MDUwtRA/edit?usp=sharing)
 - [x]  디자인 색 테마 변경 요청 대응
 - [x]  어드민 topic 숨김(삭제)처리 케이스 대응
 - [x]  버튼 컴포넌트 디자인 변경 및 상태값 따라 분류
@@ -111,8 +108,8 @@ These tasks aim to lay a solid foundation for the Agora project, ensuring that w
 - Milestone #1 개발완료 된 프로덕트 및 어드민
 
 - 개발 인원 : 1 FS dev fulltime commit 전제로 2MM+ PM 팔로업
-- QA list : [https://docs.google.com/document/d/1Ljhx3PZBQmevXxMxnKzH8qUhySBRHOX8gZNX680LsYk/edit?usp=sharing]
-- Main milestone list : [ https://whimsical.com/mossland-dao-WeR1H6NQaWxLMroqPm4ygU]
+- QA list : [Docs Link](https://docs.google.com/document/d/1Ljhx3PZBQmevXxMxnKzH8qUhySBRHOX8gZNX680LsYk/edit?usp=sharing)
+- Main milestone list : [Docs Link](https://whimsical.com/mossland-dao-WeR1H6NQaWxLMroqPm4ygU)
 
 # 각 project repo address
 admin : [https://github.com/mossland/Agora_frontend_dashboard]
@@ -214,5 +211,5 @@ To-do:
 - [ ] Undergoing front-end QA
 
 # Mossland Agora Codebase Docs
-- [Link](https://ll0-3.gitbook.io/mossland-agora)
+- [Gitbook Link](https://ll0-3.gitbook.io/mossland-agora)
 
