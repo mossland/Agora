@@ -128,14 +128,14 @@ frontend : [https://github.com/mossland/Agora_frontend]
 - Completed:
 - [x]Finalizing front-end UI development of Agora admin dashboard
       Resolved all outstanding questions on admin dashboard regarding UI/intended functionality 
-- [x]Deployed internal dev environment for QA of admin dashboard UI (https://mossland-admin.vercel.app/dashboard/). This will be updated automatically as updates are pushed to the codebase.
+- [x]Deployed internal dev environment for QA of admin dashboard UI [Demo](https://mossland-admin.vercel.app/dashboard/). This will be updated automatically as updates are pushed to the codebase.
 - [x] Sharing current status of admin dashboard code with Mossland team via Github
 - [x]Setup services for Agora backend; setup email accounts, MongoDB account, Luniverse blockchain node account 
 ### week 3(3/26~)
 Completed:
 - [x]Front-end UI development of Agora admin dashboard ready for initial review
 - [x]Started working on back-end Web2 integration for admin dashboard. Setup all CRUD operation endpoints for users, proposals, forums. Aim to complete integration into the admin UI by the end of this week.
-- [x]Started working on setup for user-facing front-end. Latest changes will be visible here: https://mossland-app.vercel.app
+- [x]Started working on setup for user-facing front-end. Latest changes will be visible here: [Demo](https://mossland-app.vercel.app)
 - [x]Will load update code to Mossland Github for Admin UI and backend repos.
 - [x]Added Admin's missing screen and policy complements
 ### week 4(4/2~4/8)
